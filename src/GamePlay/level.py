@@ -27,6 +27,33 @@ class Level:
         
         self.tiles = tiles
     
+    # arguments are level coordinates already normalized with the camera viewport into consideration
+    def GetSpriteHitTest(self, pixelX, pixelY):
+        winnerDistance = 9999999
+        winner = None
+        for sprite in self.sprites:
+            dx = sprite.X - pixelX
+            dy = sprite.Y - pixelY
+            d = dx * dx + dy * dy
+            r = sprite.R + 5
+            if d < winnerDistance and d < r * r:
+                winner = sprite
+                winnerDistance = d
+        return winner
+    
+    def RenderSprites(self, screen, cameraX, cameraY):
+        left = cameraX - 64
+        right = cameraX + 640 + 64
+        top = cameraY - 64
+        bottom = cameraY + 480 + 64
+        
+        for sprite in self.sprites:
+            if sprite.X < left or sprite.X > right or sprite.Y < top or sprite.Y > bottom:
+                continue
+            image = sprite.GetImage()
+            
+            screen.blit(image, sprite.RenderCoordinates(cameraX, cameraY))
+    
     def RenderTiles(self, screen, cameraX, cameraY):
         startX = cameraX // 32
         startY = cameraY // 32

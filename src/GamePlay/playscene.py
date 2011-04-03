@@ -18,5 +18,5 @@ class PlayScene(GameSceneBase):
     
     def Render(self, screen):
         self.level.RenderTiles(screen, self.cameraX, self.cameraY)
-        pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(10, 10, 32, 32))
+        self.level.RenderSprites(screen, self.cameraX, self.cameraY)
         
