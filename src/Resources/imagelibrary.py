@@ -18,4 +18,5 @@ class ImageLibrary:
             
             image = pygame.image.load(finalpath)
             self.images[path] = image
+            
         return image
