@@ -9,7 +9,13 @@ class Level:
         self.pixelHeight = rows * 32
         self.InitializeTiles(columns, rows)
         self.sprites = []
-        self.sprites.append(GamePlay.Sprite(64, 64))
+        
+        for i in range(100):
+            male = i % 2 == 1
+            variety = (i // 25) + 1
+            x = i // 10
+            y = i % 10
+            self.sprites.append(GamePlay.Citizen(30 + x * 45, 30 + y * 45, male, variety))
     
     def InitializeTiles(self, columns, rows):
         tiles = []

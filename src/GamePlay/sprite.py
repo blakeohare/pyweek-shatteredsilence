@@ -25,7 +25,7 @@ class Sprite:
     
     
     def GetImage(self, opacity):
-        return ImageLibrary.Get('Sprites/Dude1/down0.png', opacity)
+        raise "You were supposed to override Sprite.GetImage"
     
     def RenderCoordinates(self, camX, camY):
         return (self.X - self.R - camX, self.Y - self.R - camY)
@@ -45,4 +45,14 @@ class Sprite:
             else:
                 self.X = self.X + int(dx / distance * self.V)
                 self.Y = self.Y + int(dy / distance * self.V)
+        
+class Citizen(Sprite):
+    
+    def __init__(self, x, y, male, variety):
+        Sprite.__init__(self, x, y)
+        self.imagepath = ('Girl', 'Dude')[male] + str(variety)
+    
+    def GetImage(self, opacity):
+        return ImageLibrary.Get('Sprites/' + self.imagepath + '/down0.png', opacity)
+    
         
