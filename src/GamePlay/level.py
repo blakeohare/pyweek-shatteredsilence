@@ -27,6 +27,13 @@ class Level:
         
         self.tiles = tiles
     
+    def GetSpritesInRange(self, left, top, right, bottom):
+        sprites = []
+        for sprite in self.sprites:
+            if sprite.X >= left and sprite.X <= right and sprite.Y >= top and sprite.Y <= bottom:
+                sprites.append(sprite)
+        return sprites 
+    
     # arguments are level coordinates already normalized with the camera viewport into consideration
     def GetSpriteHitTest(self, pixelX, pixelY):
         winnerDistance = 9999999
