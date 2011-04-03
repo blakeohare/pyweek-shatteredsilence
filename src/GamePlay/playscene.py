@@ -18,14 +18,14 @@ class PlayScene(GameSceneBase):
     def ProcessInput(self, events):
         
         for event in events:
-            if event.type == pygame.MOUSEBUTTONUP:
+            if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                 x = event.pos[0] + self.cameraX
                 y = event.pos[1] + self.cameraY
                 
                 self.SetSelection(self.dragStart, (x, y))
                 self.dragStart = None
                 
-            elif event.type == pygame.MOUSEBUTTONDOWN:
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 x = event.pos[0] + self.cameraX
                 y = event.pos[1] + self.cameraY
                 self.dragStart = (x, y)
@@ -36,7 +36,14 @@ class PlayScene(GameSceneBase):
                 x = event.pos[0] + self.cameraX
                 y = event.pos[1] + self.cameraY
                 self.cursorLogicalPosition = (x, y)
-                 
+            
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
+                self.MoveSelectionToTarget(event.pos[0] - self.cameraX, event.pos[1] - self.cameraY)
+    
+    def MoveSelectionToTarget(self, targetX, targetY):
+        for sprite in self.selection:
+            sprite.SetTarget(targetX, targetY)
+    
     def SetSelection(self, startDrag, endDrag):
         left = startDrag[0]
         top = startDrag[1]
@@ -63,7 +70,8 @@ class PlayScene(GameSceneBase):
             
     def Update(self):
         
-        pass
+        for sprite in self.level.sprites:
+            sprite.Update()
     
     def Render(self, screen):
         self.level.RenderTiles(screen, self.cameraX, self.cameraY)
