@@ -25,7 +25,7 @@ class Sprite:
     
     
     def GetImage(self, opacity):
-        return ImageLibrary.Get('temp_dude.png', opacity)
+        return ImageLibrary.Get('Sprites/Dude1/down0.png', opacity)
     
     def RenderCoordinates(self, camX, camY):
         return (self.X - self.R - camX, self.Y - self.R - camY)
