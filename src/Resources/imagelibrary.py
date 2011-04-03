@@ -71,6 +71,9 @@ class ImageLibrary:
     
     def ConvertToGrayscale(self, image):
         
+        if str(pygame.surfarray).find('MissingModule') != -1:
+            return image.copy()
+        
         width =  image.get_width()
         height = image.get_height()
         
