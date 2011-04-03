@@ -51,6 +51,8 @@ class GameLoop:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     self.quitting = True
+                elif event.type == KEYDOWN and event.key == K_ESCAPE:
+                    self.quitting = True
                 else:
                     events.append(event)
             self.current.ProcessInput(events)
