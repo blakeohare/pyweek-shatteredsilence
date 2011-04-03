@@ -1,6 +1,6 @@
-from . import gameloop
-from . import gamescenebase
+from . import gameloop as _gameloop
+from . import gamescenebase as _gamescenebase
 
-GameLoop = gameloop.GameLoop
-GameSceneBase = gamescenebase.GameSceneBase
+GameLoop = _gameloop.GameLoop
+GameSceneBase = _gamescenebase.GameSceneBase
 

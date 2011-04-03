@@ -1,27 +1,23 @@
 from Game import GameSceneBase
+from GamePlay import PlayScene
 import pygame
+from Resources import ImageLibrary
 
 class Title(GameSceneBase):
     
     def __init__(self):
         GameSceneBase.__init__(self)
-        self.x = 0
-        self.y = 0
     
     def ProcessInput(self, events):
         for event in events:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                self.next = None
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+                self.next = PlayScene()
 
     def Update(self):
-        self.x += 1
-        self.y += 2
-        self.x = self.x % 640
-        self.y = self.y % 480
+        pass
     
     def Render(self, screen):
         screen.fill((0, 0, 0))
-        for xoffset in (0, -1):
-            for yOffset in (0, -1):
-                pygame.draw.rect(screen, (0, 100, 255), pygame.Rect(self.x + xoffset, self.y + yOffset, 32, 32))
+        titleimage = ImageLibrary.Get('title.png')
+        screen.blit(titleimage, (10, 10))
         
