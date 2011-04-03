@@ -22,6 +22,6 @@ class Tile:
     def Update(self, counter):
         self.colorization -= 5
     
-    def GetImage(self, opacity):
-        return self.template.GetImage(opacity)
+    def GetImage(self):
+        return self.template.GetImage(self.colorization)
         

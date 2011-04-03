@@ -61,31 +61,30 @@ class PlayScene(GameSceneBase):
             top = bottom
             bottom = t
         
+        selection = []
         if right - left < 16 and bottom - top < 16:
             sprite = self.level.GetSpriteHitTest((right + left) // 2, (bottom + top) // 2)
             if sprite != None:
-                self.selection =  [sprite]
+                selection =  [sprite]
             else:
-                self.selection = [] 
+                selection = [] 
         else:
-            self.selection = self.level.GetSpritesInRange(left, top, right, bottom)
+            selection = self.level.GetSpritesInRange(left, top, right, bottom)
+        
+        self.selection = []
+        for sprite in selection:
+            if sprite.color == 255:
+                self.selection.append(sprite)
             
     def Update(self):
         self.counter += 1
         for sprite in self.level.sprites:
             sprite.Update()
     
-    def TEMP_AmbientOpacity(self):
-        t = (self.counter % 510) - 255
-        if t < 0: t *= -1
-        
-        return t
-    
     def Render(self, screen):
-        ao = self.TEMP_AmbientOpacity()
-        self.level.RenderTiles(screen, self.cameraX, self.cameraY, ao)
+        self.level.RenderTiles(screen, self.cameraX, self.cameraY)
         self.RenderSelection(screen)
-        self.level.RenderSprites(screen, self.cameraX, self.cameraY, ao)
+        self.level.RenderSprites(screen, self.cameraX, self.cameraY)
         self.RenderDrag(screen)
     
     def RenderSelection(self, screen):

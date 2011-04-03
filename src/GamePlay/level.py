@@ -16,6 +16,8 @@ class Level:
             x = i // 10
             y = i % 10
             self.sprites.append(GamePlay.Citizen(30 + x * 45, 30 + y * 45, male, variety))
+        
+        self.sprites[23].color = 255
     
     def InitializeTiles(self, columns, rows):
         tiles = []
@@ -54,7 +56,7 @@ class Level:
                 winnerDistance = d
         return winner
     
-    def RenderSprites(self, screen, cameraX, cameraY, opacity):
+    def RenderSprites(self, screen, cameraX, cameraY):
         left = cameraX - 64
         right = cameraX + 640 + 64
         top = cameraY - 64
@@ -63,11 +65,11 @@ class Level:
         for sprite in self.sprites:
             if sprite.X < left or sprite.X > right or sprite.Y < top or sprite.Y > bottom:
                 continue
-            image = sprite.GetImage(opacity)
+            image = sprite.GetImage()
             
             screen.blit(image, sprite.RenderCoordinates(cameraX, cameraY))
     
-    def RenderTiles(self, screen, cameraX, cameraY, opacity):
+    def RenderTiles(self, screen, cameraX, cameraY):
         startX = cameraX // 32
         startY = cameraY // 32
         endX = startX + (640 // 32) + 1
@@ -87,6 +89,6 @@ class Level:
                 tile = tiles[x][y]
                 drawX = tile.PixelX - cameraX
                 drawY = tile.PixelY - cameraY
-                screen.blit(tile.GetImage(opacity), (drawX, drawY))
+                screen.blit(tile.GetImage(), (drawX, drawY))
                 y += 1
             x += 1 
