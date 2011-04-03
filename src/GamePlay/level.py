@@ -28,10 +28,10 @@ class Level:
         self.tiles = tiles
     
     def RenderTiles(self, screen, cameraX, cameraY):
-        startX = cameraX / 32
-        startY = cameraY / 32
-        endX = startX + (640 / 32) + 1
-        endY = startY + (480 / 32) + 1
+        startX = cameraX // 32
+        startY = cameraY // 32
+        endX = startX + (640 // 32) + 1
+        endY = startY + (480 // 32) + 1
         
         if startX < 0: startX = 0
         if startY < 0: startY = 0
