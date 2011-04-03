@@ -1,3 +1,4 @@
+import math
 import pygame
 from Game import GameSceneBase
 import GamePlay
@@ -14,6 +15,7 @@ class PlayScene(GameSceneBase):
         self.cursorLogicalPosition = (0, 0)
         self.cursorScreenPosition = (0, 0)
         self.suppressDragDraw = True
+        self.counter = 0
         
     def ProcessInput(self, events):
         
@@ -69,14 +71,21 @@ class PlayScene(GameSceneBase):
             self.selection = self.level.GetSpritesInRange(left, top, right, bottom)
             
     def Update(self):
-        
+        self.counter += 1
         for sprite in self.level.sprites:
             sprite.Update()
     
+    def TEMP_AmbientOpacity(self):
+        t = (self.counter % 510) - 255
+        if t < 0: t *= -1
+        
+        return t
+    
     def Render(self, screen):
-        self.level.RenderTiles(screen, self.cameraX, self.cameraY)
+        ao = self.TEMP_AmbientOpacity()
+        self.level.RenderTiles(screen, self.cameraX, self.cameraY, ao)
         self.RenderSelection(screen)
-        self.level.RenderSprites(screen, self.cameraX, self.cameraY)
+        self.level.RenderSprites(screen, self.cameraX, self.cameraY, ao)
         self.RenderDrag(screen)
     
     def RenderSelection(self, screen):

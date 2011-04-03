@@ -48,7 +48,7 @@ class Level:
                 winnerDistance = d
         return winner
     
-    def RenderSprites(self, screen, cameraX, cameraY):
+    def RenderSprites(self, screen, cameraX, cameraY, opacity):
         left = cameraX - 64
         right = cameraX + 640 + 64
         top = cameraY - 64
@@ -57,11 +57,11 @@ class Level:
         for sprite in self.sprites:
             if sprite.X < left or sprite.X > right or sprite.Y < top or sprite.Y > bottom:
                 continue
-            image = sprite.GetImage()
+            image = sprite.GetImage(opacity)
             
             screen.blit(image, sprite.RenderCoordinates(cameraX, cameraY))
     
-    def RenderTiles(self, screen, cameraX, cameraY):
+    def RenderTiles(self, screen, cameraX, cameraY, opacity):
         startX = cameraX // 32
         startY = cameraY // 32
         endX = startX + (640 // 32) + 1
@@ -81,6 +81,6 @@ class Level:
                 tile = tiles[x][y]
                 drawX = tile.PixelX - cameraX
                 drawY = tile.PixelY - cameraY
-                screen.blit(tile.GetImage(), (drawX, drawY))
+                screen.blit(tile.GetImage(opacity), (drawX, drawY))
                 y += 1
             x += 1 

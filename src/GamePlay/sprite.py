@@ -24,8 +24,8 @@ class Sprite:
         return dx * dx + dy * dy < 64 * 64
     
     
-    def GetImage(self):
-        return ImageLibrary.Get('temp_dude.png')
+    def GetImage(self, opacity):
+        return ImageLibrary.Get('temp_dude.png', opacity)
     
     def RenderCoordinates(self, camX, camY):
         return (self.X - self.R - camX, self.Y - self.R - camY)

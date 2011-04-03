@@ -11,6 +11,7 @@ class Logo(GameSceneBase):
         self.counter = 0
         self.duration = 60
         self.fadeRatio = 6.0 # 1/4th of the total length of the logo display is fade in
+        self.intermediateScreen = pygame.Surface((640, 480))
     
     def ProcessInput(self, events):
         for event in events:
@@ -42,6 +43,8 @@ class Logo(GameSceneBase):
     def Render(self, screen):
         screen.fill((0, 0, 0))
         logo = ImageLibrary.Get('logo.png')
+        
         opacity = self.Opacity()
-        logo.set_alpha(opacity)
-        screen.blit(logo, (200, 100))
+        self.intermediateScreen.blit(logo, (200, 100))
+        self.intermediateScreen.set_alpha(opacity)
+        screen.blit(self.intermediateScreen, (0, 0))

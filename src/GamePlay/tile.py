@@ -6,7 +6,7 @@ class TileTemplate:
         pass
     
     def GetImage(self, colorization):
-        return ImageLibrary.Get('temp_grass.png')
+        return ImageLibrary.Get('temp_grass.png', colorization)
 
 class Tile:
     
@@ -22,6 +22,6 @@ class Tile:
     def Update(self, counter):
         self.colorization -= 5
     
-    def GetImage(self):
-        return self.template.GetImage(self.colorization)
+    def GetImage(self, opacity):
+        return self.template.GetImage(opacity)
         
