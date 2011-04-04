@@ -7,7 +7,9 @@ class PlayScene(GameSceneBase):
     
     def __init__(self):
         GameSceneBase.__init__(self)
-        self.level = GamePlay.Level(64, 64)
+        self.tileWidth = 64
+        self.tileHeight = 64
+        self.level = GamePlay.Level(self.tileWidth, self.tileHeight)
         self.cameraX = 0
         self.cameraY = 0
         self.dragStart = None
@@ -40,7 +42,7 @@ class PlayScene(GameSceneBase):
                 self.cursorLogicalPosition = (x, y)
             
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
-                self.MoveSelectionToTarget(event.pos[0] - self.cameraX, event.pos[1] - self.cameraY)
+                self.MoveSelectionToTarget(event.pos[0] + self.cameraX, event.pos[1] + self.cameraY)
     
     def MoveSelectionToTarget(self, targetX, targetY):
         for sprite in self.selection:
@@ -80,7 +82,34 @@ class PlayScene(GameSceneBase):
         self.counter += 1
         
         self.level.Update()
+        
+        self.UpdateCamera()
     
+    def UpdateCamera(self):
+        mouse_position = pygame.mouse.get_pos()
+        x = mouse_position[0]
+        y = mouse_position[1]
+        
+        dx = 0
+        dy = 0
+        
+        if x < 64:
+            dx = (3 - x // 16) * -1
+        elif x > 640 - 63:
+            dx = 3 - (640 - x) // 16
+        if y < 64:
+            dy = (3 - y // 16) * -1
+        elif y > 480 - 63:
+            dy = 3 - (480 - y) // 16
+        
+        self.cameraX += dx * 4
+        self.cameraY += dy * 4
+        
+        if self.cameraX < 0: self.cameraX = 0
+        if self.cameraY < 0: self.cameraY = 0
+        if self.cameraX >= self.tileWidth * 32 - 640: self.cameraX = self.tileWidth * 32 - 640 - 1
+        if self.cameraY >= self.tileHeight * 32 - 480: self.cameraY = self.tileHeight * 32 - 480 - 1
+        
     def Render(self, screen):
         self.level.RenderTiles(screen, self.cameraX, self.cameraY)
         self.RenderSelection(screen)

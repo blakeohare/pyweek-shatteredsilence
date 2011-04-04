@@ -83,7 +83,7 @@ class Level:
         
         # TODO: AAAAAAAAAAH!!!! NESTED LOOP! KILL IT! KILLLLL ITTT!!!!
         for officer in self.police:
-            
+            officer.counter += 1
             if officer.target == None:
                 closest = None
                 closestDistance = 9999999

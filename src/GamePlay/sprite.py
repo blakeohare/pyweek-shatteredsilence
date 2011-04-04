@@ -81,7 +81,6 @@ class Police(Sprite):
         return ImageLibrary.Get(image, 0)
     
     def Update(self):
-        self.counter += 1
         if self.target != None:
             self.targetX = self.target.X
             self.targetY = self.target.Y
