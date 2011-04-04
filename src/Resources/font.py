@@ -2,7 +2,7 @@ import pygame
 import Resources
 
 _letter_image = None
-_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcd0123456789.,\'!?`"-/%&()[]*:;~'
+_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcd0123456789.,\'!?`"-/%&()[]*:;~>'
 _foreground = None
 _outline = None
 _width_by_letter = {}
