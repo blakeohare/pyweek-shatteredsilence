@@ -112,6 +112,9 @@ class Level:
             sprite.IsRadiating = False
             graph.AddSprite(sprite)
         
+        #lady = self.sprite[80]
+        #print lady.color, lady.colorizeable, lady.demotivation
+        
         for sprite in self.sprites:
             sprite.Update()
             

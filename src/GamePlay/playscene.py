@@ -84,6 +84,17 @@ class PlayScene(GameSceneBase):
         self.level.Update()
         
         self.UpdateCamera()
+        self.EnsureSelectionValid()
+    
+    def EnsureSelectionValid(self):
+        for sprite in self.selection:
+            if sprite.color != 255:
+                newselection = []
+                for spriteB in self.selection:
+                    if spriteB.color == 255:
+                        newselection.append(spriteB)
+                self.selection = newselection
+                return
     
     def UpdateCamera(self):
         mouse_position = pygame.mouse.get_pos()

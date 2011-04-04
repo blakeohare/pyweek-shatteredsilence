@@ -15,6 +15,7 @@ class Sprite:
         self.direction = 'down'
         self.colorizeable = False
         self.IsRadiating = False
+        self.demotivation = 0
     
     def IsCollision(self, anotherSprite):
         dx = (self.X - anotherSprite.X)
@@ -56,10 +57,20 @@ class Citizen(Sprite):
         Sprite.__init__(self, x, y)
         self.colorizeable = True
         self.imagepath = ('Girl', 'Dude')[male] + str(variety)
+
     
     def GetImage(self):
-        return ImageLibrary.Get('Sprites/' + self.imagepath + '/down0.png', self.color)
+        color = self.color - self.demotivation
+        return ImageLibrary.Get('Sprites/' + self.imagepath + '/down0.png', color)
 
+    def Decolorize(self):
+        self.colorizeable = True
+        self.color = 0
+        self.demotivation = 0
+        self.IsRadiating = False
+        self.targetX = self.X
+        self.targetY = self.Y
+    
 class Police(Sprite):
     
     def __init__(self, x, y, variety):
@@ -67,6 +78,7 @@ class Police(Sprite):
         self.target = None
         self.mode = 'walking' # modes are 'walking', 'pursuit', and 'smackdown'
         self.counter = 0
+        self.smackCounter = 0
     
     def GetImage(self):
         if self.mode == 'walking':
@@ -87,14 +99,36 @@ class Police(Sprite):
             dx = self.targetX - self.X
             dy = self.targetY - self.Y
             if dx * dx + dy * dy < (1.5 * 32) ** 2:
-                self.mode = 'smackdown'
+                if self.mode != 'smackdown':
+                    self.mode = 'smackdown'
+                    self.smackCounter = 0
             else:
                 self.mode = 'pursuit'
         else:
             self.mode = 'walking'
-            pass #TODO: patrol mode (most likely walk till you hit a wall and turn left, repeat
+            #TODO: patrol mode (most likely walk till you hit a wall and turn left, repeat
+        
+        if self.mode == 'smackdown':
+            self.smackCounter += 1
+            
+            if self.target == None:
+                self.mode = 'walking'
+                self.smackCounter = 0
+            elif self.target.demotivation >= 255:
+                self.target.Decolorize()
+                self.target = None
+                self.mode = 'walking'
+                self.smackCounter = 0
+            else:
+                self.smackCounter += 1
+                if self.smackCounter > 30:
+                    self.target.demotivation += 100
+                    self.smackCounter = 0
+            
+        
         Sprite.Update(self)
         
     def TargetCitizen(self, citizen):
         self.target = citizen
+        
         
