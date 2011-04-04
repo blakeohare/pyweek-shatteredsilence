@@ -17,8 +17,9 @@ class ImageLibrary:
             perInterval = 255.0 / self.intervals
             
             field = int(opacity / perInterval)
-            
+        
         if field > self.intervals - 1: field = self.intervals - 1
+        if field < 0: field = 0
         images = self.images[field]
         image = images.get(path)
         if image == None:

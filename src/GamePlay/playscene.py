@@ -80,6 +80,8 @@ class PlayScene(GameSceneBase):
         self.counter += 1
         for sprite in self.level.sprites:
             sprite.Update()
+        
+        
     
     def Render(self, screen):
         self.level.RenderTiles(screen, self.cameraX, self.cameraY)

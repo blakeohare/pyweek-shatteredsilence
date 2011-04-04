@@ -9,6 +9,7 @@ class Level:
         self.pixelHeight = rows * 32
         self.InitializeTiles(columns, rows)
         self.sprites = []
+        self.counter = 0
         
         for i in range(100):
             male = i % 2 == 1
@@ -34,6 +35,38 @@ class Level:
             x += 1
         
         self.tiles = tiles
+    
+    def UpdateTileColors(self):
+        counter = self.counter
+        width = len(self.tiles)
+        height = len(self.tiles[0])
+        for sprite in self.sprites:
+            if sprite.color == 255:
+                x = sprite.X // 32
+                y = sprite.Y // 32
+                self.tiles[x][y].SetColorization(counter)
+                if x > 0:
+                    self.tiles[x - 1][y].SetColorization(counter)
+                    if y > 0:
+                        self.tiles[x - 1][y - 1].SetColorization(counter - 40)
+                    if y < height - 1:
+                        self.tiles[x - 1][y + 1].SetColorization(counter - 40)
+                        
+                if y > 0:
+                    self.tiles[x][y - 1].SetColorization(counter)
+                if x < width - 1:
+                    self.tiles[x + 1][y].SetColorization(counter)
+                    if y > 0:
+                        self.tiles[x + 1][y - 1].SetColorization(counter - 40)
+                    if y < height - 1:
+                        self.tiles[x + 1][y + 1].SetColorization(counter - 40)
+                if y < height - 1:
+                    self.tiles[x][y + 1].SetColorization(counter)
+                
+                
+        
+        self.counter += 1
+                
     
     def GetSpritesInRange(self, left, top, right, bottom):
         sprites = []
@@ -70,6 +103,9 @@ class Level:
             screen.blit(image, sprite.RenderCoordinates(cameraX, cameraY))
     
     def RenderTiles(self, screen, cameraX, cameraY):
+        
+        self.UpdateTileColors()
+        
         startX = cameraX // 32
         startY = cameraY // 32
         endX = startX + (640 // 32) + 1
@@ -82,6 +118,8 @@ class Level:
         
         tiles = self.tiles
         
+        counter = self.counter
+        
         x = startX
         while x < endX:
             y = startY
@@ -89,6 +127,104 @@ class Level:
                 tile = tiles[x][y]
                 drawX = tile.PixelX - cameraX
                 drawY = tile.PixelY - cameraY
-                screen.blit(tile.GetImage(), (drawX, drawY))
+                screen.blit(tile.GetImage(counter), (drawX, drawY))
                 y += 1
             x += 1 
+
+class SpriteGraph:
+    
+    def __init__(self, map_columns, map_rows):
+        self.cols = []
+        self.buckets = []
+        self.populatedBuckets = {}
+        bucketRange = 3
+        self.bucketRange = bucketRange
+        x = 0
+        while x < map_columns:
+            y = 0
+            col = []
+            self.cols.append(col)
+            while y < map_rows:
+                if x % bucketRange == 0 and y % bucketRange == 0:
+                    bucket = SpriteBucket(str(x) + '-' + str(y))
+                    self.buckets.append(bucket)
+                    col.append(bucket)
+                else:
+                    col.append(self.cols[(x // bucketRange) * bucketRange][(y // bucketRange) * bucketRange])
+                y += 1
+            x += 1
+        self.width = len(self.cols)
+        self.height = len(self.cols[0])
+        self.EstablishNeighbors(bucketRange)
+    
+    def EstablishNeighbors(self, bucketRange):
+        
+        width = len(self.cols)
+        height = len(self.cols[0])
+        
+        x = 0
+        while x < width:
+            y = 0
+            while y < height:
+                bucket = self.cols[x][y]
+                
+                for neighbor in ((-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)):
+                    nx = x + neighbor[0] * bucketRange
+                    ny = y + neighbor[1] * bucketRange
+                    if nx >= 0 and nx < width and ny >= 0 and ny < height:
+                        bucket.AddNeighbor(self.cols[nx][ny])
+                
+                y += bucketRange
+            x += bucketRange
+    
+    def ClearAll(self):
+        for bucket in self.populatedBuckets.values():
+            bucket.ClearSprites()
+    
+    def AddSprite(self, sprite):
+        x = sprite.X // 32
+        y = sprite.Y // 32
+        bucket = self.cols[x][y]
+        bucket.AddSprite(sprite)
+        self.populatedBuckets[bucket.key] = bucket
+        
+    def GetSpritesNear(self, x, y, radius, radiates):
+        bucket = self.cols[x // 32][y // 32]
+        
+        if radiates and not bucket.radiates:
+            sprites = []
+        else:
+            sprites = bucket.GetSpritesNear(x, y, radius, radiates)
+        for neighbor in bucket.neighbors:
+            if not radiates or neighbor.radiates:
+                sprites += neighbor.GetSpritesNear(x, y, radius, radiates)
+        return sprites 
+
+class SpriteBucket:
+    
+    def __init__(self, key):
+        self.sprites = []
+        self.neighbors = []
+        self.key = key
+        self.radiates = False
+        
+    def AddSprite(self, sprite):
+        if sprite.color == 255: self.radiates = True
+        self.sprites.append(sprite)
+    
+    def ClearSprites(self):
+        self.sprites = []
+        self.radiates = False
+    
+    def GetSpritesNear(self, x, y, radius, radiates):
+        output = []
+        if radiates and not self.radiates: return output
+        for sprite in self.sprites:
+            dx = sprite.X - x
+            dy = sprite.Y - y
+            if dx * dx + dy * dy < radius * radius:
+                output.append(sprite)
+        return output
+    
+    def AddNeighbor(self, neighbor):
+        self.neighbors.append(neighbor)
