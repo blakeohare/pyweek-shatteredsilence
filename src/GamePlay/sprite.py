@@ -5,6 +5,8 @@ class Sprite:
     def __init__(self, x, y):
         self.X = x
         self.Y = y
+        self.DX = 0
+        self.DY = 0
         self.targetX = x
         self.targetY = y
         self.R = 16
@@ -40,12 +42,12 @@ class Sprite:
             dy = self.targetY - self.Y
             distance = (dx * dx + dy * dy) ** 0.5
             if distance < self.V:
-                self.X = self.targetX
-                self.Y = self.targetY
+                self.DX = self.targetX - self.X
+                self.DY = self.targetY - self.Y
             else:
-                self.X = self.X + int(dx / distance * self.V)
-                self.Y = self.Y + int(dy / distance * self.V)
-        
+                self.DX = int(dx / distance * self.V)
+                self.DY = int(dy / distance * self.V)
+    
 class Citizen(Sprite):
     
     def __init__(self, x, y, male, variety):

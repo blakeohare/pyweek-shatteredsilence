@@ -10,7 +10,7 @@ class Level:
         self.InitializeTiles(columns, rows)
         self.sprites = []
         self.counter = 0
-        
+        self.randomDirections = [(1, 0), (-1, 0), (0, 1), (0, -1)]
         for i in range(100):
             male = i % 2 == 1
             variety = (i // 25) + 1
@@ -72,6 +72,9 @@ class Level:
     def Update(self):
         self.UpdateSprites()
         
+    def RandomDirection(self):
+        self.randomDirections = [self.randomDirections[-1]] + self.randomDirections[:-1]
+        return self.randomDirections[0]
     
     def UpdateSprites(self):
         
@@ -86,16 +89,47 @@ class Level:
             
             x = sprite.X
             y = sprite.Y
-            #r = sprite.R
+            dx = sprite.DX
+            dy = sprite.DY
             
+            # do collision dispersion
+            tooClose = graph.GetClosestNeighboringSprite(sprite)
+            if tooClose != None:
+                if sprite.X < tooClose.X:
+                    dx = -1
+                else:
+                    dx = 1
+                if sprite.Y < tooClose.Y:
+                    dy = -1
+                else:
+                    dy = 1
+                sprite.DX = dx
+                sprite.DY = dy
+            
+            # do location updates
+            
+            if dx != 0 or dy != 0:
+                newx = x + dx
+                newy = y + dy
+                
+                if True: # TODO: check to see if newx and newy are passable
+                    x = newx
+                    y = newy
+                    sprite.X = x
+                    sprite.Y = y
+                sprite.DX = 0
+                sprite.DY = 0
+            
+            # do color updates
             if sprite.color < 255: sprite.color -= 2
             if sprite.color < 0: sprite.color = 0
             
             if sprite.color != 255:
-                if len(graph.GetSpritesNear(x, y, 32 * 2, True)) > 0:
+                if graph.IsRadiantSpriteNear(x, y, 32 * 2):
                     sprite.color += 4
             if sprite.color > 255: sprite.color = 255
-    
+            
+            
     
     def GetSpritesInRange(self, left, top, right, bottom):
         sprites = []
@@ -206,6 +240,20 @@ class SpriteGraph:
                 y += bucketRange
             x += bucketRange
     
+    def GetClosestNeighboringSprite(self, sprite):
+        sprites = self.GetSpritesNear(sprite.X, sprite.Y, sprite.R * 2, False)
+        winnerDistance = 9999
+        winner = None
+        for neighbor in sprites:
+            if neighbor != sprite:
+                dx = sprite.X - neighbor.X
+                dy = sprite.Y - neighbor.Y
+                r2 = dx * dx + dy * dy
+                if r2 < winnerDistance:
+                    winner = neighbor
+                    winnerDistance = r2
+        return winner
+    
     def ClearAll(self):
         for bucket in self.populatedBuckets.values():
             bucket.ClearSprites()
@@ -227,7 +275,19 @@ class SpriteGraph:
         for neighbor in bucket.neighbors:
             if not radiates or neighbor.radiates:
                 sprites += neighbor.GetSpritesNear(x, y, radius, radiates)
-        return sprites 
+        return sprites
+    
+    def IsRadiantSpriteNear(self, x, y, radius):
+        bucket = self.cols[x // 32][y // 32]
+        if bucket.radiates:
+            if bucket.IsRadiantSpriteNear(x, y, radius):
+                return True
+        
+        for neighbor in bucket.neighbors:
+            if neighbor.radiates and neighbor.IsRadiantSpriteNear(x, y, radius):
+                return True
+        
+        return False
 
 class SpriteBucket:
     
@@ -254,6 +314,17 @@ class SpriteBucket:
             if dx * dx + dy * dy < radius * radius:
                 output.append(sprite)
         return output
+    
+    def IsRadiantSpriteNear(self, x, y, radius):
+        if self.radiates:
+            for sprite in self.sprites:
+                dx = sprite.X - x
+                dy = sprite.Y - y
+                if dx * dx + dy * dy < radius * radius:
+                    return True
+        return False
+                
+        
     
     def AddNeighbor(self, neighbor):
         self.neighbors.append(neighbor)
