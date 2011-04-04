@@ -147,6 +147,11 @@ class Level:
                     sprite.Y = y
                 sprite.DX = 0
                 sprite.DY = 0
+                
+                if sprite.X < 0: sprite.X = 0
+                if sprite.Y < 0: sprite.Y = 0
+                if sprite.X >= self.width * 32: sprite.X = self.width * 32 - 1
+                if sprite.Y >= self.height * 32: sprite.Y = self.height * 32 - 1
             
             # do color updates
             if sprite.color < 255: sprite.color -= 2
