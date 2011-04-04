@@ -27,7 +27,7 @@ class Title(GameSceneBase):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     if self.index == 0:
-                        self.next = PlayScene(LevelSeed())
+                        self.next = PlayScene(LevelSeed('level1', None))
                     elif self.index == 1:
                         self.next = Menus.MapOptions()
                     elif self.index == 2:
@@ -37,7 +37,7 @@ class Title(GameSceneBase):
                     elif self.index == 4:
                         self.next = None
                     else:
-                        self.next = PlayScene(LevelSeed())
+                        self.next = PlayScene(LevelSeed('testlevel', None))
                 elif event.key == pygame.K_UP:
                     self.index -= 1
                     if self.index < 0:

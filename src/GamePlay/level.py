@@ -5,6 +5,7 @@ class Level:
     def __init__(self, levelseed):
         self.width = levelseed.width
         self.height = levelseed.height
+        
         self.pixelWidth = self.width * 32
         self.pixelHeight = self.height * 32
         self.InitializeTiles(self.width, self.height)
