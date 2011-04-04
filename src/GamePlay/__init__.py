@@ -5,6 +5,7 @@ from . import sprite as _sprite
 
 Sprite = _sprite.Sprite
 Citizen = _sprite.Citizen
+Police = _sprite.Police
 Tile = _tile.Tile
 Level = _level.Level
 TileTemplate = _tile.TileTemplate

@@ -9,6 +9,7 @@ class Level:
         self.pixelHeight = rows * 32
         self.InitializeTiles(columns, rows)
         self.sprites = []
+        self.police = []
         self.counter = 0
         self.randomDirections = [(1, 0), (-1, 0), (0, 1), (0, -1)]
         for i in range(100):
@@ -17,6 +18,10 @@ class Level:
             x = i // 10
             y = i % 10
             self.sprites.append(GamePlay.Citizen(30 + x * 45, 30 + y * 45, male, variety))
+        
+        police = GamePlay.Police(600, 10, 1)
+        self.sprites.append(police)
+        self.police.append(police)
         
         self.sprites[23].color = 255
         
@@ -71,6 +76,28 @@ class Level:
     
     def Update(self):
         self.UpdateSprites()
+        self.UpdatePolice()
+    
+    def UpdatePolice(self):
+        fugitives = self.radiatingSprites
+        
+        # TODO: AAAAAAAAAAH!!!! NESTED LOOP! KILL IT! KILLLLL ITTT!!!!
+        for officer in self.police:
+            
+            if officer.target == None:
+                closest = None
+                closestDistance = 9999999
+                
+                for evildoer in fugitives:
+                    dx = evildoer.X - officer.X
+                    dy = evildoer.Y - officer.Y
+                    distance = dx * dx + dy * dy
+                    if distance < closestDistance:
+                        closestDistance = distance
+                        closest = evildoer
+                
+                if closestDistance < (7 * 32) * (7 * 32):
+                    officer.TargetCitizen(closest)
         
     def RandomDirection(self):
         self.randomDirections = [self.randomDirections[-1]] + self.randomDirections[:-1]
@@ -82,6 +109,7 @@ class Level:
         graph.ClearAll()
         
         for sprite in self.sprites:
+            sprite.IsRadiating = False
             graph.AddSprite(sprite)
         
         for sprite in self.sprites:
@@ -124,12 +152,17 @@ class Level:
             if sprite.color < 255: sprite.color -= 2
             if sprite.color < 0: sprite.color = 0
             
-            if sprite.color != 255:
+            if sprite.color != 255 and sprite.colorizeable:
                 if graph.IsRadiantSpriteNear(x, y, 32 * 2):
                     sprite.color += 4
             if sprite.color > 255: sprite.color = 255
             
-            
+        radiatingSprites = []
+        for sprite in self.sprites:
+            if sprite.IsRadiating:
+                radiatingSprites.append(sprite)
+        self.radiatingSprites = radiatingSprites
+        
     
     def GetSpritesInRange(self, left, top, right, bottom):
         sprites = []
@@ -318,13 +351,17 @@ class SpriteBucket:
     def IsRadiantSpriteNear(self, x, y, radius):
         if self.radiates:
             for sprite in self.sprites:
-                dx = sprite.X - x
-                dy = sprite.Y - y
-                if dx * dx + dy * dy < radius * radius:
-                    return True
+                if sprite.color == 255:
+                    dx = sprite.X - x
+                    dy = sprite.Y - y
+                    if dx * dx + dy * dy < radius * radius:
+                        sprite.IsRadiating = True
+                        return True
         return False
                 
         
     
     def AddNeighbor(self, neighbor):
         self.neighbors.append(neighbor)
+        
+
