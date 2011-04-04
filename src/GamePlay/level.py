@@ -2,12 +2,12 @@ import GamePlay
 
 class Level:
     
-    def __init__(self, columns, rows):
-        self.width = columns
-        self.height = rows
-        self.pixelWidth = columns * 32
-        self.pixelHeight = rows * 32
-        self.InitializeTiles(columns, rows)
+    def __init__(self, levelseed):
+        self.width = levelseed.width
+        self.height = levelseed.height
+        self.pixelWidth = self.width * 32
+        self.pixelHeight = self.height * 32
+        self.InitializeTiles(self.width, self.height)
         self.sprites = []
         self.police = []
         self.counter = 0
@@ -25,7 +25,7 @@ class Level:
         
         self.sprites[23].color = 255
         
-        self.spriteGraph = SpriteGraph(columns, rows)
+        self.spriteGraph = SpriteGraph(self.width, self.height)
     
     def InitializeTiles(self, columns, rows):
         tiles = []

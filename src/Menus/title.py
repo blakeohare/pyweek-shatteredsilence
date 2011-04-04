@@ -4,6 +4,7 @@ import Menus
 import pygame
 from Resources import ImageLibrary
 from Resources import Font
+from GamePlay import LevelSeed
 
 class Title(GameSceneBase):
     
@@ -26,7 +27,7 @@ class Title(GameSceneBase):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     if self.index == 0:
-                        self.next = PlayScene()
+                        self.next = PlayScene(LevelSeed())
                     elif self.index == 1:
                         self.next = Menus.MapOptions()
                     elif self.index == 2:
@@ -36,7 +37,7 @@ class Title(GameSceneBase):
                     elif self.index == 4:
                         self.next = None
                     else:
-                        self.next = PlayScene()
+                        self.next = PlayScene(LevelSeed())
                 elif event.key == pygame.K_UP:
                     self.index -= 1
                     if self.index < 0:

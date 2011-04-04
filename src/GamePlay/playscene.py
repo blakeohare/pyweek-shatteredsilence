@@ -5,11 +5,11 @@ import GamePlay
 
 class PlayScene(GameSceneBase):
     
-    def __init__(self):
+    def __init__(self, levelSeed):
         GameSceneBase.__init__(self)
-        self.tileWidth = 64
-        self.tileHeight = 64
-        self.level = GamePlay.Level(self.tileWidth, self.tileHeight)
+        self.tileWidth = levelSeed.width
+        self.tileHeight = levelSeed.height
+        self.level = GamePlay.Level(levelSeed)
         self.cameraX = 0
         self.cameraY = 0
         self.dragStart = None
