@@ -19,6 +19,8 @@ class Level:
             self.sprites.append(GamePlay.Citizen(30 + x * 45, 30 + y * 45, male, variety))
         
         self.sprites[23].color = 255
+        
+        self.spriteGraph = SpriteGraph(columns, rows)
     
     def InitializeTiles(self, columns, rows):
         tiles = []
@@ -66,7 +68,34 @@ class Level:
                 
         
         self.counter += 1
-                
+    
+    def Update(self):
+        self.UpdateSprites()
+        
+    
+    def UpdateSprites(self):
+        
+        graph = self.spriteGraph
+        graph.ClearAll()
+        
+        for sprite in self.sprites:
+            graph.AddSprite(sprite)
+        
+        for sprite in self.sprites:
+            sprite.Update()
+            
+            x = sprite.X
+            y = sprite.Y
+            #r = sprite.R
+            
+            if sprite.color < 255: sprite.color -= 2
+            if sprite.color < 0: sprite.color = 0
+            
+            if sprite.color != 255:
+                if len(graph.GetSpritesNear(x, y, 32 * 2, True)) > 0:
+                    sprite.color += 4
+            if sprite.color > 255: sprite.color = 255
+    
     
     def GetSpritesInRange(self, left, top, right, bottom):
         sprites = []
