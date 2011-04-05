@@ -1,8 +1,11 @@
+import MapGen
+
 class LevelSeed:
     def __init__(self, special=None, args=None):
         self.width = 64
         self.height = 64
         self.mode = 'individual'
+        self.map = None
         self.specialName = None
         if special != None:
             if special == 'next':
@@ -72,6 +75,7 @@ class LevelSeed:
             self.width = 20
             self.height = 15
             self.citizens = 1
+            self.map = MapGen.BuildMap('level1', self.width, self.height)
         elif special == 'level2':
             self.width = 32
             self.height = 24

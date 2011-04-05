@@ -2,11 +2,31 @@ from Resources import ImageLibrary
 
 class TileTemplate:
     
-    def __init__(self):
-        pass
-    
+    def __init__(self, image, passable):
+        self.image = 'Tiles/' + image + '.png'
+        self.passable = passable
+
     def GetImage(self, colorization):
-        return ImageLibrary.Get('Tiles/grass.png', colorization)
+        return ImageLibrary.Get(self.image, colorization)
+
+_tileStore = {
+            'sidewalk' : TileTemplate('sidewalk', True),
+            'grass' : TileTemplate('grass', True),
+            'asphault' : TileTemplate('street', True),
+            'yellow_line_horizontal' : TileTemplate('streetlines2', True),
+            'yellow_line_vertical' : TileTemplate('streetlines1', True),
+            'sidewalk_corner1' : TileTemplate('sidewalkcorner1', True),
+            'sidewalk_corner2' : TileTemplate('sidewalkcorner2', True),
+            'sidewalk_corner3' : TileTemplate('sidewalkcorner3', True),
+            'sidewalk_corner4' : TileTemplate('sidewalkcorner4', True),
+            'vertical_crosswalk' : TileTemplate('crosswalk1', True),
+            'horizontal_crosswalk' : TileTemplate('crosswalk2', True)         
+            }
+
+def MakeTile(key, x, y):
+    global _tileStore
+    if key == None: key = 'grass'
+    return Tile(x, y, _tileStore[key])
 
 class Tile:
     

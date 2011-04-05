@@ -8,7 +8,7 @@ class Level:
         
         self.pixelWidth = self.width * 32
         self.pixelHeight = self.height * 32
-        self.InitializeTiles(self.width, self.height)
+        self.InitializeTiles(self.width, self.height, levelseed.map)
         self.sprites = []
         self.police = []
         self.counter = 0
@@ -32,16 +32,14 @@ class Level:
         
         self.spriteGraph = SpriteGraph(self.width, self.height)
     
-    def InitializeTiles(self, columns, rows):
+    def InitializeTiles(self, columns, rows, map_data):
         tiles = []
-        
-        grass = GamePlay.TileTemplate()
         x = 0
         while x < columns:
             y = 0
             column = []
             while y < rows:
-                column.append(GamePlay.Tile(x, y, grass))
+                column.append(GamePlay.MakeTile(map_data.grid[x][y], x, y))
                 y += 1
             tiles.append(column)
             x += 1
