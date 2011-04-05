@@ -53,7 +53,6 @@ class Generator:
 			x = compound[0]
 			y = compound[1]
 			direction = random.randint(0, 3)
-			print x, y, direction
 			if not grid[x][y][direction]:
 				grid[x][y][direction] = True
 				if direction == 0 and x > 0:
@@ -65,18 +64,15 @@ class Generator:
 				elif direction == 3 and y < height - 1:
 					grid[x][y + 1][1] = True
 		
-		self.tasks.append(self.GenerateBlockList)
-	
-	def GenerateBlockList(self):
-		
-		
-		
 		self.tasks.append(self.PopulateBlocks)
+		
 	
 	def PopulateBlocks(self):
 		commands = []
 		grid = self.logicalGrid
 		longWidth = self.cellWidth + 7
+		logGridWidth = self.logGridWidth
+		logGridHeight = self.logGridHeight
 		for block in self.RandomBlocks(self.logGridHeight * self.logGridWidth // 2):
 			x = block[0]
 			y = block[1]
@@ -90,19 +86,19 @@ class Generator:
 				if not (cell[0] or cell[1] or cell[2] or cell[3]):
 					pass
 				else:
-					if cell[0] and not grid[x - 1][y][4]:
+					if cell[0] and x > 0 and not grid[x - 1][y][4]:
 						left -= longWidth
 						width += longWidth
 						grid[x - 1][y][4] = True
-					elif cell[1] and not grid[x][y - 1][4]:
+					elif cell[1] and y > 0 and not grid[x][y - 1][4]:
 						top -= longWidth
 						height += longWidth
 						grid[x][y - 1][4] = True
 						roofHeight += longWidth
-					elif cell[2] and not grid[x + 1][y][4]:
+					elif cell[2] and x < logGridWidth - 1 and not grid[x + 1][y][4]:
 						width += longWidth
 						grid[x + 1][y][4] = True
-					elif cell[3] and not grid[x][y + 1][4]:
+					elif cell[3] and y < logGridHeight - 1 and not grid[x][y + 1][4]:
 						height += longWidth
 						grid[x][y + 1][4] = True
 						roofHeight += longWidth
