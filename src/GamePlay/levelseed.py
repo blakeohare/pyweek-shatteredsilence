@@ -75,7 +75,6 @@ class LevelSeed:
             self.width = 20
             self.height = 15
             self.citizens = 1
-            self.map = MapGen.BuildMap('level1', self.width, self.height)
         elif special == 'level2':
             self.width = 32
             self.height = 24
@@ -110,4 +109,5 @@ class LevelSeed:
             self.mode = 'region'
             self.width = 96
             self.height = 64
+        self.map = MapGen.BuildMap(special, self.width, self.height)
     

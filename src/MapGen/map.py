@@ -9,13 +9,7 @@ def _trim(string):
     return string
     
 def BuildMap(level, width, height):
-    path = ''
-    if level == 'level1':
-        path = 'Levels' + os.sep + 'level1.txt'
-    else:
-        print("level not found")
-        return None
-    
+    path = 'Levels' + os.sep + level + '.txt'
     c = open(path, 'rt')
     lines = c.read().split('\n')
     c.close()
