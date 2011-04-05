@@ -35,7 +35,7 @@ Roads...
 	ROAD startX startY endX endY
 	
 	these indicate the path of the yellow double line. 2 tiles of asphault and 1 tile of surrounding sidewalk will
-	eminate from the points on this line. Intersected lines will automatically generate an intersection.
+	emanate from the points on this line. Intersected lines will automatically generate an intersection.
 	
 
 Buildings...
