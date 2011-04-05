@@ -16,7 +16,6 @@ class Level:
 		self.citizens = []
 		
 		for citizen in levelseed.map.citizens:
-			print citizen
 			sprite = GamePlay.Citizen(32 * citizen[0] + 16, 32 * citizen[1] + 16, citizen[2], citizen[3])
 			self.sprites.append(sprite)
 			self.citizens.append(sprite)

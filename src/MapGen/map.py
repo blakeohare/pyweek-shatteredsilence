@@ -8,7 +8,7 @@ def _trim(string):
 		string = string[:-1]
 	return string
 	
-def BuildMap(level, width, height):
+def BuildMap(level, width, height, previousLevelSeed):
 	path = 'Levels' + os.sep + level + '.txt'
 	c = open(path, 'rt')
 	lines = c.read().split('\n')
@@ -17,6 +17,7 @@ def BuildMap(level, width, height):
 	items = []
 	citizens = []
 	police = []
+	carryover = None
 	for line in lines:
 		parts = _trim(line).split(' ')
 		if parts[0] == 'ROAD':
@@ -36,12 +37,14 @@ def BuildMap(level, width, height):
 			y = int(parts[2])
 			variety = int(parts[3])
 			police.append((x, y, variety))
+		elif parts[0] == 'CARRYOVER':
+			carryover = (int(parts[1]), int(parts[2]), previousLevelSeed)
 	
-	return Map(width, height, items, citizens, police)
+	return Map(width, height, items, citizens, police, carryover)
 	
 class Map:
 	
-	def __init__(self, width, height, items, citizens, police):
+	def __init__(self, width, height, items, citizens, police, carryover):
 		self.InitializeGrid(width, height)
 		self.roadSquares = []
 		
@@ -52,6 +55,24 @@ class Map:
 		items = self.FillGridWithBuildings(items)
 		
 		self.FleshOutRoads(self.roadSquares)
+		
+		if carryover != None:
+			self.FillInPreviousLevel(carryover[0], carryover[1], carryover[2].map.grid)
+		
+	def FillInPreviousLevel(self, left, top, grid):
+		
+		width = len(grid)
+		height = len(grid[0])
+		
+		x = left
+		right = left + width - 1
+		bottom = top + height - 1
+		while x <= right:
+			y = top
+			while y <= bottom:
+				self.grid[x][y] = grid[x - left][y - top]
+				y += 1
+			x += 1 
 		
 	def FleshOutRoads(self, roadSquares):
 		intersections = []

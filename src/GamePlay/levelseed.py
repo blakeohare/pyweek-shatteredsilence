@@ -37,29 +37,29 @@ class LevelSeed:
 		if specialName == None:
 			self.InitializeNextCustomLevel(previousLevelSeed)
 		elif specialName == 'level1':
-			self.InitializeSpecialLevel('level2', None)
+			self.InitializeSpecialLevel('level2', previousLevelSeed)
 		elif specialName == 'level2':
-			self.InitializeSpecialLevel('level3', None)
+			self.InitializeSpecialLevel('level3', previousLevelSeed)
 		elif specialName == 'level3':
-			self.InitializeSpecialLevel('level4', None)
+			self.InitializeSpecialLevel('level4', previousLevelSeed)
 		elif specialName == 'level4':
-			self.InitializeSpecialLevel('level5', None)
+			self.InitializeSpecialLevel('level5', previousLevelSeed)
 		elif specialName == 'level5':
-			self.InitializeSpecialLevel('level6', None)
+			self.InitializeSpecialLevel('level6', previousLevelSeed)
 		elif specialName == 'level6':
-			self.InitializeSpecialLevel('level7', None)
+			self.InitializeSpecialLevel('level7', previousLevelSeed)
 		elif specialName == 'level7':
-			self.InitializeSpecialLevel('level8', None)
+			self.InitializeSpecialLevel('level8', previousLevelSeed)
 		elif specialName == 'level8':
-			self.InitializeSpecialLevel('level9', None)
+			self.InitializeSpecialLevel('level9', previousLevelSeed)
 		elif specialName == 'level9':
 			# TODO: something else
 			raise "You won!"
 		elif specialName == 'testlevel':
-			self.InitializeSpecialLevel('level1', None)
+			self.InitializeSpecialLevel('level1', previousLevelSeed)
 			# meh
 			
-	def InitializeSpecialLevel(self, special, args):
+	def InitializeSpecialLevel(self, special, previousLevelSeed):
 		self.progress = True
 		self.timedMode = False
 		self.citizens = 0
@@ -102,5 +102,5 @@ class LevelSeed:
 			self.mode = 'region'
 			self.width = 96
 			self.height = 64
-		self.map = MapGen.BuildMap(special, self.width, self.height)
+		self.map = MapGen.BuildMap(special, self.width, self.height, previousLevelSeed)
 	
