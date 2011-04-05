@@ -1,0 +1,19 @@
+Roads...
+
+	ROAD startX startY endX endY
+	
+	these indicate the path of the yellow double line. 2 tiles of asphault and 1 tile of surrounding sidewalk will
+	eminate from the points on this line. Intersected lines will automatically generate an intersection.
+	
+
+Buildings...
+
+	BUILDING x y width height roof-height variety
+	
+	x and y refer to the top left corner of the building
+	width is the overall width of the building
+	height is the overall height of the building
+	roof-height is the overall height of the roof tiles
+	variety describes which building to place:
+		1 - brick building
+
