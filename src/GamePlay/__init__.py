@@ -15,4 +15,4 @@ MakeTile = _tile.MakeTile
 PlayScene = _playscene.PlayScene
 LevelSeed = _levelseed.LevelSeed
 LevelUpTransition = _levelup.LevelUpTransition
-Specializer = _specializer.Specializer
+GetSpecializer = _specializer.GetSpecializer

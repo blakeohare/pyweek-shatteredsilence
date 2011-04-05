@@ -50,8 +50,10 @@ class Border:
       surf.set_colorkey(key)
       
       _gt = self.GetTile
-      for x in xrange(width):
-         for y in xrange(height):
+      x = 0
+      while x < width:
+         y = 0
+         while y < height:
             tile = None
             
             if (x == 0):
@@ -79,5 +81,7 @@ class Border:
                raise "No tile found for (%d,%d)" % (x, y)
             
             surf.blit(tile, (x * 16, y * 16))
+            y += 1
+         x += 1
       
       return surf

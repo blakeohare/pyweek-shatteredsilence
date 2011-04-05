@@ -20,6 +20,7 @@ class PlayScene(GameSceneBase):
 		self.suppressDragDraw = True
 		self.counter = 0
 		self.progress = 0.0
+		self.specializer = GamePlay.GetSpecializer(self.levelSeed.specialName)
 		
 		self.font_white = Resources.GetFont(255, 255, 255)
 		self.font_red = Resources.GetFont(255, 0, 0)
@@ -102,6 +103,10 @@ class PlayScene(GameSceneBase):
 		self.progress = self.level.GetProgress()
 		if self.progress >= 80:
 			self.next = GamePlay.LevelUpTransition(self)
+		
+		messages = self.specializer.ShouldShowMessage(self.counter, self.progress)
+		if messages != None:
+			self.next = ShowMessageOverlay(messages, self)
 		
 	def EnsureSelectionValid(self):
 		for sprite in self.selection:
@@ -192,3 +197,33 @@ class PlayScene(GameSceneBase):
 			top = t
 		
 		pygame.draw.rect(screen, (255, 255, 0), pygame.Rect(left, top, right - left, bottom - top), 1)
+
+class ShowMessageOverlay(GameSceneBase):
+	
+	def __init__(self, messages, playScene):
+		GameSceneBase.__init__(self)
+		self.playScene = playScene
+		self.font = Resources.GetFont(255, 255, 255)
+		self.messages = messages
+		self.border = Resources.CreateBorder(400, len(messages) * 20 + 60) 
+	
+	def ProcessInput(self, events):
+		for event in events:
+			if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+				self.next = self.playScene
+				self.playScene.next = self.playScene
+	
+	def Update(self):
+		pass
+	
+	def Render(self, screen):
+		self.playScene.Render(screen)
+		x = 30
+		y = 10
+		screen.blit(self.border, (x, y))
+		y -= 5
+		for message in (self.messages + ["        ...press enter"]):
+			
+			y += 20
+			image = self.font.Render(message)
+			screen.blit(image, (x + 24, y))

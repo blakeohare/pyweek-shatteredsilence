@@ -5,8 +5,6 @@ If there is only 1 citizen, then the game starts out at 100% progress and is con
 For story-mode levels, only add citizens that will be NEW for that level. The citizens from the previous level will
 (eventually) be automatically carried over from the previous level. 
 
-    
-
 Sprites...
 
 	CITIZEN x y gender variety
@@ -36,7 +34,6 @@ Roads...
 	
 	these indicate the path of the yellow double line. 2 tiles of asphault and 1 tile of surrounding sidewalk will
 	emanate from the points on this line. Intersected lines will automatically generate an intersection.
-	
 
 Buildings...
 
@@ -49,10 +46,11 @@ Buildings...
 	variety describes which building to place:
 		1 - brick building
 
-
 Place tile specifically...
 
 	TILE type x y
 	
 	The type is the string as it appears in the key of the big dictionary at the beginning of tile.py.
 	(The key is to the left of the colon on each line)
+	
+	These commands are run last after all other commands are run. 
