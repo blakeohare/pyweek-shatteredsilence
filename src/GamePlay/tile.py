@@ -20,7 +20,22 @@ _tileStore = {
             'sidewalk_corner3' : TileTemplate('sidewalkcorner3', True),
             'sidewalk_corner4' : TileTemplate('sidewalkcorner4', True),
             'vertical_crosswalk' : TileTemplate('crosswalk1', True),
-            'horizontal_crosswalk' : TileTemplate('crosswalk2', True)         
+            'horizontal_crosswalk' : TileTemplate('crosswalk2', True),
+            'building/roof1' : TileTemplate('building/roof1', False),
+            'building/roof2' : TileTemplate('building/roof2', False),
+            'building/roof3' : TileTemplate('building/roof3', False),
+            'building/roof4' : TileTemplate('building/roof4', False),
+            'building/roof5' : TileTemplate('building/roof5', False),
+            'building/roof6' : TileTemplate('building/roof6', False),
+            'building/roof7' : TileTemplate('building/roof7', False),
+            'building/roof8' : TileTemplate('building/roof8', False),
+            'building/roof9' : TileTemplate('building/roof9', False),
+            'building/building1' : TileTemplate('building/building1', False),
+            'building/building2' : TileTemplate('building/building2', False),
+            'building/building3' : TileTemplate('building/building3', False),
+            'building/building4' : TileTemplate('building/building4', False),
+            'building/building5' : TileTemplate('building/building5', False),
+            'building/building6' : TileTemplate('building/building6', False)         
             }
 
 def MakeTile(key, x, y):

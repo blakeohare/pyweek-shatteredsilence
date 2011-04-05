@@ -27,7 +27,8 @@ def BuildMap(level, width, height):
             item = MapGen.Road(int(parts[1]), int(parts[2]), int(parts[3]), int(parts[4]))
             items.append(item)
         elif parts[0] == 'BUILDING':
-            raise "not done yet"
+            item = MapGen.Building(int(parts[1]), int(parts[2]), int(parts[3]), int(parts[4]), int(parts[5]), int(parts[6]))
+            items.append(item)
     
     return Map(width, height, items)
     

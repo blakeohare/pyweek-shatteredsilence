@@ -2,13 +2,66 @@ class MapItem:
     
     def __init__(self):
         self.IsRoad = False
-    
+        self.IsBuilding = False
 
 class Building(MapItem):
     
-    def __init__(self, width, height, variety):
+    def __init__(self, left, top, width, height, roofheight, variety):
         MapItem.__init__(self)
+        self.IsBuilding = True
+        self.top = top
+        self.left = left
+        self.width = width
+        self.height = height
+        self.roofHeight = roofheight
+        self.folder = ''
+        if variety == 1:
+            self.folder = 'building/'
     
+    def ApplySelfToGrid(self, grid):
+        left = self.left
+        top = self.top
+        right = self.left + self.width - 1
+        bottom = self.top + self.height - 1
+        
+        grid[left][top] = self.folder + 'roof1'
+        grid[right][top] = self.folder + 'roof3'
+        x = left + 1
+        while x < right:
+            grid[x][top] = self.folder + 'roof2'
+            x += 1
+        y = top + 1
+        while y < top + self.roofHeight - 1:
+            grid[left][y] = self.folder + 'roof4'
+            grid[right][y] = self.folder + 'roof6'
+            x = left + 1
+            while x < right:
+                # TODO: roof doodad?
+                grid[x][y] = self.folder + 'roof5'
+                x += 1
+            y += 1
+        grid[left][y] = self.folder + 'roof7'
+        grid[right][y] = self.folder + 'roof9'
+        x = left + 1
+        while x < right:
+            grid[x][y] = self.folder + 'roof8'
+            x += 1
+            
+        y += 1
+        while y < bottom:
+            grid[left][y] = self.folder + 'building1'
+            grid[right][y] = self.folder + 'building3'
+            x = left + 1
+            while x < right:
+                grid[x][y] = self.folder + 'building2'
+                x += 1
+            y += 1
+        grid[left][y] = self.folder + 'building4'
+        grid[right][y] = self.folder + 'building6'
+        x = left + 1
+        while x < right:
+            grid[x][y] = self.folder + 'building5'
+            x += 1
     
 
 class Road(MapItem):
