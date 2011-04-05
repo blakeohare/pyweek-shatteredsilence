@@ -1,3 +1,5 @@
+import random
+
 class Generator:
 	
 	# want to be able to do this in steps so that it 
@@ -28,7 +30,34 @@ class Generator:
 			self.tasks = self.tasks[1:]
 	
 	def CompoundLogicalGrid(self):
-		# TODO: this
+		grid = self.logicalGrid
+		
+		width = self.logGridWidth
+		height = self.logGridHeight
+		
+		compounds = width * height // 2
+		
+		i = 0
+		while i < compounds:
+			
+			x = random.randint(0, width - 1)
+			y = random.randint(0, height - 1)
+			direction = random.randint(0, 3)
+			
+			if not grid[x][y][direction]:
+				grid[x][y][direction] = True
+				if direction == 0 and x > 0:
+					grid[x - 1][y][2] = True
+				elif direction == 1 and y > 0:
+					grid[x][y - 1][3] = True
+				elif direction == 2 and x < width - 1:
+					grid[x + 1][y][0] = True
+				elif direction == 3 and y < height - 1:
+					grid[x][y + 1][1] = True
+		
+			
+			i += 1
+		
 		self.tasks.append(self.GenerateBlockList)
 	
 	def GenerateBlockList(self):
@@ -76,7 +105,6 @@ class Generator:
 		pass
 	
 	def InitializeLogicalGrid(self):
-		cellWidth = self.cellWidth
 		logGridWidth = self.logGridWidth
 		logGridHeight = self.logGridHeight
 		
@@ -87,7 +115,14 @@ class Generator:
 			y = 0
 			while y < logGridHeight:
 				
-				col.append([False, False, False, False]) # left top right bottom connections
+				# Connections...
+				# 0 Left
+				# 1 Top
+				# 2 Right
+				# 3 Bottom
+				
+				# 4 IsOccupied
+				col.append([False, False, False, False, False])
 				
 				y += 1
 			cols.append(col)
