@@ -3,8 +3,12 @@ class LevelSeed:
         self.width = 64
         self.height = 64
         self.mode = 'individual'
+        self.specialName = None
         if special != None:
-            self.InitializeSpecialLevel(special)
+            if special == 'next':
+                self.InitializeNextLevel(args)
+            else:
+                self.InitializeSpecialLevel(special, args)
         else:
             self.width = args['width']
             self.height = args['height']
@@ -24,11 +28,40 @@ class LevelSeed:
                 self.city_centers = args['city_centers']
             else:
                 self.city_centers = 0
-                    
-    def InitializeSpecialLevel(self, special):
+    
+    def InitializeNextLevel(self, previousLevelSeed):
+        specialName = previousLevelSeed.specialName
+        if specialName == None:
+            self.InitializeNextCustomLevel(previousLevelSeed)
+        elif specialName == 'level1':
+            self.InitializeSpecialLevel('level2', None)
+        elif specialName == 'level2':
+            self.InitializeSpecialLevel('level3', None)
+        elif specialName == 'level3':
+            self.InitializeSpecialLevel('level4', None)
+        elif specialName == 'level4':
+            self.InitializeSpecialLevel('level5', None)
+        elif specialName == 'level5':
+            self.InitializeSpecialLevel('level6', None)
+        elif specialName == 'level6':
+            self.InitializeSpecialLevel('level7', None)
+        elif specialName == 'level7':
+            self.InitializeSpecialLevel('level8', None)
+        elif specialName == 'level8':
+            self.InitializeSpecialLevel('level9', None)
+        elif specialName == 'level9':
+            # TODO: something else
+            raise "You won!"
+        elif specialName == 'testlevel':
+            self.InitializeSpecialLevel('level1')
+            # meh
+            
+    def InitializeSpecialLevel(self, special, args):
         self.progress = True
         self.timedMode = False
         self.police = 0
+        self.specialName = special
+        
         if special == 'testlevel':
             self.progress = False
             self.width = 32

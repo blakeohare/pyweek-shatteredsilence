@@ -1,4 +1,3 @@
-import math
 import pygame
 from Game import GameSceneBase
 import GamePlay
@@ -11,6 +10,7 @@ class PlayScene(GameSceneBase):
         self.tileWidth = levelSeed.width
         self.tileHeight = levelSeed.height
         self.level = GamePlay.Level(levelSeed)
+        self.levelSeed = levelSeed
         self.cameraX = 0
         self.cameraY = 0
         self.dragStart = None
@@ -20,6 +20,7 @@ class PlayScene(GameSceneBase):
         self.suppressDragDraw = True
         self.counter = 0
         self.progress = 0.0
+        
         self.font_white = Resources.GetFont(255, 255, 255)
         self.font_red = Resources.GetFont(255, 0, 0)
         self.font_orange = Resources.GetFont(255, 128, 0)
@@ -94,7 +95,10 @@ class PlayScene(GameSceneBase):
         
         self.UpdateCamera()
         self.EnsureSelectionValid()
-    
+        self.progress = self.level.GetProgress()
+        if self.progress >= 80:
+            self.next = GamePlay.LevelUpTransition(self)
+        
     def EnsureSelectionValid(self):
         for sprite in self.selection:
             if sprite.color != 255:
@@ -135,10 +139,9 @@ class PlayScene(GameSceneBase):
         self.RenderSelection(screen)
         self.level.RenderSprites(screen, self.cameraX, self.cameraY)
         self.RenderDrag(screen)
-        self.RenderChrome(screen)
+        self.RenderChrome(screen, self.progress)
         
-    def RenderChrome(self, screen):
-        progress = self.level.GetProgress()
+    def RenderChrome(self, screen, progress):
         conversions_text = self.font_white.Render('Conversion: ')
         screen.blit(conversions_text, (0, 0))
         

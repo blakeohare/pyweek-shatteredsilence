@@ -3,6 +3,7 @@ from . import tile as _tile
 from . import level as _level
 from . import sprite as _sprite
 from . import levelseed as _levelseed
+from . import leveluptransition as _levelup
 
 Sprite = _sprite.Sprite
 Citizen = _sprite.Citizen
@@ -12,3 +13,4 @@ Level = _level.Level
 TileTemplate = _tile.TileTemplate
 PlayScene = _playscene.PlayScene
 LevelSeed = _levelseed.LevelSeed
+LevelUpTransition = _levelup.LevelUpTransition
