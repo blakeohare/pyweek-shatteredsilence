@@ -83,6 +83,7 @@ class Generator:
 				width = longWidth - 7
 				height = longWidth - 7
 				roofHeight = 3
+				cell[4] = True
 				if not (cell[0] or cell[1] or cell[2] or cell[3]):
 					pass
 				else:
@@ -122,7 +123,6 @@ class Generator:
 		while y < logGridHeight:
 			
 			x = 1
-			
 			while x < logGridWidth:
 				tile = logicalGrid[x][y]
 				
