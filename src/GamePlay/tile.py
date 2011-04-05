@@ -47,6 +47,7 @@ class Tile:
 	
 	def __init__(self, x, y, template):
 		self.template = template
+		self.IsPassable = template.passable
 		self.X = x
 		self.PixelX = x * 32
 		self.Y = y

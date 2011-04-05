@@ -153,18 +153,21 @@ class Level:
 				newx = x + dx
 				newy = y + dy
 				
-				if True: # TODO: check to see if newx and newy are passable
+				if newx < 0: newx = 0
+				if newx >= self.width * 32: newx = self.width * 32 - 1
+				if newy < 0: newy = 0
+				if newy >= self.height * 32: newy = self.height * 32 - 1 
+				
+				tile = self.tiles[newx // 32][newy // 32]
+				
+				
+				if tile.IsPassable:
 					x = newx
 					y = newy
 					sprite.X = x
 					sprite.Y = y
 				sprite.DX = 0
 				sprite.DY = 0
-				
-				if sprite.X < 0: sprite.X = 0
-				if sprite.Y < 0: sprite.Y = 0
-				if sprite.X >= self.width * 32: sprite.X = self.width * 32 - 1
-				if sprite.Y >= self.height * 32: sprite.Y = self.height * 32 - 1
 			
 			# do color updates
 			if sprite.color < 255: sprite.color -= 2
