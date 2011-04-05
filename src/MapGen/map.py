@@ -13,6 +13,7 @@ def BuildMapFromCommands(commands, width, height, previousLevelSeed):
 	items = []
 	citizens = []
 	police = []
+	tileOverrides = []
 	carryover = None
 	for line in commands:
 		parts = _trim(line).split(' ')
@@ -35,8 +36,9 @@ def BuildMapFromCommands(commands, width, height, previousLevelSeed):
 			police.append((x, y, variety))
 		elif parts[0] == 'CARRYOVER':
 			carryover = (int(parts[1]), int(parts[2]), previousLevelSeed)
-	
-	return Map(width, height, items, citizens, police, carryover)
+		elif parts[0] == 'TILE':
+			tileOverrides.append((parts[1], int(parts[2]), int(parts[3])))
+	return Map(width, height, items, citizens, police, carryover, tileOverrides)
 
 def BuildMap(level, width, height, previousLevelSeed):
 	path = 'Levels' + os.sep + level + '.txt'
@@ -48,7 +50,7 @@ def BuildMap(level, width, height, previousLevelSeed):
 	
 class Map:
 	
-	def __init__(self, width, height, items, citizens, police, carryover):
+	def __init__(self, width, height, items, citizens, police, carryover, tileOverrides):
 		self.InitializeGrid(width, height)
 		self.roadSquares = []
 		
@@ -62,6 +64,13 @@ class Map:
 		
 		if carryover != None:
 			self.FillInPreviousLevel(carryover[0], carryover[1], carryover[2].map.grid)
+		
+		self.ApplyTileOverrides(tileOverrides)
+	
+	def ApplyTileOverrides(self, overrides):
+		
+		for override in overrides:
+			self.grid[override[1]][override[2]] = override[0]
 		
 	def FillInPreviousLevel(self, left, top, grid):
 		

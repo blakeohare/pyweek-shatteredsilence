@@ -49,3 +49,10 @@ Buildings...
 	variety describes which building to place:
 		1 - brick building
 
+
+Place tile specifically...
+
+	TILE type x y
+	
+	The type is the string as it appears in the key of the big dictionary at the beginning of tile.py.
+	(The key is to the left of the colon on each line)
