@@ -141,6 +141,12 @@ class PlayScene(GameSceneBase):
         self.RenderDrag(screen)
         self.RenderChrome(screen, self.progress)
         
+        mousepos = pygame.mouse.get_pos()
+        x = (mousepos[0] + self.cameraX) // 32
+        y = (mousepos[1] + self.cameraY) // 32
+        mousepos = self.font_white.Render('(' + str(x) + ', ' + str(y) + ')')
+        screen.blit(mousepos, (640 - mousepos.get_width(), 480 - mousepos.get_height()))
+        
     def RenderChrome(self, screen, progress):
         conversions_text = self.font_white.Render('Conversion: ')
         screen.blit(conversions_text, (0, 0))
