@@ -1,21 +1,23 @@
 import pygame
 import Resources
 
+_border_cache = {}
+
 class Border:
    def __init__(self):
-      self._border_cache = {}
       self.TL = 0
       self.TC = 1
       self.TR = 2
-      self.MT = 3
+      self.ML = 3
       self.MC = 4
-      self.MB = 5
+      self.MR = 5
       self.BL = 6
       self.BC = 7
       self.BR = 8
       self.Load()
    
    def Load(self):
+      global _border_cache
       _borders = Resources.ImageLibrary.Get('borders.png')
       
       i = 0
@@ -23,19 +25,29 @@ class Border:
          left = (i % 3) * 17 + 1
          top = (i // 3) * 17 + 1
          
-         self._border_cache[i] = _borders.subsurface(pygame.Rect(left, top, 16, 16))
+         _border_cache[i] = pygame.Surface((16, 16))
+         key = pygame.Color(0, 0, 255)
+         _border_cache[i].fill(key)
+         _border_cache[i].set_colorkey(key)
+         _border_cache[i].blit(_borders, (0, 0), pygame.Rect(left, top, 16, 16))
+         
+         i += 1
     
    def GetTile(self, tile):
+      global _border_cache
       if (tile < 0) or (tile > 8):
          return None
       
-      return self._border_cache[tile]
+      return _border_cache[tile]
    
-   def MakeSurface(self, width, height):
+   def MakeSurf(self, width, height):
       if (width < 2) or (height < 2):
          raise "Invalid size."
       
       surf = pygame.Surface((width * 16, height * 16))
+      key = pygame.Color(0, 0, 255)
+      surf.fill(key)
+      surf.set_colorkey(key)
       
       _gt = self.GetTile
       for x in xrange(width):
@@ -53,17 +65,17 @@ class Border:
                if (y == 0):
                   tile = _gt(self.TR)
                elif (y == (height - 1)):
-                  tile = _gt(self.MR)
-               else:
                   tile = _gt(self.BR)
+               else:
+                  tile = _gt(self.MR)
             else:
                if (y == 0):
-                  tile = _gt(self.MT)
+                  tile = _gt(self.TC)
                elif (y == (height - 1)):
-                  tile = _gt(self.MB)
+                  tile = _gt(self.BC)
                else:
                   tile = _gt(self.MC)
-            if not Tile:
+            if not tile:
                raise "No tile found for (%d,%d)" % (x, y)
             
             surf.blit(tile, (x * 16, y * 16))
