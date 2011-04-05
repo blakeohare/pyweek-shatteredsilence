@@ -56,12 +56,13 @@ class LevelSeed:
             # TODO: something else
             raise "You won!"
         elif specialName == 'testlevel':
-            self.InitializeSpecialLevel('level1')
+            self.InitializeSpecialLevel('level1', None)
             # meh
             
     def InitializeSpecialLevel(self, special, args):
         self.progress = True
         self.timedMode = False
+        self.citizens = 0
         self.police = 0
         self.specialName = special
         
@@ -69,26 +70,18 @@ class LevelSeed:
             self.progress = False
             self.width = 32
             self.height = 24
-            self.citizens = 10
-            self.police = 2
         elif special == 'level1':
             self.width = 20
             self.height = 15
-            self.citizens = 1
         elif special == 'level2':
             self.width = 32
             self.height = 24
-            self.citizens = 9
         elif special == 'level3':
             self.width = 64
             self.height = 48
-            self.citizens = 30
-            self.police = 3
         elif special == 'level4':
             self.width = 180
             self.height = 100
-            self.citizens = 100
-            self.police = 20
         elif special == 'level5':
             self.mode = 'crowd'
             self.width = 40

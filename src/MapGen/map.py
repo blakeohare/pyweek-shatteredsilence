@@ -15,6 +15,8 @@ def BuildMap(level, width, height):
     c.close()
     
     items = []
+    citizens = []
+    police = []
     for line in lines:
         parts = _trim(line).split(' ')
         if parts[0] == 'ROAD':
@@ -23,16 +25,28 @@ def BuildMap(level, width, height):
         elif parts[0] == 'BUILDING':
             item = MapGen.Building(int(parts[1]), int(parts[2]), int(parts[3]), int(parts[4]), int(parts[5]), int(parts[6]))
             items.append(item)
+        elif parts[0] == 'CITIZEN':
+            x = int(parts[1])
+            y = int(parts[2])
+            male = parts[3].upper() == 'M'
+            variety = int(parts[4])
+            citizens.append((x, y, male, variety))
+        elif parts[0] == 'POLICE':
+            x = int(parts[1])
+            y = int(parts[2])
+            variety = int(parts[3])
+            police.append((x, y, variety))
     
-    return Map(width, height, items)
-    
-    
+    return Map(width, height, items, citizens, police)
     
 class Map:
     
-    def __init__(self, width, height, items):
+    def __init__(self, width, height, items, citizens, police):
         self.InitializeGrid(width, height)
         self.roadSquares = []
+        
+        self.citizens = citizens
+        self.police = police
         
         items = self.FillGridWithRoads(items)
         items = self.FillGridWithBuildings(items)

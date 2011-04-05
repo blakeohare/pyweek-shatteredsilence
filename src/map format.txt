@@ -1,3 +1,19 @@
+Sprites...
+
+	CITIZEN x y gender variety
+	
+	x and y are tile coordinates, not pixel coordinates
+	gender is M or F (capitalized). Technically it's 'M' for male and anything else for female.
+	variety is 1 through 4. Look in the Images/Sprites folder to see which ones are which.
+	
+	
+	POLICE x y variety
+	
+	x and y are tile coordinates
+	variety:
+		1 - traditional police officer uniform
+		2 - riot control officer
+
 Roads...
 
 	ROAD startX startY endX endY

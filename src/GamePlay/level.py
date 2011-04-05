@@ -15,20 +15,18 @@ class Level:
         self.randomDirections = [(1, 0), (-1, 0), (0, 1), (0, -1)]
         self.citizens = []
         
-        for i in range(100):
-            male = i % 2 == 1
-            variety = (i // 25) + 1
-            x = i // 10
-            y = i % 10
-            citizen = GamePlay.Citizen(30 + x * 45, 30 + y * 45, male, variety)
-            self.sprites.append(citizen)
-            self.citizens.append(citizen)
+        for citizen in levelseed.map.citizens:
+            print citizen
+            sprite = GamePlay.Citizen(32 * citizen[0] + 16, 32 * citizen[1] + 16, citizen[2], citizen[3])
+            self.sprites.append(sprite)
+            self.citizens.append(sprite)
         
-        police = GamePlay.Police(600, 10, 1)
-        self.sprites.append(police)
-        self.police.append(police)
+        self.citizens[0].color = 255
         
-        self.sprites[23].color = 255
+        for police in levelseed.map.police:
+            sprite = GamePlay.Police(32 * police[0] + 16, 32 * police[1] + 16, police[2])
+            self.sprites.append(sprite)
+            self.police.append(sprite)
         
         self.spriteGraph = SpriteGraph(self.width, self.height)
     
