@@ -31,6 +31,14 @@ class LevelSeed:
 				self.city_centers = args['city_centers']
 			else:
 				self.city_centers = 0
+			self.map = self.GenerateCustomMap(self.width, self.height, True)
+	
+	def GenerateCustomMap(self, width, height, isUrban):
+		generator = MapGen.Generator(width, height, isUrban)
+		while not generator.IsDone():
+			generator.DoNextTask()
+		commands = generator.commands
+		return MapGen.BuildMapFromCommands(commands, width, height, None)
 	
 	def InitializeNextLevel(self, previousLevelSeed):
 		specialName = previousLevelSeed.specialName

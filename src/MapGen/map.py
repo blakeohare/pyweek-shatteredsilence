@@ -7,18 +7,14 @@ def _trim(string):
 	while len(string) > 0 and string[-1] in ' \t\r\n':
 		string = string[:-1]
 	return string
-	
-def BuildMap(level, width, height, previousLevelSeed):
-	path = 'Levels' + os.sep + level + '.txt'
-	c = open(path, 'rt')
-	lines = c.read().split('\n')
-	c.close()
-	
+
+def BuildMapFromCommands(commands, width, height, previousLevelSeed):
+		
 	items = []
 	citizens = []
 	police = []
 	carryover = None
-	for line in lines:
+	for line in commands:
 		parts = _trim(line).split(' ')
 		if parts[0] == 'ROAD':
 			item = MapGen.Road(int(parts[1]), int(parts[2]), int(parts[3]), int(parts[4]))
@@ -41,6 +37,14 @@ def BuildMap(level, width, height, previousLevelSeed):
 			carryover = (int(parts[1]), int(parts[2]), previousLevelSeed)
 	
 	return Map(width, height, items, citizens, police, carryover)
+
+def BuildMap(level, width, height, previousLevelSeed):
+	path = 'Levels' + os.sep + level + '.txt'
+	c = open(path, 'rt')
+	lines = c.read().split('\n')
+	c.close()
+	
+	return BuildMapFromCommands(lines, width, height, previousLevelSeed)
 	
 class Map:
 	

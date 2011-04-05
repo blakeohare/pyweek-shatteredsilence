@@ -59,6 +59,10 @@ class PlayScene(GameSceneBase):
 			sprite.SetTarget(targetX, targetY)
 	
 	def SetSelection(self, startDrag, endDrag):
+		
+		# not sure how this occurred
+		if startDrag == None or endDrag == None: return
+		
 		left = startDrag[0]
 		top = startDrag[1]
 		right = endDrag[0]
