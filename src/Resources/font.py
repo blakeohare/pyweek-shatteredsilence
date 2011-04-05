@@ -35,8 +35,19 @@ def _initialize():
         i += 1
 
 
+_fonts = {}
 
-class Font:
+def GetFont(r, g, b):
+    global _fonts
+    key = str(r) + '_' + str(g) + '_' + str(b)
+    font = _fonts.get(key)
+    if font == None:
+        font = FontPrivate((r, g, b))
+        _fonts[key] = font
+    return font
+
+
+class FontPrivate:
     def __init__(self, color):
         global _initialized
         if not _initialized:

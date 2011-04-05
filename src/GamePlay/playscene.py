@@ -2,6 +2,7 @@ import math
 import pygame
 from Game import GameSceneBase
 import GamePlay
+import Resources
 
 class PlayScene(GameSceneBase):
     
@@ -18,6 +19,14 @@ class PlayScene(GameSceneBase):
         self.cursorScreenPosition = (0, 0)
         self.suppressDragDraw = True
         self.counter = 0
+        self.progress = 0.0
+        self.font_white = Resources.GetFont(255, 255, 255)
+        self.font_red = Resources.GetFont(255, 0, 0)
+        self.font_orange = Resources.GetFont(255, 128, 0)
+        self.font_yellow = Resources.GetFont(255, 255, 0)
+        self.font_green = Resources.GetFont(0, 255, 0)
+        self.font_blue = Resources.GetFont(0, 170, 255)
+        
         
     def ProcessInput(self, events):
         
@@ -126,6 +135,19 @@ class PlayScene(GameSceneBase):
         self.RenderSelection(screen)
         self.level.RenderSprites(screen, self.cameraX, self.cameraY)
         self.RenderDrag(screen)
+        self.RenderChrome(screen)
+        
+    def RenderChrome(self, screen):
+        progress = self.level.GetProgress()
+        conversions_text = self.font_white.Render('Conversion: ')
+        screen.blit(conversions_text, (0, 0))
+        
+        if progress < 20: font = self.font_red
+        elif progress < 40: font = self.font_orange
+        elif progress < 60: font = self.font_yellow
+        elif progress < 80: font = self.font_green
+        else: font = self.font_blue
+        screen.blit(font.Render(str(int(progress)) + '%'), (conversions_text.get_width(), 0))
     
     def RenderSelection(self, screen):
         for sprite in self.selection:

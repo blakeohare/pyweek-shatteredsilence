@@ -5,4 +5,4 @@ ImageLibrary = _imglib.ImageLibrary()
 
 from . import font as _font
 
-Font = _font.Font
+GetFont = _font.GetFont

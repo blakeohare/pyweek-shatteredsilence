@@ -13,12 +13,16 @@ class Level:
         self.police = []
         self.counter = 0
         self.randomDirections = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        self.citizens = []
+        
         for i in range(100):
             male = i % 2 == 1
             variety = (i // 25) + 1
             x = i // 10
             y = i % 10
-            self.sprites.append(GamePlay.Citizen(30 + x * 45, 30 + y * 45, male, variety))
+            citizen = GamePlay.Citizen(30 + x * 45, 30 + y * 45, male, variety)
+            self.sprites.append(citizen)
+            self.citizens.append(citizen)
         
         police = GamePlay.Police(600, 10, 1)
         self.sprites.append(police)
@@ -43,6 +47,16 @@ class Level:
             x += 1
         
         self.tiles = tiles
+    
+    def GetProgress(self):
+        total = len(self.citizens)
+        converted = 0
+        for citizen in self.citizens:
+            if citizen.color == 255:
+                converted += 1
+        
+        if total == 0: total = 1
+        return 100.0 * converted / total
     
     def UpdateTileColors(self):
         counter = self.counter
@@ -83,6 +97,9 @@ class Level:
         fugitives = self.radiatingSprites
         
         # TODO: AAAAAAAAAAH!!!! NESTED LOOP! KILL IT! KILLLLL ITTT!!!!
+        officer_sight_range = 7 # (blocks)
+        officer_sight_range = (officer_sight_range * 32) ** 2
+        
         for officer in self.police:
             officer.counter += 1
             if officer.target == None:
@@ -97,7 +114,7 @@ class Level:
                         closestDistance = distance
                         closest = evildoer
                 
-                if closestDistance < (7 * 32) * (7 * 32):
+                if closestDistance < officer_sight_range:
                     officer.TargetCitizen(closest)
         
     def RandomDirection(self):
@@ -112,9 +129,6 @@ class Level:
         for sprite in self.sprites:
             sprite.IsRadiating = False
             graph.AddSprite(sprite)
-        
-        #lady = self.sprite[80]
-        #print lady.color, lady.colorizeable, lady.demotivation
         
         for sprite in self.sprites:
             sprite.Update()

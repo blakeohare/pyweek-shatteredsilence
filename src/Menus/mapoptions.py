@@ -1,13 +1,13 @@
 import pygame
 from Game import GameSceneBase
 from GamePlay import PlayScene
-from Resources import Font
+import Resources
 from GamePlay import LevelSeed
 
 class MapOptions(GameSceneBase):
     def __init__(self):
         GameSceneBase.__init__(self)
-        self.font = Font((255, 255, 0))
+        self.font = Resources.GetFont(255, 255, 0)
     
     def ProcessInput(self, events):
         

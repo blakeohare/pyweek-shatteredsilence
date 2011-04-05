@@ -1,12 +1,12 @@
 import pygame
 from Game import GameSceneBase
-from Resources import Font
+import Resources
 import Menus
 
 class Credits(GameSceneBase):
     def __init__(self):
         GameSceneBase.__init__(self)
-        self.font = Font((255, 255, 0))
+        self.font = Resources.GetFont(255, 255, 0)
     
     def ProcessInput(self, events):
         

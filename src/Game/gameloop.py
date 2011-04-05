@@ -78,7 +78,7 @@ class GameLoop:
             
             if self.show_fps_counter:
                 if self.font == None:
-                    self.font = Resources.Font((255, 255, 255))
+                    self.font = Resources.GetFont(255, 255, 255)
                 text = self.font.Render("FPS: " + str(vfps))
                 self.screen.blit(text, (4, 480 - text.get_height()))
             pygame.display.flip()

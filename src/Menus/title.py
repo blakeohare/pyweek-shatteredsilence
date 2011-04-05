@@ -3,15 +3,15 @@ from GamePlay import PlayScene
 import Menus
 import pygame
 from Resources import ImageLibrary
-from Resources import Font
+import Resources
 from GamePlay import LevelSeed
 
 class Title(GameSceneBase):
     
     def __init__(self):
         GameSceneBase.__init__(self)
-        self.whitefont = Font((255, 255, 255))
-        self.yellowfont = Font((255, 255, 0))
+        self.whitefont = Resources.GetFont(255, 255, 255)
+        self.yellowfont = Resources.GetFont(255, 255, 0)
         self.index = 5
         self.options = [
                         'Story Mode',
