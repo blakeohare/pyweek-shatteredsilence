@@ -46,10 +46,14 @@ Buildings...
 	variety describes which building to place:
 		1 - brick building
 
-	HOUSE x y
+	HOUSE x y variety
 	
 	x and y are the top left corner
 	The house is 5 wide and 7 tall
+	varieties:
+		1 - green
+		2 - blue
+		3 - pink
 	
 Place tile specifically...
 

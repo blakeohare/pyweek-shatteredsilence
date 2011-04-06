@@ -112,12 +112,12 @@ class GameLoop:
 	def DoHacks(self, screen):
 		
 		# partition the house
-		screen.fill((0, 0, 255))
-		bighouse = Resources.ImageLibrary.Get('Tiles/house.png')
-		for y in range(0, 7):
-			for x in range(0, 5):
-				i = y * 5 + x
-				image = Resources.ImageLibrary.Get('Tiles/grass.png', 255).copy()
-				image.blit(bighouse, (-x * 32, -y * 32))
-				path = os.path.join('Images','Tiles','house','house'+str(i) + '.png')
-				Resources.ImageLibrary.AddVirtualizedImage(path, image)
+		for foo in (('',''), ('p','pink'), ('b','blue')):
+			bighouse = Resources.ImageLibrary.Get('Tiles/'+foo[1]+'house.png')
+			for y in range(0, 7):
+				for x in range(0, 5):
+					i = y * 5 + x
+					image = Resources.ImageLibrary.Get('Tiles/grass.png', 255).copy()
+					image.blit(bighouse, (-x * 32, -y * 32))
+					path = os.path.join('Images','Tiles','house',foo[0]+'house'+str(i) + '.png')
+					Resources.ImageLibrary.AddVirtualizedImage(path, image)

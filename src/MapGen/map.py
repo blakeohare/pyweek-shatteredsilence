@@ -41,7 +41,7 @@ def BuildMapFromCommands(commands, width, height, previousLevelSeed):
 		elif parts[0] == 'HOUSE':
 			x = int(parts[1])
 			y = int(parts[2])
-			items.append(MapGen.House(x, y))
+			items.append(MapGen.House(x, y, int(parts[3])))
 	return Map(width, height, items, citizens, police, carryover, tileOverrides)
 
 def BuildMap(level, width, height, previousLevelSeed):

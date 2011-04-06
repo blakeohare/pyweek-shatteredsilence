@@ -6,11 +6,14 @@ class MapItem:
 		self.IsHouse = False
 		
 class House(MapItem):
-	def __init__(self, x, y):
+	def __init__(self, x, y, variety):
 		MapItem.__init__(self)
 		self.IsHouse = True
 		self.x = x
 		self.y = y
+		self.prefix = ''
+		if variety == 2: self.prefix = 'b'
+		elif variety == 3: self.prefix = 'p'
 	
 	def ApplySelfToGrid(self, grid):
 		left = self.x
@@ -22,7 +25,7 @@ class House(MapItem):
 		while y < height:
 			x = 0
 			while x < width:
-				grid[x + left][y + top] = 'house' + str(i)
+				grid[x + left][y + top] = self.prefix + 'house' + str(i)
 				i += 1
 				x += 1
 			y += 1
