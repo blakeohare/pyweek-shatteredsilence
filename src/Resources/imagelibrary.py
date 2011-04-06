@@ -6,6 +6,7 @@ class ImageLibrary:
 	def __init__(self):
 		self.intervals = 50
 		self.images = []
+		self.virtualizedImages = {}
 		for i in range(self.intervals):
 			self.images.append({})
 			
@@ -28,13 +29,25 @@ class ImageLibrary:
 			if image != None:
 				self.MirrorImage(path, newpath)
 				return images.get(newpath)
+			
 			finalpath = ('Images/' + newpath).replace('/', os.sep).replace(os.sep + os.sep, os.sep)
 			
-			image = pygame.image.load(finalpath).convert_alpha()
+			if os.path.exists(finalpath):
+				print 'exists: ' + finalpath
+				image = pygame.image.load(finalpath).convert_alpha()
+			else:
+				print 'getting: ' + finalpath
+				image = self.GetVirtualizedImageFile(finalpath).convert_alpha()
 			image = self.InitializeImages(path, image, opacity == None)
 			return self.Get(path, opacity)
 			
 		return image
+	
+	def GetVirtualizedImageFile(self, path):
+		return self.virtualizedImages[path]
+	
+	def AddVirtualizedImage(self, path, image):
+		self.virtualizedImages[path] = image.copy()
 	
 	def MirrorImage(self, targetPath, sourcePath):
 		for i in range(self.intervals):

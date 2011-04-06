@@ -38,6 +38,10 @@ def BuildMapFromCommands(commands, width, height, previousLevelSeed):
 			carryover = (int(parts[1]), int(parts[2]), previousLevelSeed)
 		elif parts[0] == 'TILE':
 			tileOverrides.append((parts[1], int(parts[2]), int(parts[3])))
+		elif parts[0] == 'HOUSE':
+			x = int(parts[1])
+			y = int(parts[2])
+			items.append(MapGen.House(x, y))
 	return Map(width, height, items, citizens, police, carryover, tileOverrides)
 
 def BuildMap(level, width, height, previousLevelSeed):
@@ -189,7 +193,7 @@ class Map:
 	def FillGridWithBuildings(self, items):
 		notbuildings = []
 		for item in items:
-			if item.IsBuilding:
+			if item.IsBuilding or item.IsHouse:
 				item.ApplySelfToGrid(self.grid)
 			else:
 				notbuildings.append(item)

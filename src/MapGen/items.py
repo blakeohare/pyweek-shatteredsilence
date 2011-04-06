@@ -3,6 +3,29 @@ class MapItem:
 	def __init__(self):
 		self.IsRoad = False
 		self.IsBuilding = False
+		self.IsHouse = False
+		
+class House(MapItem):
+	def __init__(self, x, y):
+		MapItem.__init__(self)
+		self.IsHouse = True
+		self.x = x
+		self.y = y
+	
+	def ApplySelfToGrid(self, grid):
+		left = self.x
+		top = self.y
+		width = 5
+		height = 7
+		y = 0
+		i = 0
+		while y < height:
+			x = 0
+			while x < width:
+				grid[x + left][y + top] = 'house' + str(i)
+				i += 1
+				x += 1
+			y += 1
 
 class Building(MapItem):
 	

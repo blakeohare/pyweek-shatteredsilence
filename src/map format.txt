@@ -46,6 +46,11 @@ Buildings...
 	variety describes which building to place:
 		1 - brick building
 
+	HOUSE x y
+	
+	x and y are the top left corner
+	The house is 5 wide and 7 tall
+	
 Place tile specifically...
 
 	TILE type x y
