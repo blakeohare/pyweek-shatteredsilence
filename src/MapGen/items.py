@@ -4,11 +4,13 @@ class MapItem:
 		self.IsRoad = False
 		self.IsBuilding = False
 		self.IsHouse = False
+		self.Applyable = False
 		
 class House(MapItem):
 	def __init__(self, x, y, variety):
 		MapItem.__init__(self)
 		self.IsHouse = True
+		self.Applyable = True
 		self.x = x
 		self.y = y
 		self.prefix = ''
@@ -25,16 +27,37 @@ class House(MapItem):
 		while y < height:
 			x = 0
 			while x < width:
+				#print x + left, y + top, len(grid), len(grid[0])
 				grid[x + left][y + top] = self.prefix + 'house' + str(i)
 				i += 1
 				x += 1
 			y += 1
+
+class Bush(MapItem):
+	def __init__(self, x, y, width):
+		MapItem.__init__(self)
+		self.x = x
+		self.y = y
+		self.width = width
+		self.Applyable = True
+	
+	def ApplySelfToGrid(self, grid):
+		x = self.x
+		y = self.y
+		grid[x][y] = 'bush_left'
+		grid[x + self.width - 1][y] = 'bush_right'
+		xEnd = x + self.width - 1
+		x += 1
+		while x < xEnd:
+			grid[x][y] = 'bush_center'
+			x += 1
 
 class Building(MapItem):
 	
 	def __init__(self, left, top, width, height, roofheight, variety):
 		MapItem.__init__(self)
 		self.IsBuilding = True
+		self.Applyable = True
 		self.top = top
 		self.left = left
 		self.width = width

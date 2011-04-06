@@ -54,7 +54,14 @@ Buildings...
 		1 - green
 		2 - blue
 		3 - pink
+
+Vegetation...
+
+	BUSH x y width
 	
+	x and y are the left side of the bush
+	width is width
+
 Place tile specifically...
 
 	TILE type x y

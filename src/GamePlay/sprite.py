@@ -16,6 +16,8 @@ class Sprite:
 		self.colorizeable = False
 		self.IsRadiating = False
 		self.demotivation = 0
+		self.beingShoved = False
+		self.shoveCounter = 0
 	
 	def IsCollision(self, anotherSprite):
 		dx = (self.X - anotherSprite.X)
@@ -50,6 +52,9 @@ class Sprite:
 			else:
 				self.DX = int(dx / distance * self.V)
 				self.DY = int(dy / distance * self.V)
+		
+		if self.shoveCounter > 0:
+			self.shoveCounter -= 1 
 	
 class Citizen(Sprite):
 	

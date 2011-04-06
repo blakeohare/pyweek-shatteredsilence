@@ -8,7 +8,7 @@ def _trim(string):
 		string = string[:-1]
 	return string
 
-def BuildMapFromCommands(commands, width, height, previousLevelSeed):
+def BuildMapFromCommands(commands, mapwidth, mapheight, previousLevelSeed):
 		
 	items = []
 	citizens = []
@@ -34,6 +34,11 @@ def BuildMapFromCommands(commands, width, height, previousLevelSeed):
 			y = int(parts[2])
 			variety = int(parts[3])
 			police.append((x, y, variety))
+		elif parts[0] == 'BUSH':
+			x = int(parts[1])
+			y = int(parts[2])
+			widthIhatePython = int(parts[3])
+			items.append(MapGen.Bush(x, y, widthIhatePython))
 		elif parts[0] == 'CARRYOVER':
 			carryover = (int(parts[1]), int(parts[2]), previousLevelSeed)
 		elif parts[0] == 'TILE':
@@ -42,7 +47,7 @@ def BuildMapFromCommands(commands, width, height, previousLevelSeed):
 			x = int(parts[1])
 			y = int(parts[2])
 			items.append(MapGen.House(x, y, int(parts[3])))
-	return Map(width, height, items, citizens, police, carryover, tileOverrides)
+	return Map(mapwidth, mapheight, items, citizens, police, carryover, tileOverrides)
 
 def BuildMap(level, width, height, previousLevelSeed):
 	path = 'Levels' + os.sep + level + '.txt'
@@ -193,7 +198,7 @@ class Map:
 	def FillGridWithBuildings(self, items):
 		notbuildings = []
 		for item in items:
-			if item.IsBuilding or item.IsHouse:
+			if item.Applyable:
 				item.ApplySelfToGrid(self.grid)
 			else:
 				notbuildings.append(item)
