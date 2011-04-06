@@ -51,7 +51,6 @@ class MapOptions(GameSceneBase):
 	def Update(self):
 		pass
 	
-	
 	def Render(self, screen):
 		if (self._transitioning):
 			composite = self._BuildFrame(self._bg, self._nextbg, self._direction, self._animStart, time.time(), ANIMATION_TIME)
@@ -65,8 +64,13 @@ class MapOptions(GameSceneBase):
 		screen.blit(self._bg, (0, 0))
 		text = self._font.Render("Just press enter for now")
 		screen.blit(text, (10, 10))
-		
 	
+	
+	
+	
+# Private methods
+	
+	# cleans up after animating a frame change
 	def _StopAnimation(self):
 		self._bg = self._nextbg
 		self._nextbg = None
@@ -74,6 +78,7 @@ class MapOptions(GameSceneBase):
 		self._animStart = None
 		self._transitioning = False
 
+	# builds a frame of an animation
 	def _BuildFrame(self, frame1, frame2, direction, startTime, curTime, totalTimeMS):
 		delta = curTime - startTime
 		pctDone = delta / (totalTimeMS / 1000)
@@ -93,9 +98,10 @@ class MapOptions(GameSceneBase):
 			surf.blit(frame2, (0, 0))
 		
 		return surf
-		
 	
 	def _NextPage(self):
+		if (self._transitioning):
+			return
 		self._page += 1
 		if (self._page >= len(self._images)):
 			self._page = 0
@@ -105,6 +111,8 @@ class MapOptions(GameSceneBase):
 		self._animStart = time.time()
 	
 	def _PrevPage(self):
+		if (self._transitioning):
+			return
 		self._page -= 1
 		if (self._page < 0):
 			self._page = (len(self._images) - 1)
@@ -129,5 +137,5 @@ class MapOptions(GameSceneBase):
 			'city_centers' : 1
 			
 			# region mode settings
-			# ????????
+				# ????????
 		}
