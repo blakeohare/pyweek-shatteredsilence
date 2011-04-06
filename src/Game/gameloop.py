@@ -17,6 +17,7 @@ class GameLoop:
 		self.show_fps_counter = True
 		self.lastNFrames = []
 		self.font = None
+		self.sound_cache = {}
 	
 	def Start(self, startingScene):
 		self.current = startingScene
@@ -41,6 +42,8 @@ class GameLoop:
 			
 			if self.current == None:
 				self.quitting = True
+			
+			self.PlaySounds()
 			
 			end = time.time()
 			
@@ -85,10 +88,25 @@ class GameLoop:
 				self.screen.blit(text, (4, 480 - text.get_height()))
 			pygame.display.flip()
 	
+	def PlaySounds(self):
+		if self.current != None and len(self.current.sounds) != 0:
+			sounds = self.current.sounds
+			self.current.sounds = []
+			for sound in sounds:
+				path = 'Media' + os.sep + '%SOUNDFOLDER%' + os.sep + sound.replace('/', os.sep).replace('\\', os.sep)
+				path = path.replace(os.sep + os.sep, os.sep)
+				self.PlaySound(path)
 	
 	
-	
-	
+	def PlaySound(self, path):
+		sound = self.sound_cache.get(path)
+		if sound == None:
+			finalPath =  path.replace('%SOUNDFOLDER%', 'Sounds')
+			if not os.path.exists(finalPath):
+				finalPath = path.replace('%SOUNDFOLDER%', 'TEMP_Sounds')
+			sound = pygame.mixer.Sound(finalPath)
+			self.sound_cache[path] = sound
+		sound.play()
 	
 	
 	def DoHacks(self, screen):
