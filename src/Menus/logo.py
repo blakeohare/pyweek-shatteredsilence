@@ -43,8 +43,9 @@ class Logo(GameSceneBase):
 	def Render(self, screen):
 		screen.fill((0, 0, 0))
 		logo = ImageLibrary.Get('logo.png')
-		
+		left = (640 - logo.get_width()) // 2
+		top = (480 - logo.get_height()) // 2 - 50
 		opacity = self.Opacity()
-		self.intermediateScreen.blit(logo, (200, 100))
+		self.intermediateScreen.blit(logo, (left, top))
 		self.intermediateScreen.set_alpha(opacity)
 		screen.blit(self.intermediateScreen, (0, 0))
