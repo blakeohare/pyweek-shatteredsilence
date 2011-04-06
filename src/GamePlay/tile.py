@@ -37,7 +37,10 @@ _tileStore = {
 			'building/building5' : TileTemplate('building/building5', False),
 			'building/building6' : TileTemplate('building/building6', False),
 			'building/doodad' : TileTemplate('building/roofdoodad', False),
-			'building/door' : TileTemplate('building/buildingdoor', False)
+			'building/door' : TileTemplate('building/buildingdoor', False),
+			'sidewalkchalkboy' : TileTemplate('sidewalkchalkboy', True),
+			'sidewalkchalkgirl' : TileTemplate('sidewalkchalkgirl', True),
+			'sidewalkchalkunicorn' : TileTemplate('sidewalkchalkunicorn', True)
 			}
 
 def MakeTile(key, x, y):

@@ -135,7 +135,28 @@ class Map:
 			  ['vertical_crosswalk', 'asphault', 'asphault', 'asphault', 'asphault', 'asphault', 'vertical_crosswalk'],
 			  ['vertical_crosswalk', 'asphault', 'asphault', 'asphault', 'asphault', 'asphault', 'vertical_crosswalk'],
 			  ['sidewalk_corner2', 'horizontal_crosswalk', 'horizontal_crosswalk', 'horizontal_crosswalk', 'horizontal_crosswalk', 'horizontal_crosswalk', 'sidewalk_corner1']]
-
+			
+			if grid[x - 4][y] != 'yellow_line_horizontal':
+				i = 0
+				while i <= 6:
+					impose[i][0] = 'sidewalk'
+					i += 1
+			if grid[x + 4][y] != 'yellow_line_horizontal':
+				i = 0
+				while i <= 6:
+					impose[i][6] = 'sidewalk'
+					i += 1
+			if grid[x][y - 4] != 'yellow_line_vertical':
+				i = 0
+				while i <= 6:
+					impose[0][i] = 'sidewalk'
+					i += 1
+			if grid[x][y + 4] != 'yellow_line_vertical':
+				i = 0
+				while i <= 6:
+					impose[6][i] = 'sidewalk'
+					i += 1
+			
 			col = 0
 			while col < 7:
 				row = 0
