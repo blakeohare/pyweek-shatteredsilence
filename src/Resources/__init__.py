@@ -4,6 +4,9 @@ ImageLibrary = _imglib.ImageLibrary()
 from . import font as _font
 GetFont = _font.GetFont
 
+from . import ttf_font as _ttf
+TTF_Font = _ttf.TTF_Font
+
 from . import border as _border
 Border = _border.Border
 
