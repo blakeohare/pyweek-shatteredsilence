@@ -33,10 +33,8 @@ class ImageLibrary:
 			finalpath = ('Images/' + newpath).replace('/', os.sep).replace(os.sep + os.sep, os.sep)
 			
 			if os.path.exists(finalpath):
-				print 'exists: ' + finalpath
 				image = pygame.image.load(finalpath).convert_alpha()
 			else:
-				print 'getting: ' + finalpath
 				image = self.GetVirtualizedImageFile(finalpath).convert_alpha()
 			image = self.InitializeImages(path, image, opacity == None)
 			return self.Get(path, opacity)
