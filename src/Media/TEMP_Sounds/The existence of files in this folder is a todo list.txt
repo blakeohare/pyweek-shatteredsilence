@@ -1,0 +1,5 @@
+1 - Record a sound for the situation described in the filename.
+2 - Save that sound with the identical filename into /Sounds/ instead of /TEMP_Sounds/
+3 - Check in
+4 - Poke Blake (who will update the code and delete the file in this folder)
+5 - Wash, Rinse, Repeat
