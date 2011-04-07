@@ -56,6 +56,7 @@ def BuildMapFromCommands(commands, mapwidth, mapheight, previousLevelSeed):
 			x = left
 			endX = left + width - 1
 			endY = top + height - 1
+			
 			while x <= endX:
 				y = top
 				while y <= endY:
@@ -95,6 +96,7 @@ class Map:
 	def ApplyTileOverrides(self, overrides):
 		
 		for override in overrides:
+			
 			self.grid[override[1]][override[2]] = override[0]
 		
 	def FillInPreviousLevel(self, left, top, grid):

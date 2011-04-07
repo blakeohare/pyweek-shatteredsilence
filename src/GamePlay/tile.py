@@ -12,6 +12,10 @@ class TileTemplate:
 _tilesToBeLoaded = {}
 
 _tileStore = {
+			#suburbia
+			'cobblestone' : TileTemplate('cobblestone', True),
+			'mailbox' : TileTemplate('mailboxB', False),
+			
 			# Interior
 			'int/black' : TileTemplate('black', False),
 			'int/bedtop' : TileTemplate('Interior/bedtop', False),

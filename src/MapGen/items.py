@@ -28,6 +28,7 @@ class House(MapItem):
 			x = 0
 			while x < width:
 				#print x + left, y + top, len(grid), len(grid[0])
+				#print x + left, y + top, len(grid), len(grid[0])
 				grid[x + left][y + top] = self.prefix + 'house' + str(i)
 				i += 1
 				x += 1
@@ -85,7 +86,7 @@ class Building(MapItem):
 			grid[right][y] = self.folder + 'roof6'
 			x = left + 1
 			while x < right:
-				# TODO: roof doodad?
+				#TODO: roof doodad?
 				grid[x][y] = self.folder + 'roof5'
 				x += 1
 			y += 1

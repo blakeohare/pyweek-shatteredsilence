@@ -31,6 +31,19 @@ class SpecializerBase:
 	def DoSetup(self, playScene, level):
 		pass
 	
+	def Shortcircuited(self, levelName):
+		return levelName in ['level1']
+	
+	def SetMinColor(self, level, left, top, right, bottom, value):
+		
+		x = left
+		while x <= right:
+			y = top
+			while y <= bottom:
+				level.tiles[x][y].SetMinColorIntensity(value)
+				y += 1
+			x += 1
+	
 class Level1Specializer(SpecializerBase):
 	def __init__(self):
 		self.lapis = None
@@ -153,6 +166,14 @@ class Level1Specializer(SpecializerBase):
 class Level2Specializer(SpecializerBase):
 	def __init__(self):
 		pass
+	
+	def DoSetup(self, playScene, level):
+		level.citizens[0].Colorize()
+		level.citizens[1].Colorize()
+		
+		self.SetMinColor(level, 10, 10, 18, 19, 128)
+		self.SetMinColor(level, 11, 11, 17, 18, 255)
+	
 	
 class Level3Specializer(SpecializerBase):
 	def __init__(self):

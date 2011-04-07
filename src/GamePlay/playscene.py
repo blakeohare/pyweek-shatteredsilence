@@ -31,6 +31,31 @@ class PlayScene(GameSceneBase):
 		self.font_blue = Resources.GetFont(0, 170, 255)
 		
 		self.specializer.DoSetup(self, self.level)
+		self.CenterCameraOnColorSprites()
+	
+	def CenterCameraOnColorSprites(self):
+		targets = []
+		for sprite in self.level.citizens:
+			if sprite.color == 255:
+				targets.append(sprite)
+		
+		x = 0
+		y = 0
+		if len(targets) > 0:
+			for target in targets:
+				x += target.X
+				y += target.Y
+			x = x // len(targets)
+			y = y // len(targets)
+		
+		self.cameraX = x - 320
+		self.cameraY = y - 240
+		
+		if self.cameraX >= self.level.pixelWidth - 640: self.cameraX = self.level.pixelWidth - 640
+		if self.cameraY >= self.level.pixelHeight - 480: self.cameraY = self.level.pixelHeight - 480
+		if self.cameraX < 0: self.cameraX = 0
+		if self.cameraY < 0: self.cameraY = 0
+		
 		
 	def ProcessInput(self, events):
 		
@@ -104,7 +129,7 @@ class PlayScene(GameSceneBase):
 		self.UpdateCamera()
 		self.EnsureSelectionValid()
 		self.progress = self.level.GetProgress()
-		if self.specializer.MoveToNextLevel(self.counter, self.progress):
+		if self.specializer.Shortcircuited(self.levelSeed.specialName) or self.specializer.MoveToNextLevel(self.counter, self.progress):
 			self.next = GamePlay.LevelUpTransition(self)
 		
 		messages = self.specializer.ShouldShowMessage(self.counter, self.progress)
@@ -143,10 +168,10 @@ class PlayScene(GameSceneBase):
 		self.cameraX += dx * 4
 		self.cameraY += dy * 4
 		
-		if self.cameraX < 0: self.cameraX = 0
-		if self.cameraY < 0: self.cameraY = 0
 		if self.cameraX >= self.tileWidth * 32 - 640: self.cameraX = self.tileWidth * 32 - 640 - 1
 		if self.cameraY >= self.tileHeight * 32 - 480: self.cameraY = self.tileHeight * 32 - 480 - 1
+		if self.cameraX < 0: self.cameraX = 0
+		if self.cameraY < 0: self.cameraY = 0
 		
 	def Render(self, screen):
 		self.level.RenderTiles(screen, self.cameraX, self.cameraY)
