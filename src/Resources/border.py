@@ -32,7 +32,7 @@ class Border:
 			_border_cache[i].blit(_borders, (0, 0), pygame.Rect(left, top, 16, 16))
 			
 			i += 1
-	 
+
 	def GetTile(self, tile):
 		global _border_cache
 		if (tile < 0) or (tile > 8):
@@ -45,9 +45,12 @@ class Border:
 			raise "Invalid size."
 		
 		surf = pygame.Surface((width * 16, height * 16))
+		
 		key = pygame.Color(0, 0, 255)
 		surf.fill(key)
 		surf.set_colorkey(key)
+		surf = surf.convert_alpha()
+		pygame.draw.rect(surf, (0, 0, 0, 128), pygame.Rect(8, 8, width * 16 - 16, height * 16 - 16))
 		
 		_gt = self.GetTile
 		x = 0
