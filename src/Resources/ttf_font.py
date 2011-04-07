@@ -10,5 +10,5 @@ class TTF_Font:
       #TODO: cache
       self._font = pygame.font.Font(_buildPath(file), sz)
    
-   def Render(self, txt, color = pygame.Color(255, 255, 0)):
+   def Render(self, txt, color = pygame.Color(0, 0, 0)):
       return self._font.render(txt, True, color)

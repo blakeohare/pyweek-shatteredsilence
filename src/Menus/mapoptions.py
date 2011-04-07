@@ -11,115 +11,123 @@ from GamePlay import LevelSeed
 # Time
 # Zoom level
 
-RIGHT = 1
-LEFT = 2
-ANIMATION_TIME = 2500 #ms
-
 class MapOptions(GameSceneBase):
 	def __init__(self):
 		GameSceneBase.__init__(self)
-		self._font = Resources.TTF_Font('Kallamar/KALLAMAR.TTF', 30)
-		self._images = [
-			'sc1.png',
-			'sc2.png',
-			'sc3.png',
-			'sc4.png'
-		]
+		self._font = Resources.TTF_Font('Kallamar/KALLAMAR.TTF', 36)
 		self._page = 0 # which BG page we're on
-		self._bg = Resources.ImageLibrary.Get('MapOptions/%s' % self._images[self._page]) # Background to draw
+		self._bg = Resources.ImageLibrary.Get('MapOptions/sc1.png') # Background to draw
 		self._args = {}
+		
+		self._map_sz1 = None
+		self._map_size = 1
+		self._font_r = None
+
 		
 		#animation related
 		self._transitioning = False #should we be animating to the next option screen?
-		self._direction = None # which direction should we transition in?
-		self._animStart = None
-		self._nextbg = None #next background
 		
 		# set stuff up
 		self._SetDefaults()
 	
 	def ProcessInput(self, events):
-		for event in events:
-			if event.type == pygame.KEYDOWN:
-				if (event.key == pygame.K_RIGHT):
-					self._NextPage()
-				elif (event.key == pygame.K_LEFT):
-					self._PrevPage()
-				elif (event.key == pygame.K_RETURN):
-					self.next = PlayScene(LevelSeed(None, self._args))
+			if (self._page == 0):
+				self._MapUIInput(events)
+				return
+
+			for event in events:
+				if event.type == pygame.KEYDOWN:
+					if (event.key == pygame.K_RIGHT):
+						self._page += 1
+						if (self._page >= 4):
+							self._page = 0
+					elif (event.key == pygame.K_LEFT):
+						self._page -= 1
+						if (self._page < 0):
+							self._page = 3
+					elif (event.key == pygame.K_RETURN):
+						self.next = PlayScene(LevelSeed(None, self._args))
 	
 	def Update(self):
 		pass
 	
 	def Render(self, screen):
-		if (self._transitioning):
-			composite = self._BuildFrame(self._bg, self._nextbg, self._direction, self._animStart, time.time(), ANIMATION_TIME)
-		
-			if composite:
-				screen.blit(composite, (0, 0))
-				return
-			else:
-				self._StopAnimation()
-
 		screen.blit(self._bg, (0, 0))
-		text = self._font.Render("Just press enter for now")
-		screen.blit(text, (10, 10))
-	
+		text = self._font.Render("Next")
+		fx = _GetCenterX(screen, text)
+		screen.blit(text, (fx, 400))
+		if not self._font_r:
+			self._font_r = pygame.Rect(fx, 400, text.get_width(), text.get_height())
+
+		p = self._page
+		if p == 0:
+			surf = self._BuildMapUI(screen)
+
+		elif p == 1:
+			text = "Progress Mode"
+		elif p == 2:
+			text = "Time Limit"
+		elif p == 3:
+			text = "Zoom Level"
 	
 	
 	
 # Private methods
-	
-	# cleans up after animating a frame change
-	def _StopAnimation(self):
-		self._bg = self._nextbg
-		self._nextbg = None
-		self._direction = None
-		self._animStart = None
-		self._transitioning = False
 
-	# builds a frame of an animation
-	def _BuildFrame(self, frame1, frame2, direction, startTime, curTime, totalTimeMS):
-		delta = curTime - startTime
-		pctDone = delta / (totalTimeMS / 1000)
-		
-		if (pctDone >= 1):
-			return None
-		
-		surf = pygame.Surface((640, 480))
-		offset = int(pctDone * 640)
-		
-		if (direction == RIGHT):
-			surf.blit(frame1, (0, 0), pygame.Rect(offset, 0, 640 - offset, 480))
-			surf.blit(frame2, (640 - offset, 0), pygame.Rect(0, 0, offset, 480))
-		else:
-			surf.blit(frame1, (0 + offset, 0), pygame.Rect(0, 0, 640 - offset, 480))
-			frame2 = frame2.subsurface(pygame.Rect(640 - offset, 0, offset, 480))
-			surf.blit(frame2, (0, 0))
-		
-		return surf
-	
 	def _NextPage(self):
-		if (self._transitioning):
-			return
 		self._page += 1
-		if (self._page >= len(self._images)):
-			self._page = 0
-		self._nextbg = Resources.ImageLibrary.Get('MapOptions/%s' % self._images[self._page])
-		self._transitioning = True
-		self._direction = RIGHT
-		self._animStart = time.time()
+
+	def _BuildMapUI(self, screen):
+		gcy = _GetCenterY
+		gcx = _GetCenterX
+		
+		text = self._font.Render("Map Size")
+		screen.blit(text, (gcx(screen, text), 50))
+		yoffset = 50 + text.get_height()
+
+		
+		if not self._map_sz1:
+			self._map_sz1 = Resources.ImageLibrary.Get('MapOptions/sz1.png')
+			self._map_sz2 = Resources.ImageLibrary.Get('MapOptions/sz2.png')
+			self._map_sz3 = Resources.ImageLibrary.Get('MapOptions/sz3.png')
+			self._map_sz1_selected = Resources.ImageLibrary.Get('MapOptions/sz1_selected.png')
+			self._map_sz2_selected = Resources.ImageLibrary.Get('MapOptions/sz2_selected.png')
+			self._map_sz3_selected = Resources.ImageLibrary.Get('MapOptions/sz3_selected.png')
+		sz1 = self._map_sz1
+		sz2 = self._map_sz2
+		sz3 = self._map_sz3
+		if self._map_size == 1:
+			sz1 = self._map_sz1_selected
+		elif self._map_size == 2:
+			sz2 = self._map_sz2_selected
+		elif self._map_size == 3:
+			sz3 = self._map_sz3_selected
+		
+		screen.blit(sz1, (180, yoffset + 20))
+		self._sz1_r = pygame.Rect(180, yoffset + 20, sz1.get_width(), sz1.get_height())
+		
+		screen.blit(sz2, (275, yoffset + 20))
+		self._sz2_r = pygame.Rect(275, yoffset + 20, sz2.get_width(), sz2.get_height())
+		
+		screen.blit(sz3, (390, yoffset + 20))
+		self._sz3_r = pygame.Rect(390, yoffset + 20, sz3.get_width(), sz3.get_height())
+		
+		yoffset += 20 + sz3.get_height()
 	
-	def _PrevPage(self):
-		if (self._transitioning):
-			return
-		self._page -= 1
-		if (self._page < 0):
-			self._page = (len(self._images) - 1)
-		self._nextbg = Resources.ImageLibrary.Get('MapOptions/%s' % self._images[self._page])
-		self._transitioning = True
-		self._direction = LEFT
-		self._animStart = time.time()
+	def _MapUIInput(self, events):
+		for e in events:
+			if e.type == pygame.MOUSEBUTTONUP and e.button == 1:
+				x = e.pos[0]
+				y = e.pos[1]
+				if (self._font_r.collidepoint(x, y)):
+					self._NextPage()
+				elif (self._sz1_r.collidepoint(x, y)):
+					self._map_size = 1
+				elif (self._sz2_r.collidepoint(x, y)):
+					self._map_size = 2
+				elif (self._sz3_r.collidepoint(x, y)):
+					self._map_size = 3
+			
 	
 	def _SetDefaults(self):
 		self._args = {
@@ -139,3 +147,10 @@ class MapOptions(GameSceneBase):
 			# region mode settings
 				# ????????
 		}
+
+# Utility methods
+def _GetCenterX(surf1, surf2):
+	return (surf1.get_width() - surf2.get_width()) / 2
+
+def _GetCenterY(surf1, surf2):
+	return (surf1.get_height() - surf2.get_height()) / 2
