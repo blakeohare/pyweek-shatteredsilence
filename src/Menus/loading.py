@@ -17,7 +17,7 @@ class LoadingScreen(Game.GameSceneBase):
 	
 	def Update(self):
 		progress = GamePlay.LoadNextTile()
-		if progress == None or progress > 20:
+		if progress == None or progress > 1:
 			self.next = Menus.Title()
 			self.progress = 100
 		else:
