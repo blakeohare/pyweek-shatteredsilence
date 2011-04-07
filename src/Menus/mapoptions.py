@@ -7,9 +7,10 @@ from GamePlay import LevelSeed
 
 # Option stages
 # Size
-# Progress + 
-# Time
+# Progress + Time
 # Zoom level
+
+ANIM_TIME = 4000 #ms
 
 class MapOptions(GameSceneBase):
 	def __init__(self):
@@ -35,41 +36,46 @@ class MapOptions(GameSceneBase):
 		
 		#animation related
 		self._transitioning = False #should we be animating to the next option screen?
+		self._animStart = None
 		
 		# set stuff up
 		self._SetDefaults()
 	
 	def ProcessInput(self, events):
-			if (self._page == 0):
-				self._MapUIInput(events)
-				return
-
-			if (self._page == 1):
-				self._ProgTimeUIInput(events)
-				return
-
-			for event in events:
-				if event.type == pygame.KEYDOWN:
-					if (event.key == pygame.K_RIGHT):
-						self._page += 1
-						if (self._page >= 4):
-							self._page = 0
-					elif (event.key == pygame.K_LEFT):
-						self._page -= 1
-						if (self._page < 0):
-							self._page = 3
-					elif (event.key == pygame.K_RETURN):
-						self.next = PlayScene(LevelSeed(None, self._args))
+		if (self._page == 0):
+			self._MapUIInput(events)
+		elif (self._page == 1):
+			self._ProgTimeUIInput(events)			  
+		elif (self._page == 2):
+			self._ZoomLevelUIInput(events)
 	
 	def Update(self):
 		pass
 	
 	def Render(self, screen):
-		screen.blit(self._bg, (0, 0))
-		text = self._font.Render("Next")
+		if (self._transitioning):
+			screen.blit(self._screen_cache, (0, 0))
+			delta = time.time() - self._animStart
+			pct = delta * 1000 / ANIM_TIME
+			if (pct > 1):
+				pct = 1
+			al = 255 * pct
+			print("_bg.set_alpha(%s)" % al)
+			self._bg.set_alpha(al)
+			screen.blit(self._bg, (0, 0))
+			return
+
+		else:
+			screen.blit(self._bg, (0, 0))
+		
+		if (self._page == 2):
+			text = self._font.Render('Start')
+		else:
+			text = self._font.Render("Next")
+			
 		fx = _GetCenterX(screen, text)
 		screen.blit(text, (fx, 400))
-		if not self._font_r:
+		if not self._font_r or self._page == 2:
 			self._font_r = pygame.Rect(fx, 400, text.get_width(), text.get_height())
 
 		p = self._page
@@ -80,16 +86,41 @@ class MapOptions(GameSceneBase):
 			self._BuildProgTimeUI(screen)
 
 		elif p == 2:
-			text = "Time Limit"
-		elif p == 3:
-			text = "Zoom Level"
+			self._BuildZoomUI(screen)
 	
 	
 	
 # Private methods
 
 	def _NextPage(self):
-		self._page += 1
+		if (self._page == 2):
+			print("TODO: update args")
+			print("TODO: set next scene")
+			print("TODO: animate transition to game-start")
+			self._transitioning = True
+			self._animStart = time.time()
+		else:
+			self._page += 1
+
+	def _BuildZoomUI(self, screen):
+		gcy = _GetCenterY
+		gcx = _GetCenterX
+		
+		text = self._font.Render("Zoom Level")
+		screen.blit(text, (gcx(screen, text), 50))
+		yoffset = 50 + text.get_height()
+		
+		screen.blit(self._mode_cont_selected, (150, 150))
+		
+		self._screen_cache = screen.copy()
+		
+	def _ZoomLevelUIInput(self, events):
+		for e in events:
+			if e.type == pygame.MOUSEBUTTONUP and e.button == 1:
+				x = e.pos[0]
+				y = e.pos[1]
+				if (self._font_r.collidepoint(x, y)):
+					self._NextPage()
 
 	def _BuildProgTimeUI(self, screen):
 		gcy = _GetCenterY
