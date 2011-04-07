@@ -7,7 +7,7 @@ from GamePlay import LevelSeed
 
 # Option stages
 # Size
-# Progress
+# Progress + 
 # Time
 # Zoom level
 
@@ -19,9 +19,18 @@ class MapOptions(GameSceneBase):
 		self._bg = Resources.ImageLibrary.Get('MapOptions/sc1.png') # Background to draw
 		self._args = {}
 		
-		self._map_sz1 = None
 		self._map_size = 1
+		self._map_sz1 = None
 		self._font_r = None
+		
+		self._mode = 2
+		self._mode_cont = None
+		self._mode_cont_r = None
+		self._mode_zoom_r = None
+		
+		self._time = -1
+		self._time_right_r = None
+		self._time_left_r = None
 
 		
 		#animation related
@@ -33,6 +42,10 @@ class MapOptions(GameSceneBase):
 	def ProcessInput(self, events):
 			if (self._page == 0):
 				self._MapUIInput(events)
+				return
+
+			if (self._page == 1):
+				self._ProgTimeUIInput(events)
 				return
 
 			for event in events:
@@ -61,10 +74,11 @@ class MapOptions(GameSceneBase):
 
 		p = self._page
 		if p == 0:
-			surf = self._BuildMapUI(screen)
+			self._BuildMapUI(screen)
 
 		elif p == 1:
-			text = "Progress Mode"
+			self._BuildProgTimeUI(screen)
+
 		elif p == 2:
 			text = "Time Limit"
 		elif p == 3:
@@ -77,6 +91,105 @@ class MapOptions(GameSceneBase):
 	def _NextPage(self):
 		self._page += 1
 
+	def _BuildProgTimeUI(self, screen):
+		gcy = _GetCenterY
+		gcx = _GetCenterX
+		
+		text = self._font.Render("Game Mode")
+		screen.blit(text, (gcx(screen, text), 50))
+		yoffset = 50 + text.get_height()
+		
+		if not self._mode_cont:
+			self._mode_cont = Resources.ImageLibrary.Get('MapOptions/prog-time/continuous.png')
+			self._mode_zoom = Resources.ImageLibrary.Get('MapOptions/prog-time/progress.png')
+			self._mode_cont_selected = Resources.ImageLibrary.Get('MapOptions/prog-time/continuous_selected.png')
+			self._mode_zoom_selected = Resources.ImageLibrary.Get('MapOptions/prog-time/progress_selected.png')
+			self._time_right = Resources.ImageLibrary.Get('MapOptions/prog-time/right.png')
+			self._time_left = Resources.ImageLibrary.Get('MapOptions/prog-time/left.png')
+		
+		cont = self._mode_cont
+		zoom = self._mode_zoom
+		
+		if (self._mode == 1):
+			cont = self._mode_cont_selected
+		elif (self._mode == 2):
+			zoom = self._mode_zoom_selected
+		
+		x = (640 - 2 * cont.get_width()) / 2 - 18
+		y = yoffset + 20
+		screen.blit(cont, (x, y))
+		if (not self._mode_cont_r):
+			self._mode_cont_r = pygame.Rect(x, y, cont.get_width(), cont.get_height())
+		
+		x += cont.get_width() + 18
+		screen.blit(zoom, (x, y))
+		if (not self._mode_zoom_r):
+			self._mode_zoom_r = pygame.Rect(x, y, cont.get_width(), cont.get_height())
+		
+		yoffset = y + cont.get_height()
+		
+		text = self._font.Render("Time Limit", pygame.Color(255, 255, 255))
+		screen.blit(text, (gcx(screen, text), 230))
+		yoffset = 230 + text.get_height()
+		
+		text = self._font.Render("Untimed")
+		base = gcx(screen, text)
+		unl_width = text.get_width()
+		
+		if (self._time != -1):
+			text = self._font.Render("%d min" % self._time)
+		screen.blit(text, (gcx(screen, text), yoffset + 30))
+		
+		delta = 40
+		fx = base - self._time_left.get_width() - delta
+		y = yoffset + 30
+		screen.blit(self._time_left, (fx, y))
+		if not self._time_left_r:
+			self._time_left_r = pygame.Rect(fx, y, self._time_left.get_width(), self._time_left.get_height())
+			
+		fx = base + unl_width + delta
+		screen.blit(self._time_right, (fx, y))
+		if not self._time_right_r:
+			self._time_right_r = pygame.Rect(fx, y, self._time_right.get_width(), self._time_right.get_height())
+		
+
+	def _ProgTimeUIInput(self, events):
+		for e in events:
+			if e.type == pygame.MOUSEBUTTONUP and e.button == 1:
+				x = e.pos[0]
+				y = e.pos[1]
+				if (self._font_r.collidepoint(x, y)):
+					self._NextPage()
+				elif (self._mode_cont_r.collidepoint(x, y)):
+					self._mode = 1
+				elif (self._mode_zoom_r.collidepoint(x, y)):
+					self._mode = 2
+				elif (self._time_right_r.collidepoint(x, y)):
+					self._incTime()
+				elif (self._time_left_r.collidepoint(x, y)):
+					self._decTime()
+				
+	def _incTime(self):
+		if (self._time == -1):
+			self._time = 2
+		elif (self._time < 10):
+			self._time += 1
+		elif (self._time < 30):
+			self._time += 5
+		else:
+			self._time = -1
+			
+	def _decTime(self):
+		if (self._time == -1):
+			self._time = 30
+		elif (self._time == 2):
+			self._time = -1
+		elif (self._time <= 10):
+			self._time -= 1
+		elif (self._time <= 30):
+			self._time -= 5
+
+
 	def _BuildMapUI(self, screen):
 		gcy = _GetCenterY
 		gcx = _GetCenterX
@@ -87,12 +200,13 @@ class MapOptions(GameSceneBase):
 
 		
 		if not self._map_sz1:
-			self._map_sz1 = Resources.ImageLibrary.Get('MapOptions/sz1.png')
-			self._map_sz2 = Resources.ImageLibrary.Get('MapOptions/sz2.png')
-			self._map_sz3 = Resources.ImageLibrary.Get('MapOptions/sz3.png')
-			self._map_sz1_selected = Resources.ImageLibrary.Get('MapOptions/sz1_selected.png')
-			self._map_sz2_selected = Resources.ImageLibrary.Get('MapOptions/sz2_selected.png')
-			self._map_sz3_selected = Resources.ImageLibrary.Get('MapOptions/sz3_selected.png')
+			self._map_sz1 = Resources.ImageLibrary.Get('MapOptions/map-size/sz1.png')
+			self._map_sz2 = Resources.ImageLibrary.Get('MapOptions/map-size/sz2.png')
+			self._map_sz3 = Resources.ImageLibrary.Get('MapOptions/map-size/sz3.png')
+			self._map_sz1_selected = Resources.ImageLibrary.Get('MapOptions/map-size/sz1_selected.png')
+			self._map_sz2_selected = Resources.ImageLibrary.Get('MapOptions/map-size/sz2_selected.png')
+			self._map_sz3_selected = Resources.ImageLibrary.Get('MapOptions/map-size/sz3_selected.png')
+
 		sz1 = self._map_sz1
 		sz2 = self._map_sz2
 		sz3 = self._map_sz3
