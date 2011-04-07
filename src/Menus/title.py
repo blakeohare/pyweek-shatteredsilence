@@ -12,7 +12,7 @@ class Title(GameSceneBase):
 		GameSceneBase.__init__(self)
 		self.whitefont = Resources.GetFont(255, 255, 255)
 		self.yellowfont = Resources.GetFont(255, 255, 0)
-		self.index = 5
+		self.index = 0
 		self.options = [
 						'Story Mode',
 						'Custom Game',
@@ -41,11 +41,11 @@ class Title(GameSceneBase):
 				elif event.key == pygame.K_UP:
 					self.index -= 1
 					if self.index < 0:
-						self.index = 0
+						self.index = len(self.options) - 1
 				elif event.key == pygame.K_DOWN:
 					self.index += 1
 					if self.index >= len(self.options):
-						self.index = len(self.options) - 1
+						self.index = 0
 
 	def Update(self):
 		pass
