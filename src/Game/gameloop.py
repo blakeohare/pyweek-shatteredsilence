@@ -6,12 +6,13 @@ import Resources
 
 class GameLoop:
 	
-	def __init__(self, width, height, framesPerSecond):
+	def __init__(self, title, width, height, framesPerSecond):
 		self.width = width
 		self.height = height
 		self.fps = framesPerSecond
 		pygame.init()
 		self.screen = pygame.display.set_mode((640, 480))
+		pygame.display.set_caption(title)
 		self.DoHacks(self.screen)
 		self.quitting = False
 		self.show_fps_counter = True
