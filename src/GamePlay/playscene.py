@@ -107,7 +107,7 @@ class PlayScene(GameSceneBase):
 		
 		messages = self.specializer.ShouldShowMessage(self.counter, self.progress)
 		if messages != None:
-			self.next = ShowMessageOverlay(messages, self)
+			self.next = ShowMessageOverlay(messages[0], messages[1:], self)
 		
 	def EnsureSelectionValid(self):
 		for sprite in self.selection:
@@ -201,29 +201,45 @@ class PlayScene(GameSceneBase):
 
 class ShowMessageOverlay(GameSceneBase):
 	
-	def __init__(self, messages, playScene):
+	def __init__(self, color, messages, playScene):
 		GameSceneBase.__init__(self)
 		self.playScene = playScene
-		self.font = Resources.GetFont(255, 255, 255)
+		self.font = Resources.GetFont(color[0], color[1], color[2])
 		self.messages = messages
-		self.border = Resources.CreateBorder(400, len(messages) * 20 + 60) 
+		self.border = Resources.CreateBorder(400, len(messages) * 20 + 60)
+		self.x = 30
+		self.y = 10
+		self.close_x = self.x + self.border.get_width() - 24
+		self.close_y = self.y + 24
 	
 	def ProcessInput(self, events):
 		for event in events:
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
-				self.next = self.playScene
-				self.playScene.next = self.playScene
+				self.GoBack()
+			if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+				x = event.pos[0]
+				y = event.pos[1]
+				dx = x - self.close_x
+				dy = y - self.close_y
+				if dx * dx + dy * dy <= 196:
+					self.GoBack()
+	
+	def GoBack(self):
+		self.next = self.playScene
+		self.playScene.next = self.playScene
 	
 	def Update(self):
 		pass
 	
 	def Render(self, screen):
 		self.playScene.Render(screen)
-		x = 30
-		y = 10
+		x = self.x
+		y = self.y
 		screen.blit(self.border, (x, y))
+		x_image = Resources.ImageLibrary.Get('x.png')
+		screen.blit(x_image, (self.close_x - x_image.get_width() // 2, self.close_y - x_image.get_height() // 2))
 		y -= 5
-		for message in (self.messages + ["        ...press enter"]):
+		for message in self.messages:
 			
 			y += 20
 			image = self.font.Render(message)

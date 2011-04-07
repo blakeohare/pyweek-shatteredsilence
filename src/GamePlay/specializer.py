@@ -24,7 +24,7 @@ class Level1Specializer(SpecializerBase):
 	
 	def ShouldShowMessage(self, counter, conversionProgress):
 		if counter == 2:
-			return ['This is story mode. This should', 'probably say something interesting']
+			return [(0, 120, 255), 'This is story mode. This should', 'probably say something interesting']
 		
 class Level2Specializer(SpecializerBase):
 	def __init__(self):
