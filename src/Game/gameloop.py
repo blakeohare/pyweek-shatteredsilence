@@ -113,6 +113,13 @@ class GameLoop:
 		
 		grass = Resources.ImageLibrary.Get('Tiles/grass.png', 255)
 		graygrass = Resources.ImageLibrary.Get('Tiles/grass.png', 0)
+		
+		wall = Resources.ImageLibrary.Get('Tiles/Interior/wallpaper.png', 255)
+		graywall = Resources.ImageLibrary.Get('Tiles/Interior/wallpaper.png', 0)
+		
+		floor = Resources.ImageLibrary.Get('Tiles/Interior/floor.png', 255)
+		grayfloor = Resources.ImageLibrary.Get('Tiles/Interior/floor.png', 0)
+		 
 		# partition the house
 		for foo in (('',''), ('p','pink'), ('b','blue')):
 			path = os.path.join('Images', 'Tiles', foo[1] + 'house.png')
@@ -128,16 +135,37 @@ class GameLoop:
 					path = os.path.join('Images','Tiles','house',foo[0]+'house'+str(i) + '.png')
 					Resources.ImageLibrary.AddVirtualizedImage(path, image)
 					Resources.ImageLibrary.AddVirtualizedImage('Gray' + path, grayimage)
-		for i in (('1','left'), ('2', 'center'), ('3', 'right')):
-			image = grass.copy()
-			grayimage = graygrass.copy()
-			origpath = os.path.join('Images', 'Tiles', 'bush' + i[0] + '.png')
+		
+		
+		applyBackgroundAndRename = [
+						('grass', 'Images/Tiles/bush1.png', 'Images/Tiles/bush_left.png'),
+						('grass', 'Images/Tiles/bush2.png', 'Images/Tiles/bush_center.png'),
+						('grass', 'Images/Tiles/bush3.png', 'Images/Tiles/bush_right.png'),
+						('wall', 'Images/Tiles/Interior/bed_top.png', 'Images/Tiles/Interior/bedtop.png'),
+						('floor', 'Images/Tiles/Interior/bed_bottom.png', 'Images/Tiles/Interior/bedbottom.png'),
+						('wall', 'Images/Tiles/Interior/dresser.png', 'Images/Tiles/Interior/dresserA.png'),
+						('floor', 'Images/Tiles/Interior/chair.png', 'Images/Tiles/Interior/chairA.png'),
+						('floor', 'Images/Tiles/Interior/table.png', 'Images/Tiles/Interior/tableA.png')
+						]
+		
+		for conversion in applyBackgroundAndRename:
+			if conversion[0] == 'grass':
+				image = grass.copy()
+				grayimage = graygrass.copy()
+			elif conversion[0] == 'wall':
+				image = wall.copy()
+				grayimage = graywall.copy()
+			elif conversion[0] == 'floor':
+				image = floor.copy()
+				grayimage = grayfloor.copy()
+			
+			origpath = conversion[1].replace('/', os.sep).replace('\\', os.sep)
 			origgraypath = 'Gray' + origpath
 			
 			image.blit(pygame.image.load(origpath).convert_alpha(), (0, 0))
 			grayimage.blit(pygame.image.load(origgraypath).convert_alpha(), (0, 0))
 			
-			fakepath = os.path.join('Images', 'Tiles', 'bush_' + i[1] + '.png')
+			fakepath = conversion[2].replace('/', os.sep).replace('\\', os.sep)
 			fakegraypath = 'Gray' + fakepath
 			Resources.ImageLibrary.AddVirtualizedImage(fakepath, image)
 			Resources.ImageLibrary.AddVirtualizedImage(fakegraypath, grayimage)
