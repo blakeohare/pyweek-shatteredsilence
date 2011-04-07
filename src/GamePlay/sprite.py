@@ -76,6 +76,10 @@ class Citizen(Sprite):
 		self.targetX = self.X
 		self.targetY = self.Y
 	
+	def Colorize(self):
+		self.color = 255
+		self.IsRadiating = True
+	
 class Police(Sprite):
 	
 	def __init__(self, x, y, variety):

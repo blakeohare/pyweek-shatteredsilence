@@ -33,42 +33,89 @@ class SpecializerBase:
 	
 class Level1Specializer(SpecializerBase):
 	def __init__(self):
-		pass
+		self.lapis = None
+		self.narrator_color = (0, 60, 128)
+		self.lapis_color = (243, 98, 210)
+		self.maple_color = (255, 107, 0)
+		self.magic_counter = 852
+		self.foo = True #OMG HAX
 	
 	def DoSetup(self, playScene, level):
 		level.citizens[0].color = 0
 	
 	def ShouldShowMessage(self, counter, conversionProgress):
 		if counter == 1:
-			return [(255, 107, 0),
+			return [self.maple_color,
 				"*sniffle* She's been gone for a while but I",
 				"still miss Gran, you know Lapis?"]
 		elif counter == 2:
-			return [(243, 98, 210),
+			return [self.lapis_color,
 				"Yea, cleaning out her house isn't helping, ",
 				"brings back memories of playing here as kids."]
 		elif counter == 40:
-			return [(255, 107, 0),
+			return [self.maple_color,
 				"Why don't you go make us some lunch, I'll be ",
 				"in there in a moment."]
 		elif counter == 130:
-			return [(255, 107, 0),
+			return [self.maple_color,
 				"Huh, I wonder what this is..."]
-	
+		elif counter == 220 + 255:
+			return [self.narrator_color,
+				"(Once a person has been `cultured\" you may",
+				"select them by clicking on them and move ",
+				"them around by right-clicking destinations)"]
+		
+		elif counter == 780:
+			return [self.narrator_color,
+				"(A cultured citizen emits a contagious aura.)"]
+		
+		elif counter == 830:
+			return [self.lapis_color,
+				"Maple! Lunch is ready..."]
+		
+		elif counter == 840:
+			return [self.lapis_color,
+				"Wha...What is that?!?"]
+		
+		elif counter == 850:
+			return [self.narrator_color,
+				"(To spread culture, simply stand next to an",
+				"uninitiated citizen)"]
+		
+		elif self.foo and counter > 851 and conversionProgress == 100:
+			self.magic_counter = counter
+			self.foo = False
+			return [self.lapis_color,
+				"It's...beautiful..."]
+		
+		elif counter == self.magic_counter + 1 and conversionProgress == 100:
+			return [self.maple_color,
+				"I think it's that stuff Gran used to ",
+				"talk about...`music\"?"]
+		
+		elif counter == self.magic_counter + 60 and conversionProgress == 100:
+			return [self.narrator_color,
+				"(To select multiple people, click and drag",
+				"a box around them)"]
+		
+		elif counter == self.magic_counter + 250 and conversionProgress == 100:
+			return [self.lapis_color,
+				"We should really let others know about this..."]
+			
 	def MoveToNextLevel(self, counter, conversionProgress):
-		return False
+		return counter == self.magic_counter + 255 and conversionProgress == 100
 	
 	
 	def DoSomethingInteresting(self, counter, auxCounter, conversionProgress, playScene, level):
 		
 		maple = level.citizens[0]
 		if counter == 41:
-			lapis = level.citizens[1]
+			self.lapis = level.citizens[1]
 			
 			maple.targetX = 15 * 32
 			maple.targetY = 10 * 32
-			lapis.targetX = 9 * 32
-			lapis.targetY = 3 * 32
+			self.lapis.targetX = 9 * 32
+			self.lapis.targetY = 3 * 32
 		
 		elif counter == 120: # when lapis reaches the door
 			level.citizens = level.citizens[:1]
@@ -76,14 +123,21 @@ class Level1Specializer(SpecializerBase):
 			
 		elif counter == 145:
 			level.tiles[15][9] = GamePlay.MakeTile('int/phonograph', 15, 9)
+			level.tiles[15][9].SetMinColorIntensity(255)
 		
 		elif counter == 175:
 			pygame.mixer.music.load(os.path.join('Media', 'Music', '98time.mp3'))
 			pygame.mixer.music.set_volume(0.5)
 			pygame.mixer.music.play(-1)
 			
-		elif counter >= 220 or counter <= 220 + 255:
+		elif counter >= 220 and counter <= 220 + 255:
 			v = counter - 220
+			maple.color = v
+			
+			
+		elif counter >= 220 + 255 and counter <= 220 + 255 + 255: # 730
+			
+			v = (counter - 220 - 255) // 2
 			y = 2
 			while y <= 11:
 				x = 3
@@ -92,6 +146,9 @@ class Level1Specializer(SpecializerBase):
 					x += 1 
 				y += 1
 	
+		elif counter == 829:
+			level.citizens.append(self.lapis)
+			level.sprites.append(self.lapis)
 		
 class Level2Specializer(SpecializerBase):
 	def __init__(self):
