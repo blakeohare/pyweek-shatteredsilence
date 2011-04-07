@@ -35,7 +35,7 @@ class Sprite:
 		raise "You were supposed to override Sprite.GetImage"
 	
 	def RenderCoordinates(self, camX, camY):
-		return (self.X - self.R - camX, self.Y - self.R - camY)
+		return (self.X - self.R - camX, self.Y - self.R - camY - 10)
 	
 	def SetTarget(self, x, y):
 		self.targetX = x

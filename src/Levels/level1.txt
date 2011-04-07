@@ -32,5 +32,8 @@ TILE int/chair 7 9
 TILE int/bedtop 13 3
 TILE int/bedbottom 13 4
 
-CITIZEN 5 7 M 1
-CITIZEN 13 10 F 3
+TILE int/dresserfloor 15 10
+
+CITIZEN 13 8 F 1
+CITIZEN 11 10 F 2
+#CITIZEN 5 7 M 2

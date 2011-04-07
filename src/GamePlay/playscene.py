@@ -21,6 +21,7 @@ class PlayScene(GameSceneBase):
 		self.counter = 0
 		self.progress = 0.0
 		self.specializer = GamePlay.GetSpecializer(self.levelSeed.specialName)
+		self.auxillaryCounter = 0
 		
 		self.font_white = Resources.GetFont(255, 255, 255)
 		self.font_red = Resources.GetFont(255, 0, 0)
@@ -29,7 +30,7 @@ class PlayScene(GameSceneBase):
 		self.font_green = Resources.GetFont(0, 255, 0)
 		self.font_blue = Resources.GetFont(0, 170, 255)
 		
-		
+		self.specializer.DoSetup(self, self.level)
 		
 	def ProcessInput(self, events):
 		
@@ -96,18 +97,21 @@ class PlayScene(GameSceneBase):
 			
 	def Update(self):
 		self.counter += 1
+		self.auxillaryCounter += 1
 		
 		self.level.Update()
 		
 		self.UpdateCamera()
 		self.EnsureSelectionValid()
 		self.progress = self.level.GetProgress()
-		if self.progress >= 80:
+		if self.specializer.MoveToNextLevel(self.counter, self.progress):
 			self.next = GamePlay.LevelUpTransition(self)
 		
 		messages = self.specializer.ShouldShowMessage(self.counter, self.progress)
 		if messages != None:
 			self.next = ShowMessageOverlay(messages[0], messages[1:], self)
+		
+		self.specializer.DoSomethingInteresting(self.counter, self.auxillaryCounter, self.progress, self, self.level)
 		
 	def EnsureSelectionValid(self):
 		for sprite in self.selection:

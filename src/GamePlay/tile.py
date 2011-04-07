@@ -18,11 +18,13 @@ _tileStore = {
 			'int/bedbottom' : TileTemplate('Interior/bedbottom', False),
 			'int/chair' : TileTemplate('Interior/chairA', False),
 			'int/dresser' : TileTemplate('Interior/dresserA', False),
+			'int/dresserfloor' : TileTemplate('Interior/dresserB', False),
 			'int/table' : TileTemplate('Interior/tableA', False),
 			'int/bookcase' : TileTemplate('Interior/bookcase', False),
 			'int/door' : TileTemplate('Interior/door', False),
 			'int/wall' : TileTemplate('Interior/wallpaper', False),
 			'int/floor' : TileTemplate('Interior/floor', True),
+			'int/phonograph' : TileTemplate('Interior/phonograph', True),
 			
 			'int/trim1' : TileTemplate('Interior/trim1', False),
 			'int/trim2' : TileTemplate('Interior/trim2', False),

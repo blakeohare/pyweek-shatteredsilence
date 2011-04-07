@@ -145,7 +145,8 @@ class GameLoop:
 						('floor', 'Images/Tiles/Interior/bed_bottom.png', 'Images/Tiles/Interior/bedbottom.png'),
 						('wall', 'Images/Tiles/Interior/dresser.png', 'Images/Tiles/Interior/dresserA.png'),
 						('floor', 'Images/Tiles/Interior/chair.png', 'Images/Tiles/Interior/chairA.png'),
-						('floor', 'Images/Tiles/Interior/table.png', 'Images/Tiles/Interior/tableA.png')
+						('floor', 'Images/Tiles/Interior/table.png', 'Images/Tiles/Interior/tableA.png'),
+						('floor', 'Images/Tiles/Interior/dresser.png', 'Images/Tiles/Interior/dresserB.png')
 						]
 		
 		for conversion in applyBackgroundAndRename:

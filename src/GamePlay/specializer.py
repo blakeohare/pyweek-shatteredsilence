@@ -1,3 +1,7 @@
+import os
+import pygame
+import GamePlay
+
 def GetSpecializer(levelName):
 	if levelName == 'level1': return Level1Specializer()
 	if levelName == 'level2': return Level2Specializer()
@@ -17,14 +21,69 @@ class SpecializerBase:
 	
 	def ShouldShowMessage(self, counter, conversionProgress):
 		return None
-
+	
+	def MoveToNextLevel(self, counter, conversionProgress):
+		return conversionProgress >= 80
+	
+	def DoSomethingInteresting(self, coutner, auxCounter, conversionProgress, playScene, level):
+		pass
+	
+	def DoSetup(self, playScene, level):
+		pass
+	
 class Level1Specializer(SpecializerBase):
 	def __init__(self):
 		pass
 	
+	def DoSetup(self, playScene, level):
+		level.citizens[0].color = 0
+	
 	def ShouldShowMessage(self, counter, conversionProgress):
-		if counter == 2:
-			return [(0, 120, 255), 'This is story mode. This should', 'probably say something interesting']
+		if counter == 1:
+			return [(255, 107, 0),
+				"*sniffle* She's been gone for a while but I",
+				"still miss Gran, you know Lapis?"]
+		elif counter == 2:
+			return [(243, 98, 210),
+				"Yea, cleaning out her house isn't helping, ",
+				"brings back memories of playing here as kids."]
+		elif counter == 40:
+			return [(255, 107, 0),
+				"Why don't you go make us some lunch, I'll be ",
+				"in there in a moment."]
+		elif counter == 130:
+			return [(255, 107, 0),
+				"Huh, I wonder what this is..."]
+	
+	def MoveToNextLevel(self, counter, conversionProgress):
+		return False
+	
+	
+	def DoSomethingInteresting(self, counter, auxCounter, conversionProgress, playScene, level):
+		
+		maple = level.citizens[0]
+		if counter == 41:
+			lapis = level.citizens[1]
+			
+			maple.targetX = 15 * 32
+			maple.targetY = 10 * 32
+			lapis.targetX = 9 * 32
+			lapis.targetY = 3 * 32
+		
+		elif counter == 120: # when lapis reaches the door
+			level.citizens = level.citizens[:1]
+			level.sprites = level.sprites[:1]
+			
+		elif counter == 145:
+			level.tiles[15][9] = GamePlay.MakeTile('int/phonograph', 15, 9)
+		
+		elif counter == 175:
+			pygame.mixer.music.load(os.path.join('Media', 'Music', '98time.mp3'))
+			pygame.mixer.music.set_volume(0.5)
+			pygame.mixer.music.play(-1)
+			
+			
+	
 		
 class Level2Specializer(SpecializerBase):
 	def __init__(self):
