@@ -1,10 +1,13 @@
+import time
 import pygame
 import os
+
+_conversion_mode = True
 
 class ImageLibrary:
 	
 	def __init__(self):
-		self.intervals = 50
+		self.intervals = 25
 		self.images = []
 		self.virtualizedImages = {}
 		for i in range(self.intervals):
@@ -59,7 +62,7 @@ class ImageLibrary:
 		
 		width = colorImage.get_width()
 		height = colorImage.get_height()
-		grayImage = self.ConvertToGrayscale(colorImage)
+		grayImage = self.ConvertToGrayscale(colorImage, path)
 		self.images[0][path] = grayImage
 		self.images[self.intervals - 1][path] = colorImage
 		onePixel = pygame.Surface((1, 1)).convert()
@@ -81,31 +84,8 @@ class ImageLibrary:
 			self.images[i][path] = copy
 			
 	
-	def ConvertToGrayscale(self, image):
-		
-		if str(pygame.surfarray).find('MissingModule') != -1:
-			return image.copy()
-		
-		width =  image.get_width()
-		height = image.get_height()
-		
-		colorpixels = pygame.surfarray.pixels3d(image)
-		grayimage = image.copy()
-		graypixels = pygame.surfarray.pixels3d(grayimage)
-		
-		x = 0
-		while x < width:
-			
-			y = 0
-			while y < height:
-				
-				v = colorpixels[x][y]
-				gray = int((0.0 + v[0] + v[1] + v[2]) / 3)
-				graypixels[x][y][0] = gray
-				graypixels[x][y][1] = gray
-				graypixels[x][y][2] = gray
-				
-				y += 1
-			x += 1
-		
-		return grayimage
+	def ConvertToGrayscale(self, image, path):
+		grayfile = 'GrayImages' + os.sep + path.replace('/', os.sep).replace('\\', os.sep)
+		if os.path.exists(grayfile):
+			return pygame.image.load(grayfile).convert_alpha()
+		return self.GetVirtualizedImageFile(grayfile)

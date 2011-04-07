@@ -1,3 +1,4 @@
+import GamePlay
 import Menus
 
 from Game import GameSceneBase
@@ -21,9 +22,12 @@ class Logo(GameSceneBase):
 					self.counter = newcounter
 	
 	def Update(self):
+		# Too slow
+		#GamePlay.LoadNextTile()
+		
 		self.counter += 1
 		if self.counter > self.duration:
-			self.next = Menus.Title()
+			self.next = Menus.LoadingScreen()
 	
 	def Opacity(self):
 		

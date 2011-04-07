@@ -30,6 +30,7 @@ class PlayScene(GameSceneBase):
 		self.font_blue = Resources.GetFont(0, 170, 255)
 		
 		
+		
 	def ProcessInput(self, events):
 		
 		for event in events:

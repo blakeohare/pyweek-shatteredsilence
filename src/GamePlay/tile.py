@@ -9,6 +9,8 @@ class TileTemplate:
 	def GetImage(self, colorization):
 		return ImageLibrary.Get(self.image, colorization)
 
+_tilesToBeLoaded = {}
+
 _tileStore = {
 			'sidewalk' : TileTemplate('sidewalk', True),
 			'grass' : TileTemplate('grass', True),
@@ -41,9 +43,9 @@ _tileStore = {
 			'sidewalkchalkboy' : TileTemplate('sidewalkchalkboy', True),
 			'sidewalkchalkgirl' : TileTemplate('sidewalkchalkgirl', True),
 			'sidewalkchalkunicorn' : TileTemplate('sidewalkchalkunicorn', True),
-			'bush_left' : TileTemplate('bush1', False),
-			'bush_center' : TileTemplate('bush2', False),
-			'bush_right' : TileTemplate('bush3', False),
+			'bush_left' : TileTemplate('bush_left', False),
+			'bush_center' : TileTemplate('bush_center', False),
+			'bush_right' : TileTemplate('bush_right', False),
 			'house0' : TileTemplate('house/house0', True),
 			'house1' : TileTemplate('house/house1', False),
 			'house2' : TileTemplate('house/house2', True),
@@ -151,6 +153,28 @@ _tileStore = {
 			'phouse34' : TileTemplate('house/phouse34', False)
 			}
 
+_loadComplete = False
+def LoadNextTile():
+	global _tileStore, _tilesToBeLoaded, _loadComplete
+	
+	if _loadComplete: return None
+	
+	if len(_tilesToBeLoaded) == 0 and not _loadComplete:
+		for key in _tileStore.keys():
+			_tilesToBeLoaded[key] = _tileStore[key]
+	tiles_left = len(_tilesToBeLoaded)
+	total_tiles = len(_tileStore)
+	if len(_tilesToBeLoaded) > 0:
+		
+		for key in _tilesToBeLoaded.keys():
+			_tileStore[key].GetImage(0)
+			_tilesToBeLoaded.pop(key)
+			if len(_tilesToBeLoaded) == 0:
+				_loadComplete = True
+			return 100 - 100 * tiles_left // total_tiles
+		
+	return None
+	
 def MakeTile(key, x, y):
 	global _tileStore
 	if key == None: key = 'grass'

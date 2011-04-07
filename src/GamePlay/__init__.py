@@ -16,3 +16,4 @@ PlayScene = _playscene.PlayScene
 LevelSeed = _levelseed.LevelSeed
 LevelUpTransition = _levelup.LevelUpTransition
 GetSpecializer = _specializer.GetSpecializer
+LoadNextTile = _tile.LoadNextTile

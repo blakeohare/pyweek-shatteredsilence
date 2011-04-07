@@ -111,13 +111,34 @@ class GameLoop:
 	
 	def DoHacks(self, screen):
 		
+		grass = Resources.ImageLibrary.Get('Tiles/grass.png', 255)
+		graygrass = Resources.ImageLibrary.Get('Tiles/grass.png', 0)
 		# partition the house
 		for foo in (('',''), ('p','pink'), ('b','blue')):
-			bighouse = Resources.ImageLibrary.Get('Tiles/'+foo[1]+'house.png')
+			path = os.path.join('Images', 'Tiles', foo[1] + 'house.png')
+			bighouse = pygame.image.load(path)
+			grayhouse = pygame.image.load('Gray' + path)
 			for y in range(0, 7):
 				for x in range(0, 5):
 					i = y * 5 + x
-					image = Resources.ImageLibrary.Get('Tiles/grass.png', 255).copy()
+					image = grass.copy()
+					grayimage = graygrass.copy()
 					image.blit(bighouse, (-x * 32, -y * 32))
+					grayimage.blit(grayhouse, (-x * 32, -y * 32))
 					path = os.path.join('Images','Tiles','house',foo[0]+'house'+str(i) + '.png')
 					Resources.ImageLibrary.AddVirtualizedImage(path, image)
+					Resources.ImageLibrary.AddVirtualizedImage('Gray' + path, grayimage)
+		for i in (('1','left'), ('2', 'center'), ('3', 'right')):
+			image = grass.copy()
+			grayimage = graygrass.copy()
+			origpath = os.path.join('Images', 'Tiles', 'bush' + i[0] + '.png')
+			origgraypath = 'Gray' + origpath
+			
+			image.blit(pygame.image.load(origpath).convert_alpha(), (0, 0))
+			grayimage.blit(pygame.image.load(origgraypath).convert_alpha(), (0, 0))
+			
+			fakepath = os.path.join('Images', 'Tiles', 'bush_' + i[1] + '.png')
+			fakegraypath = 'Gray' + fakepath
+			Resources.ImageLibrary.AddVirtualizedImage(fakepath, image)
+			Resources.ImageLibrary.AddVirtualizedImage(fakegraypath, grayimage)
+			

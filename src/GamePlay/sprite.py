@@ -87,14 +87,14 @@ class Police(Sprite):
 	
 	def GetImage(self):
 		if self.mode == 'walking':
-			image = 'temp_police0.png'
+			image = 'Sprites/Police/down0.png'
 		elif self.mode == 'smackdown':
 			if (self.counter / 15) % 2 == 0:
-				image = 'temp_police1.png'
+				image = 'Sprites/Police/down0.png'
 			else:
-				image = 'temp_police2.png'
+				image = 'Sprites/Police/down0.png'
 		else:
-			image = 'temp_police2.png'
+			image = 'Sprites/Police/down0.png'
 		return ImageLibrary.Get(image, 0)
 	
 	def Update(self):
