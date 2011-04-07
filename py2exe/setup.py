@@ -7,6 +7,15 @@ import os
 import glob, shutil
 sys.argv.append("py2exe")
  
+ 
+
+origIsSystemDLL = py2exe.build_exe.isSystemDLL
+def isSystemDLL(pathname):
+        if os.path.basename(pathname).lower() in ("msvcp71.dll", "dwmapi.dll"):
+                return 0
+        return origIsSystemDLL(pathname)
+py2exe.build_exe.isSystemDLL = isSystemDLL
+ 
 VERSION = '1.0'
 AUTHOR_NAME = 'NP3G'
 AUTHOR_EMAIL = 'someone@somewhere.com'
@@ -92,7 +101,7 @@ setup(windows=[
           author = AUTHOR_NAME,
           author_email = AUTHOR_EMAIL,
           url = AUTHOR_URL,
-          packages = ['Game', 'Menus', 'GamePlay', 'Resources']
+          packages = ['Game', 'Menus', 'GamePlay', 'Resources', 'MapGen']
           #package_dir = {'': os.path.join('Game', 'Menus', 'GamePlay', 'Resources')}
           )
  
