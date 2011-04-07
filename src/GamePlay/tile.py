@@ -12,6 +12,7 @@ class TileTemplate:
 _tilesToBeLoaded = {}
 
 _tileStore = {
+			# Interior
 			'black' : TileTemplate('black', False),
 			'bedtop' : TileTemplate('Interior/bedtop', False),
 			'bedbottom' : TileTemplate('Interior/bedbottom', False),
@@ -22,6 +23,8 @@ _tileStore = {
 			'door' : TileTemplate('Interior/door', False),
 			'wall' : TileTemplate('Interior/wallpaper', False),
 			'floor' : TileTemplate('Interior/floor', True),
+			
+			# Outside
 			'sidewalk' : TileTemplate('sidewalk', True),
 			'grass' : TileTemplate('grass', True),
 			'asphault' : TileTemplate('street', True),
