@@ -214,6 +214,7 @@ class Tile:
 		self.Y = y
 		self.PixelY = y * 32
 		self.colorization = -999
+		self.permacolor = -1 # if colorization is lower than this, use this value instead
 		self.image = template.GetImage(0)
 		self.get_image = self.template.GetImage
 	
@@ -221,8 +222,13 @@ class Tile:
 		self.colorization -= 5
 	
 	def GetImage(self, counter):
-		
-		return self.get_image((self.colorization - counter) * 3 + 255)
+		color = (self.colorization - counter) * 3 + 255
+		if color < self.permacolor:
+			color = self.permacolor
+		return self.get_image(color)
+	
+	def SetMinColorIntensity(self, color):
+		self.permacolor = color
 	
 	def SetColorization(self, value):
 		if self.colorization < value:

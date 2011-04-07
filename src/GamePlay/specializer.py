@@ -82,7 +82,15 @@ class Level1Specializer(SpecializerBase):
 			pygame.mixer.music.set_volume(0.5)
 			pygame.mixer.music.play(-1)
 			
-			
+		elif counter >= 220 or counter <= 220 + 255:
+			v = counter - 220
+			y = 2
+			while y <= 11:
+				x = 3
+				while x <= 16:
+					level.tiles[x][y].SetMinColorIntensity(v)
+					x += 1 
+				y += 1
 	
 		
 class Level2Specializer(SpecializerBase):
