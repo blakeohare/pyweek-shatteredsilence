@@ -24,6 +24,15 @@ _tileStore = {
 			'int/wall' : TileTemplate('Interior/wallpaper', False),
 			'int/floor' : TileTemplate('Interior/floor', True),
 			
+			'int/trim1' : TileTemplate('Interior/trim1', False),
+			'int/trim2' : TileTemplate('Interior/trim2', False),
+			'int/trim3' : TileTemplate('Interior/trim3', False),
+			'int/trim4' : TileTemplate('Interior/trim4', False),
+			'int/trim6' : TileTemplate('Interior/trim6', False),
+			'int/trim7' : TileTemplate('Interior/trim7', False),
+			'int/trim8' : TileTemplate('Interior/trim8', False),
+			'int/trim9' : TileTemplate('Interior/trim9', False),
+			
 			# Outside
 			'sidewalk' : TileTemplate('sidewalk', True),
 			'grass' : TileTemplate('grass', True),

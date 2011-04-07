@@ -2,5 +2,35 @@ RECT int/black 0 0 20 15
 RECT int/floor 4 4 12 7
 RECT int/wall 4 3 12 1
 
+RECT int/trim8 4 2 12 1
+RECT int/trim4 3 3 1 8
+RECT int/trim6 16 3 1 8
+RECT int/trim2 4 11 12 1
+
+TILE int/trim7 3 2
+TILE int/trim9 16 2
+TILE int/trim1 3 11
+TILE int/trim3 16 11
+
+TILE int/bedtop 4 3
+TILE int/bedbottom 4 4
+
+TILE int/bedtop 15 3
+TILE int/bedbottom 15 4
+
+TILE int/door 9 3
+
+TILE int/bookcase 6 3
+TILE int/bookcase 7 3
+
+TILE int/table 7 8
+TILE int/chair 6 8
+TILE int/chair 8 8
+TILE int/chair 7 7
+TILE int/chair 7 9
+
+TILE int/bedtop 13 3
+TILE int/bedbottom 13 4
+
 CITIZEN 5 7 M 1
 CITIZEN 13 10 F 3
