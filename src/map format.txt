@@ -69,4 +69,9 @@ Place tile specifically...
 	The type is the string as it appears in the key of the big dictionary at the beginning of tile.py.
 	(The key is to the left of the colon on each line)
 	
-	These commands are run last after all other commands are run. 
+	RECT type left top width height
+	
+	Same as TILE command, but draws a rectangle of width-by-height with the top left corner at (left, top) 
+	
+	These commands are run last after all other commands are run.
+	They run in order, so you can create a floor by RECT int/floor ... and apply furniture with TILE commands after that

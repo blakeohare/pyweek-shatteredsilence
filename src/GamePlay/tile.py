@@ -13,16 +13,16 @@ _tilesToBeLoaded = {}
 
 _tileStore = {
 			# Interior
-			'black' : TileTemplate('black', False),
-			'bedtop' : TileTemplate('Interior/bedtop', False),
-			'bedbottom' : TileTemplate('Interior/bedbottom', False),
-			'chairA' : TileTemplate('Interior/chairA', False),
-			'dresserA' : TileTemplate('Interior/dresserA', False),
-			'tableA' : TileTemplate('Interior/tableA', False),
-			'bookcase' : TileTemplate('Interior/bookcase', False),
-			'door' : TileTemplate('Interior/door', False),
-			'wall' : TileTemplate('Interior/wallpaper', False),
-			'floor' : TileTemplate('Interior/floor', True),
+			'int/black' : TileTemplate('black', False),
+			'int/bedtop' : TileTemplate('Interior/bedtop', False),
+			'int/bedbottom' : TileTemplate('Interior/bedbottom', False),
+			'int/chair' : TileTemplate('Interior/chairA', False),
+			'int/dresser' : TileTemplate('Interior/dresserA', False),
+			'int/table' : TileTemplate('Interior/tableA', False),
+			'int/bookcase' : TileTemplate('Interior/bookcase', False),
+			'int/door' : TileTemplate('Interior/door', False),
+			'int/wall' : TileTemplate('Interior/wallpaper', False),
+			'int/floor' : TileTemplate('Interior/floor', True),
 			
 			# Outside
 			'sidewalk' : TileTemplate('sidewalk', True),
