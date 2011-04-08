@@ -2,7 +2,14 @@ CITIZEN 14 18 F 1
 CITIZEN 15 18 F 2
 
 CITIZEN 1 1 M 1 5 1
-CITIZEN 5 5 F 3
+CITIZEN 3 10 F 3 25 10
+CITIZEN 18 1 M 2 18 8
+CITIZEN 23 0 F 2 28 6
+CITIZEN 22 9 M 4
+CITIZEN 25 14 F 4 25 17
+CITIZEN 28 29 M 3 0 29
+CITIZEN 2 15 F 4 2 27
+
 
 HOUSE 4 2 1
 HOUSE 12 2 2
@@ -36,6 +43,10 @@ RECT cobblestone 2 0 24 1
 RECT cobblestone 26 0 1 29
 RECT cobblestone 10 0 1 28
 RECT cobblestone 18 0 1 28
+
+RECT sidewalk 0 29 29 1
+RECT asphault 0 30 29 2
+RECT yellow_line_horizontal 0 32 29 1
 
 TILE mailbox 8 9
 TILE mailbox 16 9
