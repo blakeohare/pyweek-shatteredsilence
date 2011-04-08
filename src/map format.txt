@@ -7,12 +7,14 @@ For story-mode levels, only add citizens that will be NEW for that level. The ci
 
 Sprites...
 
-	CITIZEN x y gender variety
+	CITIZEN x y gender variety [tx ty]
 	
 	x and y are tile coordinates, not pixel coordinates
 	gender is M or F (capitalized). Technically it's 'M' for male and anything else for female.
 	variety is 1 through 4. Look in the Images/Sprites folder to see which ones are which.
 	
+	tx and ty are its Target X,Y. It will walk back and forth from its starting point to tx, ty (tile coordinates) 
+	until that sprite has been colorized
 	
 	POLICE x y variety
 	
