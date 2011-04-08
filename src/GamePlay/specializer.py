@@ -32,7 +32,7 @@ class SpecializerBase:
 		pass
 	
 	def Shortcircuited(self, levelName):
-		return levelName in ['level1']
+		return levelName in ['level1', 'level2']
 	
 	def SetMinColor(self, level, left, top, right, bottom, value):
 		

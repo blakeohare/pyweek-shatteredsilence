@@ -34,7 +34,45 @@ class Level:
 			self.police.append(sprite)
 		
 		self.spriteGraph = SpriteGraph(self.width, self.height)
+		
+		self.PreColorize(levelseed.map.colorize_these)
+		if levelseed.map.carryoversprites != None:
+			
+			self.CarryOverSprites(levelseed.map.carryoversprites[0], levelseed.map.carryoversprites[1], levelseed.map.previousLevel)
+		levelseed.map.previousLevel = None
 	
+	def CarryOverSprites(self, xTileOffset, yTileOffset, previousLevel):
+		if previousLevel == None: return
+		for sprite in previousLevel.sprites:
+			sprite = sprite.Clone()
+			sprite.X += xTileOffset * 32
+			sprite.Y += yTileOffset * 32
+			sprite.targetX += xTileOffset * 32
+			sprite.targetY += yTileOffset * 32
+			waypoints = []
+			for waypoint in sprite.waypoints:
+				waypoints.append((waypoint[0] + xTileOffset * 32, waypoint[1] + yTileOffset * 32))
+			sprite.waypoints = waypoints 
+			if sprite.IsPolice:
+				self.police.append(sprite)
+			else:
+				self.citizens.append(sprite)
+			self.sprites.append(sprite)
+	def PreColorize(self, rectangles):
+		for rectangle in rectangles:
+			xStart = rectangle[0]
+			xEnd = xStart + rectangle[2] - 1
+			yStart = rectangle[1]
+			yEnd = yStart + rectangle[3] - 1
+			y = yStart
+			while y < yEnd:
+				x = xStart
+				while x < xEnd:
+					self.tiles[x][y].SetMinColorIntensity(255)
+					x += 1
+				y += 1 
+			# TODO: 50% intensity on the border?
+		
 	def InitializeTiles(self, columns, rows, map_data):
 		tiles = []
 		x = 0

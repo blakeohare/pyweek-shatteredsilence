@@ -24,6 +24,7 @@ class Sprite:
 		self.direction = 'down'
 		self.isMoving = False
 		self.renderCounter = 0
+		self.IsPolice = False
 	
 	def IsCollision(self, anotherSprite):
 		dx = (self.X - anotherSprite.X)
@@ -99,7 +100,8 @@ class Sprite:
 					self.direction = 'up'
 		else:
 			self.isMoving = False
-		
+	
+	
 class Citizen(Sprite):
 	
 	def __init__(self, x, y, male, variety):
@@ -107,7 +109,21 @@ class Citizen(Sprite):
 		self.colorizeable = True
 		self.imagepath = ('Girl', 'Dude')[male] + str(variety)
 
-	
+	def Clone(self):
+		sprite = Citizen(self.X, self.Y, True, 1)
+		sprite.colorizeable = self.colorizeable
+		sprite.imagepath = self.imagepath
+		sprite.targetX = self.targetX
+		sprite.targetY = self.targetY
+		sprite.color = self.color
+		sprite.IsRadiating = self.IsRadiating
+		sprite.isMoving = self.isMoving
+		sprite.waypoints = self.waypoints
+		sprite.direction = self.direction
+		sprite.demotiviation = self.demotivation
+		sprite.waypointDelay = self.waypointDelay
+		return sprite
+		
 	def GetImage(self):
 		color = self.color - self.demotivation
 		num = '0'
@@ -138,7 +154,22 @@ class Police(Sprite):
 		self.mode = 'walking' # modes are 'walking', 'pursuit', and 'smackdown'
 		self.counter = 0
 		self.smackCounter = 0
+		self.IsPolice = True
 	
+	def Clone(self):
+		sprite = Police(self.X, self.Y, 1)
+		sprite.colorizeable = self.colorizeable
+		sprite.imagepath = self.imagepath
+		sprite.targetX = self.targetX
+		sprite.targetY = self.targetY
+		sprite.color = self.color
+		sprite.IsRadiating = self.IsRadiating
+		sprite.isMoving = self.isMoving
+		sprite.waypoints = self.waypoints
+		sprite.direction = self.direction
+		sprite.demotiviation = self.demotivation
+		sprite.waypointDelay = self.waypointDelay
+		return sprite
 	def GetImage(self):
 		if self.mode == 'walking':
 			image = 'Sprites/Police/down0.png'

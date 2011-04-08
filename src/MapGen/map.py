@@ -8,8 +8,7 @@ def _trim(string):
 		string = string[:-1]
 	return string
 
-def BuildMapFromCommands(commands, mapwidth, mapheight, previousLevelSeed):
-		
+def BuildMapFromCommands(commands, mapwidth, mapheight, previousLevelSeed, previousLevel):
 	items = []
 	citizens = []
 	police = []
@@ -49,7 +48,8 @@ def BuildMapFromCommands(commands, mapwidth, mapheight, previousLevelSeed):
 			widthIhatePython = int(parts[3])
 			items.append(MapGen.Bush(x, y, widthIhatePython))
 		elif parts[0] == 'CARRYOVER':
-			carryover = (int(parts[1]), int(parts[2]), previousLevelSeed)
+			colorize_center = len(parts) >= 4 and parts[3] == 'COLOR'
+			carryover = (int(parts[1]), int(parts[2]), previousLevelSeed, colorize_center)
 		elif parts[0] == 'TILE':
 			tileOverrides.append((parts[1], int(parts[2]), int(parts[3])))
 		elif parts[0] == 'HOUSE':
@@ -73,32 +73,41 @@ def BuildMapFromCommands(commands, mapwidth, mapheight, previousLevelSeed):
 					y += 1
 				x += 1
 				
-	return Map(mapwidth, mapheight, items, citizens, police, carryover, tileOverrides)
+	return Map(mapwidth, mapheight, items, citizens, police, carryover, tileOverrides, previousLevel)
 
-def BuildMap(level, width, height, previousLevelSeed):
+def BuildMap(level, width, height, previousLevelSeed, previousLevel):
 	path = 'Levels' + os.sep + level + '.txt'
 	c = open(path, 'rt')
 	lines = c.read().split('\n')
 	c.close()
 	
-	return BuildMapFromCommands(lines, width, height, previousLevelSeed)
+	return BuildMapFromCommands(lines, width, height, previousLevelSeed, previousLevel)
 	
 class Map:
 	
-	def __init__(self, width, height, items, citizens, police, carryover, tileOverrides):
+	def __init__(self, width, height, items, citizens, police, carryover, tileOverrides, previousLevel):
 		self.InitializeGrid(width, height)
 		self.roadSquares = []
+		
+		self.colorize_these = []
 		
 		self.citizens = citizens
 		self.police = police
 		
 		items = self.FillGridWithRoads(items)
 		items = self.FillGridWithBuildings(items)
-		
+		self.previousLevel = previousLevel
 		self.FleshOutRoads(self.roadSquares)
+		self.carryoversprites = None
 		
 		if carryover != None:
-			self.FillInPreviousLevel(carryover[0], carryover[1], carryover[2].map.grid)
+			x = carryover[0]
+			y = carryover[1]
+			self.carryoversprites = (x, y)
+			prev_grid = carryover[2].map.grid
+			self.FillInPreviousLevel(x, y, prev_grid)
+			if carryover[3]:
+				self.colorize_these.append((x, y, len(prev_grid), len(prev_grid[0])))
 		
 		self.ApplyTileOverrides(tileOverrides)
 	

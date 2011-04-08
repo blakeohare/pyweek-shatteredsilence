@@ -17,7 +17,7 @@ class LevelUpTransition(Game.GameSceneBase):
 		self.counter += 1
 		if self.counter == 3:
 			self.PlaySound('phase_complete.ogg')
-			self.nextPlayScene = GamePlay.PlayScene(GamePlay.LevelSeed('next', self.prevPlayScene.levelSeed))
+			self.nextPlayScene = GamePlay.PlayScene(GamePlay.LevelSeed('next', self.prevPlayScene.levelSeed, self.prevPlayScene.level))
 		elif self.counter == 69:
 			self.next = self.nextPlayScene  
 			
