@@ -65,9 +65,9 @@ class Level:
 			yStart = rectangle[1]
 			yEnd = yStart + rectangle[3] - 1
 			y = yStart
-			while y < yEnd:
+			while y <= yEnd:
 				x = xStart
-				while x < xEnd:
+				while x <= xEnd:
 					self.tiles[x][y].SetMinColorIntensity(255)
 					x += 1
 				y += 1 
