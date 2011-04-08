@@ -6,64 +6,123 @@ from Resources import ImageLibrary
 import Resources
 from GamePlay import LevelSeed
 
+COLOR = [pygame.Color(0, 0, 0), pygame.Color(255, 0, 0)]
+
+NONE = 0
+STORY = 1
+CUSTOM = 2
+INTRO = 3
+CREDITS = 4
+QUIT = 5
+
+OPTIONS = [
+	'',
+	'Story Mode',
+	'Custom Game',
+	'Watch Intro',
+	'Credits',
+	'Quit'
+]
+
 class Title(GameSceneBase):
 	
 	def __init__(self):
 		GameSceneBase.__init__(self)
 		self.whitefont = Resources.GetFont(255, 255, 255)
 		self.yellowfont = Resources.GetFont(255, 255, 0)
-		self.index = 0
-		self.options = [
-						'Story Mode',
-						'Custom Game',
-						'Rewatch Intro',
-						'Credits',
-						'Quit'
-						]
+		self._font = Resources.TTF_Font('Kallamar/KALLAMAR.TTF', 28)
 	
+		self._story_r = None
+		self._custom_r = None
+		self._intro_r = None
+		self._credits_r = None
+		self._quit_r = None
+		self._hover = NONE
+		
 	def ProcessInput(self, events):
 		for event in events:
-			if event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_RETURN:
-					if self.index == 0:
-						self.next = PlayScene(LevelSeed('level1', None))
-					elif self.index == 1:
-						self.next = Menus.MapOptions()
-					elif self.index == 2:
-						self.next = Menus.Intro()
-					elif self.index == 3:
-						self.next = Menus.Credits()
-					elif self.index == 4:
-						self.next = None
-					else:
-						self.next = PlayScene(LevelSeed('testlevel', None))
-				elif event.key == pygame.K_UP:
-					self.index -= 1
-					if self.index < 0:
-						self.index = len(self.options) - 1
-				elif event.key == pygame.K_DOWN:
-					self.index += 1
-					if self.index >= len(self.options):
-						self.index = 0
+			if event.type == pygame.MOUSEMOTION and self._story_r:
+				x = event.pos[0]
+				y = event.pos[1]
+				
+				if (self._story_r.collidepoint(x, y)):
+					self._hover = STORY
+				elif (self._custom_r.collidepoint(x, y)):
+					self._hover = CUSTOM
+				elif (self._intro_r.collidepoint(x, y)):
+					self._hover = INTRO
+				elif (self._credits_r.collidepoint(x, y)):
+					self._hover = CREDITS
+				elif (self._quit_r.collidepoint(x, y)):
+					self._hover = QUIT
+
+			elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+				x = event.pos[0]
+				y = event.pos[1]
+				
+				if (self._story_r.collidepoint(x, y)):
+					self.next = PlayScene(LevelSeed('level1', None))
+				elif (self._custom_r.collidepoint(x, y)):
+					self.next = Menus.MapOptions()
+				elif (self._intro_r.collidepoint(x, y)):
+					self.next = Menus.Intro();
+				elif (self._credits_r.collidepoint(x, y)):
+					self.next = Menus.Credits()
+				elif (self._quit_r.collidepoint(x, y)):
+					self.next = None
 
 	def Update(self):
 		pass
 	
 	def Render(self, screen):
-		screen.fill((80, 90, 100))
-		titleimage = ImageLibrary.Get('title.png')
-		screen.blit(titleimage, ((640 - titleimage.get_width()) // 2, 20))
+		screen.fill((0, 0, 0))
+		titleimage = ImageLibrary.Get('title_bg.png')
+		screen.blit(titleimage, (0, 0))
 		
-		y = 320
-		x = 100
-		for i in range(len(self.options)):
-			
-			if i == self.index:
-				font = self.yellowfont
-				cursor = font.Render('>')
-				screen.blit(cursor, (x - 12, y)) 
-			else:
-				font = self.whitefont
-			
-			screen.blit(font.Render(self.options[i]), (x, y))
-			y += 20
+		f = self._font.Render
+		h = self._hover
+		x = 44
+		y = 316
+		text = f('Story Mode', COLOR[h == STORY])
+		screen.blit(text, (x, y))
+		if (not self._story_r):
+			self._story_r = pygame.Rect(x, y, text.get_width(), text.get_height())
+		x = 39
+		y = 353
+		text = f('Custom Game', COLOR[h == CUSTOM])
+		screen.blit(text, (x, y))
+		if (not self._custom_r):
+			self._custom_r = pygame.Rect(x, y, text.get_width(), text.get_height())
+		x = 43
+		y = 394
+		text = f('Watch Intro', COLOR[h == INTRO])
+		screen.blit(text, (x, y))
+		if (not self._intro_r):
+			self._intro_r = pygame.Rect(x, y, text.get_width(), text.get_height())
+		x = 67
+		y = 433
+		text = f('Credits', COLOR[h == CREDITS])
+		screen.blit(text, (x, y))
+		if (not self._credits_r):
+			self._credits_r = pygame.Rect(x, y, text.get_width(), text.get_height())
+		x = 570
+		y = 433
+		text = f('Quit', COLOR[h == QUIT])
+		screen.blit(text, (x, y))
+		if (not self._quit_r):
+			self._quit_r = pygame.Rect(x, y, text.get_width(), text.get_height())
+
+		
+		#y = 320
+		#x = 100
+		#for i in range(len(self.options)):
+		#	
+		#	if i == self.index:
+		#		font = self.yellowfont
+		#		cursor = font.Render('>')
+		#		screen.blit(cursor, (x - 12, y)) 
+		#	else:
+		#		font = self.whitefont
+		#	
+		#	screen.blit(font.Render(self.options[i]), (x, y))
+		#	y += 20
