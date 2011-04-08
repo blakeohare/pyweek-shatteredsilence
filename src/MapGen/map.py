@@ -31,8 +31,8 @@ def BuildMapFromCommands(commands, mapwidth, mapheight, previousLevelSeed):
 			male = parts[3].upper() == 'M'
 			variety = int(parts[4])
 			if len(parts) > 5:
-				tx = int(parts[4])
-				ty = int(parts[5])
+				tx = int(parts[5])
+				ty = int(parts[6])
 			else:
 				tx = x
 				ty = y
