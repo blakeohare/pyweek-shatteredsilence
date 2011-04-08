@@ -64,6 +64,10 @@ Vegetation...
 	x and y are the left side of the bush
 	width is width
 
+	TREE x y GREEN|ORANGE|RED
+	
+	3 kinds of tress. case insensitive
+
 Place tile specifically...
 
 	TILE type x y
