@@ -21,6 +21,9 @@ class Sprite:
 		self.shoveCounter = 0
 		self.waypoints = []
 		self.waypointDelay = 0
+		self.direction = 'down'
+		self.isMoving = False
+		self.renderCounter = 0
 	
 	def IsCollision(self, anotherSprite):
 		dx = (self.X - anotherSprite.X)
@@ -48,6 +51,7 @@ class Sprite:
 		self.waypoints = [(self.X, self.Y), (x + 16, y + 16)]
 	
 	def Update(self):
+		self.renderCounter += 1
 		
 		if len(self.waypoints) > 0:
 			if self.color == 255:
@@ -79,6 +83,22 @@ class Sprite:
 		if self.shoveCounter > 0:
 			self.shoveCounter -= 1 
 		
+		dx = self.DX
+		dy = self.DY
+		if dx != 0 or dy != 0:
+			self.isMoving = True
+			if dx * dx > dy * dy:
+				if dx > 0:
+					self.direction = 'right'
+				else:
+					self.direction = 'left'
+			else:
+				if dy > 0:
+					self.direction = 'down'
+				else:
+					self.direction = 'up'
+		else:
+			self.isMoving = False
 		
 class Citizen(Sprite):
 	
@@ -90,7 +110,10 @@ class Citizen(Sprite):
 	
 	def GetImage(self):
 		color = self.color - self.demotivation
-		return ImageLibrary.Get('Sprites/' + self.imagepath + '/down0.png', color)
+		num = '0'
+		if self.isMoving:
+			num = ('1', '0', '2', '0')[(self.renderCounter // 3) & 3] 
+		return ImageLibrary.Get('Sprites/' + self.imagepath + '/' + self.direction + num + '.png', color)
 
 	def Decolorize(self):
 		self.colorizeable = True

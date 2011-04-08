@@ -179,10 +179,13 @@ class Level:
 			if sprite.color < 255: sprite.color -= 2
 			if sprite.color < 0: sprite.color = 0
 			
+			wasColorized = sprite.color == 255
+			
 			if sprite.color != 255 and sprite.colorizeable:
 				if graph.IsRadiantSpriteNear(x, y, 32 * 2):
 					sprite.color += 4
-			if sprite.color > 255: sprite.color = 255
+			if sprite.color >= 255 and not wasColorized:
+				sprite.Colorize()
 			
 		radiatingSprites = []
 		for sprite in self.sprites:
