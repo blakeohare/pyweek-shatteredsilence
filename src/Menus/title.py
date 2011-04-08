@@ -55,6 +55,8 @@ class Title(GameSceneBase):
 					self._hover = CREDITS
 				elif (self._quit_r.collidepoint(x, y)):
 					self._hover = QUIT
+				else:
+					self._hover = NONE
 
 			elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
 				x = event.pos[0]
