@@ -16,7 +16,13 @@ class Level:
 		self.citizens = []
 		
 		for citizen in levelseed.map.citizens:
+			x = citizen[0]
+			y = citizen[1]
+			tx = citizen[4]
+			ty = citizen[5]
 			sprite = GamePlay.Citizen(32 * citizen[0] + 16, 32 * citizen[1] + 16, citizen[2], citizen[3])
+			if x != tx or y != ty:
+				sprite.SetWaypoint(tx * 32, ty * 32)
 			self.sprites.append(sprite)
 			self.citizens.append(sprite)
 		

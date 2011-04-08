@@ -11,13 +11,16 @@ class Sprite:
 		self.targetY = y
 		self.R = 16
 		self.color = 0
-		self.V = 4.2
+		self.gV = 1.8
+		self.cV = 4.2
 		self.direction = 'down'
 		self.colorizeable = False
 		self.IsRadiating = False
 		self.demotivation = 0
 		self.beingShoved = False
 		self.shoveCounter = 0
+		self.waypoints = []
+		self.waypointDelay = 0
 	
 	def IsCollision(self, anotherSprite):
 		dx = (self.X - anotherSprite.X)
@@ -41,21 +44,42 @@ class Sprite:
 		self.targetX = x
 		self.targetY = y
 	
+	def SetWaypoint(self, x, y):
+		self.waypoints = [(self.X, self.Y), (x + 16, y + 16)]
+	
 	def Update(self):
+		
+		if len(self.waypoints) > 0:
+			if self.color == 255:
+				self.waypoints = []
+			else:
+				if self.X != self.waypoints[0][0] or self.Y != self.waypoints[0][1]:
+					self.targetX = self.waypoints[0][0]
+					self.targetY = self.waypoints[0][1]
+					self.waypointDelay = 0
+				elif self.waypointDelay > 20:
+					self.waypoints = self.waypoints[::-1]
+		self.waypointDelay += 1
+		
+		v = self.gV
+		if self.color == 255: v = self.cV
+		elif self.color != 0: v = 0
+		
 		if self.targetX != self.X or self.targetY != self.Y:
 			dx = self.targetX - self.X
 			dy = self.targetY - self.Y
 			distance = (dx * dx + dy * dy) ** 0.5
-			if distance < self.V:
+			if distance < v:
 				self.DX = self.targetX - self.X
 				self.DY = self.targetY - self.Y
 			else:
-				self.DX = int(dx / distance * self.V)
-				self.DY = int(dy / distance * self.V)
+				self.DX = int(dx / distance * v)
+				self.DY = int(dy / distance * v)
 		
 		if self.shoveCounter > 0:
 			self.shoveCounter -= 1 
-	
+		
+		
 class Citizen(Sprite):
 	
 	def __init__(self, x, y, male, variety):
@@ -79,6 +103,9 @@ class Citizen(Sprite):
 	def Colorize(self):
 		self.color = 255
 		self.IsRadiating = True
+		self.waypoints = []
+		self.targetX = self.X
+		self.targetY = self.Y
 	
 class Police(Sprite):
 	

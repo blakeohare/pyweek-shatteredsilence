@@ -24,11 +24,20 @@ def BuildMapFromCommands(commands, mapwidth, mapheight, previousLevelSeed):
 			item = MapGen.Building(int(parts[1]), int(parts[2]), int(parts[3]), int(parts[4]), int(parts[5]), int(parts[6]))
 			items.append(item)
 		elif parts[0] == 'CITIZEN':
+			
 			x = int(parts[1])
 			y = int(parts[2])
+			
 			male = parts[3].upper() == 'M'
 			variety = int(parts[4])
-			citizens.append((x, y, male, variety))
+			if len(parts) > 5:
+				tx = int(parts[4])
+				ty = int(parts[5])
+			else:
+				tx = x
+				ty = y
+			citizens.append((x, y, male, variety, tx, ty))
+			
 		elif parts[0] == 'POLICE':
 			x = int(parts[1])
 			y = int(parts[2])

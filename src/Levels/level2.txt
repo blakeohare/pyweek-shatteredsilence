@@ -1,7 +1,7 @@
 CITIZEN 14 18 F 1
 CITIZEN 15 18 F 2
 
-CITIZEN 1 1 M 1
+CITIZEN 1 1 M 1 5 1
 CITIZEN 5 5 F 3
 
 HOUSE 4 2 1
@@ -15,7 +15,6 @@ HOUSE 20 11 3
 HOUSE 4 20 1
 HOUSE 12 20 2
 HOUSE 20 20 1
-
 
 TILE cobblestone 7 9
 TILE cobblestone 15 9
@@ -34,7 +33,7 @@ RECT cobblestone 2 10 24 1
 RECT cobblestone 2 19 24 1
 RECT cobblestone 2 28 24 1
 RECT cobblestone 2 0 24 1
-RECT cobblestone 26 0 1 28
+RECT cobblestone 26 0 1 29
 RECT cobblestone 10 0 1 28
 RECT cobblestone 18 0 1 28
 

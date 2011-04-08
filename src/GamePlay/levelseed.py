@@ -82,7 +82,7 @@ class LevelSeed:
 			self.width = 20
 			self.height = 15
 		elif special == 'level2':
-			self.width = 32
+			self.width = 29
 			self.height = 32
 		elif special == 'level3':
 			self.width = 64
