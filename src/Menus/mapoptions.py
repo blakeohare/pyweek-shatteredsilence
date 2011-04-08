@@ -10,7 +10,7 @@ from GamePlay import LevelSeed
 # Progress + Time
 # Zoom level
 
-ANIM_TIME = 4000 #ms
+ANIMATION_TIME = 2500 #ms
 ZOOM_LEVELS = [
 	'House',
 	'Street',
@@ -28,7 +28,7 @@ class MapOptions(GameSceneBase):
 		GameSceneBase.__init__(self)
 		self._font = Resources.TTF_Font('Kallamar/KALLAMAR.TTF', 36)
 		self._page = 0 # which BG page we're on
-		self._bg = Resources.ImageLibrary.Get('MapOptions/sc1.png') # Background to draw
+		self._bg = Resources.ImageLibrary.Get('MapOptions/sc2.png') # Background to draw
 		self._args = {}
 		
 		self._map_size = 1
@@ -53,7 +53,9 @@ class MapOptions(GameSceneBase):
 		#animation related
 		self._transitioning = False #should we be animating to the next option screen?
 		self._animStart = None
-		
+		self._nextbg = None #next background
+		self._curScreenCache = None # previous bg
+
 		# set stuff up
 		self._SetDefaults()
 	
@@ -70,42 +72,40 @@ class MapOptions(GameSceneBase):
 	
 	def Render(self, screen):
 		if (self._transitioning):
-			screen.blit(self._screen_cache, (0, 0))
-			delta = time.time() - self._animStart
-			pct = delta * 1000 / ANIM_TIME
-			if (pct > 1):
-				pct = 1
-			al = 255 * pct
-			self._bg.set_alpha(al)
-			screen.blit(self._bg, (0, 0))
-			return
-
-		else:
-			screen.blit(self._bg, (0, 0))
+			surf = self._Animate(self._curScreenCache, self._nextbg, self._animStart, time.time(), ANIMATION_TIME)
+			if surf:
+				screen.blit(surf, (0, 0))
+				return
 		
-		if (self._page == 2):
-			text = self._font.Render('Start')
-		else:
-			text = self._font.Render("Next")
-			
-		fx = _GetCenterX(screen, text)
-		screen.blit(text, (fx, 400))
-		if not self._font_r or self._page == 2:
-			self._font_r = pygame.Rect(fx, 400, text.get_width(), text.get_height())
-
+		screen.blit(self._bg, (0, 0))
+		
 		p = self._page
 		if p == 0:
 			self._BuildMapUI(screen)
-
 		elif p == 1:
 			self._BuildProgTimeUI(screen)
-
 		elif p == 2:
 			self._BuildZoomUI(screen)
 	
+		self._curScreenCache = screen.copy()
 	
 	
 # Private methods
+
+	def _Animate(self, frame1, frame2, startTime, curTime, totalTimeMS):
+		delta = curTime - startTime
+		pctDone = delta / (totalTimeMS / 1000)
+		
+		if (pctDone >= 1):
+			return None
+		
+		surf = pygame.Surface((640, 480))
+		offset = int(pctDone * 640)
+		
+		surf.blit(frame1, (0, 0), pygame.Rect(offset, 0, 640 - offset, 480))
+		surf.blit(frame2, (640 - offset, 0), pygame.Rect(0, 0, offset, 480))
+		
+		return surf
 
 	def _StartGame(self):
 		levelseed = LevelSeed(None, self._args)
@@ -113,21 +113,35 @@ class MapOptions(GameSceneBase):
 
 	def _NextPage(self):
 		if (self._page == 2):
-			print("TODO: update args")
-			print("TODO: set next scene")
 			print("TODO: animate transition to game-start")
 			#self._transitioning = True
 			#self._animStart = time.time()
 			self._UpdateArgs()
 			self._StartGame()
 		else:
+			self._transitioning = True
+			self._animStart = time.time()
 			self._page += 1
+			self._nextbg = pygame.Surface((640, 480))
+			if (self._page == 1):
+				self._bg = Resources.ImageLibrary.Get('MapOptions/sc3.png')
+				self._nextbg.blit(self._bg, (0,0))
+				self._BuildProgTimeUI(self._nextbg)
+			elif (self._page == 2):
+				self._bg = Resources.ImageLibrary.Get('MapOptions/sc4.png')
+				self._nextbg.blit(self._bg, (0,0))
+				self._BuildZoomUI(self._nextbg)
 
 	def _BuildZoomUI(self, screen):
 		gcy = _GetCenterY
 		gcx = _GetCenterX
 		
-		text = self._font.Render("Zoom Level")
+		text = self._font.Render("Start", pygame.Color(255, 255, 255))
+		nextx = _GetCenterX(screen, text)
+		screen.blit(text, (nextx, 400))
+		self._font_r = pygame.Rect(nextx, 400, text.get_width(), text.get_height())
+
+		text = self._font.Render("Zoom Level", pygame.Color(255, 255, 255))
 		screen.blit(text, (gcx(screen, text), 50))
 		yoffset = 50 + text.get_height()
 
@@ -137,7 +151,7 @@ class MapOptions(GameSceneBase):
 				if t > self._zoom_size:
 					self._zoom_size = t
 		
-		zsz = self._font.Render(ZOOM_LEVELS[self._zoom_level])
+		zsz = self._font.Render(ZOOM_LEVELS[self._zoom_level], pygame.Color(255, 255, 255))
 		x = gcx(screen, zsz)
 		screen.blit(zsz, (x, yoffset + 30))
 		
@@ -181,6 +195,13 @@ class MapOptions(GameSceneBase):
 		gcy = _GetCenterY
 		gcx = _GetCenterX
 		
+		text = self._font.Render("Next")
+		nextx = _GetCenterX(screen, text)
+		screen.blit(text, (nextx, 400))
+		if not self._font_r:
+			self._font_r = pygame.Rect(nextx, 400, text.get_width(), text.get_height())
+
+		
 		text = self._font.Render("Game Mode")
 		screen.blit(text, (gcx(screen, text), 50))
 		yoffset = 50 + text.get_height()
@@ -214,7 +235,7 @@ class MapOptions(GameSceneBase):
 		
 		yoffset = y + cont.get_height()
 		
-		text = self._font.Render("Time Limit", pygame.Color(255, 255, 255))
+		text = self._font.Render("Time Limit")
 		screen.blit(text, (gcx(screen, text), 230))
 		yoffset = 230 + text.get_height()
 		
@@ -279,6 +300,12 @@ class MapOptions(GameSceneBase):
 	def _BuildMapUI(self, screen):
 		gcy = _GetCenterY
 		gcx = _GetCenterX
+		
+		text = self._font.Render("Next")
+		nextx = _GetCenterX(screen, text)
+		screen.blit(text, (nextx, 400))
+		if not self._font_r:
+			self._font_r = pygame.Rect(nextx, 400, text.get_width(), text.get_height())
 		
 		text = self._font.Render("Map Size")
 		screen.blit(text, (gcx(screen, text), 50))
