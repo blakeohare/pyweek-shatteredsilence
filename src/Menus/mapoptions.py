@@ -11,6 +11,17 @@ from GamePlay import LevelSeed
 # Zoom level
 
 ANIM_TIME = 4000 #ms
+ZOOM_LEVELS = [
+	'House',
+	'Street',
+	'Neighborhood',
+	'City',
+	'State',
+	'Region',
+	'Country',
+	'Continent',
+	'World'
+]
 
 class MapOptions(GameSceneBase):
 	def __init__(self):
@@ -32,6 +43,11 @@ class MapOptions(GameSceneBase):
 		self._time = -1
 		self._time_right_r = None
 		self._time_left_r = None
+
+		self._zoom_level = 2
+		self._zoom_size = 0
+		self._zoom_right_r = None
+		self._zoom_left_r = None
 
 		
 		#animation related
@@ -60,7 +76,6 @@ class MapOptions(GameSceneBase):
 			if (pct > 1):
 				pct = 1
 			al = 255 * pct
-			print("_bg.set_alpha(%s)" % al)
 			self._bg.set_alpha(al)
 			screen.blit(self._bg, (0, 0))
 			return
@@ -92,13 +107,19 @@ class MapOptions(GameSceneBase):
 	
 # Private methods
 
+	def _StartGame(self):
+		levelseed = LevelSeed(None, self._args)
+		self.next = PlayScene(levelseed)
+
 	def _NextPage(self):
 		if (self._page == 2):
 			print("TODO: update args")
 			print("TODO: set next scene")
 			print("TODO: animate transition to game-start")
-			self._transitioning = True
-			self._animStart = time.time()
+			#self._transitioning = True
+			#self._animStart = time.time()
+			self._UpdateArgs()
+			self._StartGame()
 		else:
 			self._page += 1
 
@@ -109,8 +130,28 @@ class MapOptions(GameSceneBase):
 		text = self._font.Render("Zoom Level")
 		screen.blit(text, (gcx(screen, text), 50))
 		yoffset = 50 + text.get_height()
+
+		if self._zoom_size == 0:
+			for s in ZOOM_LEVELS:
+				t = self._font.Render(s).get_width()
+				if t > self._zoom_size:
+					self._zoom_size = t
 		
-		screen.blit(self._mode_cont_selected, (150, 150))
+		zsz = self._font.Render(ZOOM_LEVELS[self._zoom_level])
+		x = gcx(screen, zsz)
+		screen.blit(zsz, (x, yoffset + 30))
+		
+		x1 = ((640 - self._zoom_size)/2) - self._time_left.get_width() - 20
+		screen.blit(self._time_left, (x1, yoffset + 30))
+		if (not self._zoom_left_r):
+			self._zoom_left_r = pygame.Rect(x1, yoffset+30, self._time_left.get_width(), self._time_left.get_height())
+		
+		x2 = x1 + self._time_left.get_width() + self._zoom_size + 40
+		screen.blit(self._time_right, (x2, yoffset + 30))
+		if (not self._zoom_right_r):
+			self._zoom_right_r = pygame.Rect(x2, yoffset+30, self._time_right.get_width(), self._time_right.get_height())
+
+		yoffset += 55
 		
 		self._screen_cache = screen.copy()
 		
@@ -121,6 +162,20 @@ class MapOptions(GameSceneBase):
 				y = e.pos[1]
 				if (self._font_r.collidepoint(x, y)):
 					self._NextPage()
+				elif (self._zoom_left_r.collidepoint(x, y)):
+					self._decZoom()
+				elif (self._zoom_right_r.collidepoint(x, y)):
+					self._incZoom()
+	
+	def _incZoom(self):
+		self._zoom_level += 1
+		if self._zoom_level >= len(ZOOM_LEVELS):
+			self._zoom_level = 0
+	
+	def _decZoom(self):
+		self._zoom_level -= 1
+		if self._zoom_level < 0:
+			self._zoom_level = (len(ZOOM_LEVELS) - 1)
 
 	def _BuildProgTimeUI(self, screen):
 		gcy = _GetCenterY
@@ -274,6 +329,29 @@ class MapOptions(GameSceneBase):
 					self._map_size = 3
 			
 	
+	def _UpdateArgs(self):
+		a = self._args
+		if self._map_size == 1:
+			a['width'] = 40
+			a['height'] = 40
+		elif self._map_size == 2:
+			a['width'] = 64
+			a['height'] = 64
+		elif self._map_size == 3:
+			a['width'] = 80
+			a['height'] = 80
+		
+		a['minutes'] = self._time
+		
+		if self._zoom_level < 4: # Room -> Neighborhood
+			a['mode'] = 'individual'
+		elif self._zoom_level < 7: # City -> Country
+			a['mode'] = 'crowd'
+		else: # Continent + World	
+			a['mode'] = 'region'
+
+		a['progress'] = (self._mode == 2)
+			
 	def _SetDefaults(self):
 		self._args = {
 			'width' : 64, #these are tiles, not pixels
