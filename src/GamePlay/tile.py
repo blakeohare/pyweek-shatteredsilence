@@ -181,6 +181,10 @@ _tileStore = {
 			'phouse32' : TileTemplate('house/phouse32', False),
 			'phouse33' : TileTemplate('house/phouse33', False),
 			'phouse34' : TileTemplate('house/phouse34', False)
+			
+			
+			#Trees
+			
 			}
 
 _loadComplete = False

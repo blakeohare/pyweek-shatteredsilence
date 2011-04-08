@@ -159,7 +159,6 @@ class Police(Sprite):
 	def Clone(self):
 		sprite = Police(self.X, self.Y, 1)
 		sprite.colorizeable = self.colorizeable
-		sprite.imagepath = self.imagepath
 		sprite.targetX = self.targetX
 		sprite.targetY = self.targetY
 		sprite.color = self.color
@@ -194,6 +193,10 @@ class Police(Sprite):
 					self.smackCounter = 0
 			else:
 				self.mode = 'pursuit'
+			if self.target.color == 0:
+				self.target = None
+				self.targetX = self.X
+				self.targetY = self.Y
 		else:
 			self.mode = 'walking'
 			#TODO: patrol mode (most likely walk till you hit a wall and turn left, repeat

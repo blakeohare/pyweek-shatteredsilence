@@ -15,6 +15,10 @@ class PlayScene(GameSceneBase):
 		self.cameraY = 0
 		self.dragStart = None
 		self.selection = []
+		self.topmenu = pygame.Surface((640, 20))
+		self.topmenu.fill((40, 40, 40))
+		pygame.draw.rect(self.topmenu, (128, 128, 128), pygame.Rect(0, 18, 640, 2))
+		self.topmenu.set_alpha(200)
 		self.cursorLogicalPosition = (0, 0)
 		self.cursorScreenPosition = (0, 0)
 		self.suppressDragDraw = True
@@ -187,15 +191,16 @@ class PlayScene(GameSceneBase):
 		screen.blit(mousepos, (640 - mousepos.get_width(), 480 - mousepos.get_height()))
 		
 	def RenderChrome(self, screen, progress):
+		screen.blit(self.topmenu, (0, 0))
 		conversions_text = self.font_white.Render('Conversion: ')
-		screen.blit(conversions_text, (0, 0))
+		screen.blit(conversions_text, (3, 3))
 		
 		if progress < 20: font = self.font_red
 		elif progress < 40: font = self.font_orange
 		elif progress < 60: font = self.font_yellow
 		elif progress < 80: font = self.font_green
 		else: font = self.font_blue
-		screen.blit(font.Render(str(int(progress)) + '%'), (conversions_text.get_width(), 0))
+		screen.blit(font.Render(str(int(progress)) + '%'), (conversions_text.get_width(), 3))
 	
 	def RenderSelection(self, screen):
 		for sprite in self.selection:
