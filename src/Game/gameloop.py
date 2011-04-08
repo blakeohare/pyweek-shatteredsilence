@@ -122,7 +122,7 @@ class GameLoop:
 		
 		floor = Resources.ImageLibrary.Get('Tiles/Interior/floor.png', 255)
 		grayfloor = Resources.ImageLibrary.Get('Tiles/Interior/floor.png', 0)
-		 
+		
 		# partition the house
 		for foo in (('',''), ('p','pink'), ('b','blue')):
 			path = os.path.join('Images', 'Tiles', foo[1] + 'house.png')
@@ -139,6 +139,23 @@ class GameLoop:
 					Resources.ImageLibrary.AddVirtualizedImage(path, image)
 					Resources.ImageLibrary.AddVirtualizedImage('Gray' + path, grayimage)
 		
+		
+		for foo in ((2, 4, 'green'),(2, 3, 'red'),(2, 3, 'orange')):
+			path = os.path.join('Images', 'Tiles', foo[2] + 'tree.png')
+			tree = pygame.image.load(path)
+			graytree = pygame.image.load('Gray' + path)
+			for x in range(0, foo[0]):
+				for y in range(0, foo[1]):
+					
+					i = y * 2 + x
+					image = grass.copy()
+					grayimage = graygrass.copy()
+					image.blit(tree, (-x * 32, -y * 32))
+					grayimage.blit(graytree, (-x * 32, -y * 32))
+					path = os.path.join('Images', 'Tiles', foo[2] + 'tree' + str(i) + '.png')
+					Resources.ImageLibrary.AddVirtualizedImage(path, image)
+					Resources.ImageLibrary.AddVirtualizedImage('Gray' + path, grayimage)
+					
 		
 		applyBackgroundAndRename = [
 						('grass', 'Images/Tiles/bush1.png', 'Images/Tiles/bush_left.png'),

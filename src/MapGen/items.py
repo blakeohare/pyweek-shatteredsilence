@@ -34,6 +34,33 @@ class House(MapItem):
 				x += 1
 			y += 1
 
+class Tree(MapItem):
+	def __init__(self, x, y, type):
+		MapItem.__init__(self)
+		self.x = x
+		self.y = y
+		self.type = type
+		self.width = 2
+		self.height = 3
+		if type == 'green': self.height = 4
+		self.Applyable = True
+		
+	def ApplySelfToGrid(self, grid):
+		left = self.x
+		top = self.y
+		
+		x = 0
+		while x < self.width:
+			y = 0
+			while y < self.height:
+				_x = left + x
+				_y = top + y
+				t = self.type + 'tree' + str(x + y * self.width)
+				grid[_x][_y] = t
+				y += 1
+			x += 1
+		
+
 class Bush(MapItem):
 	def __init__(self, x, y, width):
 		MapItem.__init__(self)

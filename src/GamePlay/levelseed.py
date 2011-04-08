@@ -111,4 +111,3 @@ class LevelSeed:
 			self.width = 96
 			self.height = 64
 		self.map = MapGen.BuildMap(special, self.width, self.height, previousLevelSeed, previousLevel)
-		

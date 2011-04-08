@@ -7,6 +7,7 @@ Building = _items.Building
 Road = _items.Road
 House = _items.House
 Bush = _items.Bush
+Tree = _items.Tree
 
 BuildMap = _map.BuildMap
 BuildMapFromCommands = _map.BuildMapFromCommands

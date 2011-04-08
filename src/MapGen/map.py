@@ -47,6 +47,11 @@ def BuildMapFromCommands(commands, mapwidth, mapheight, previousLevelSeed, previ
 			y = int(parts[2])
 			widthIhatePython = int(parts[3])
 			items.append(MapGen.Bush(x, y, widthIhatePython))
+		elif parts[0] == 'TREE':
+			x = int(parts[1])
+			y = int(parts[2])
+			type = parts[3].lower()
+			items.append(MapGen.Tree(x, y, type))
 		elif parts[0] == 'CARRYOVER':
 			colorize_center = len(parts) >= 4 and parts[3] == 'COLOR'
 			carryover = (int(parts[1]), int(parts[2]), previousLevelSeed, colorize_center)
@@ -238,4 +243,5 @@ class Map:
 				item.ApplySelfToGrid(self.grid)
 			else:
 				notbuildings.append(item)
+				
 		return notbuildings

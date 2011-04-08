@@ -180,11 +180,32 @@ _tileStore = {
 			'phouse31' : TileTemplate('house/phouse31', False),
 			'phouse32' : TileTemplate('house/phouse32', False),
 			'phouse33' : TileTemplate('house/phouse33', False),
-			'phouse34' : TileTemplate('house/phouse34', False)
+			'phouse34' : TileTemplate('house/phouse34', False),
 			
 			
 			#Trees
+			'greentree0' : TileTemplate('greentree0', False),
+			'greentree1' : TileTemplate('greentree1', False),
+			'greentree2' : TileTemplate('greentree2', False),
+			'greentree3' : TileTemplate('greentree3', False),
+			'greentree4' : TileTemplate('greentree4', False),
+			'greentree5' : TileTemplate('greentree5', False),
+			'greentree6' : TileTemplate('greentree6', False),
+			'greentree7' : TileTemplate('greentree7', False),
 			
+			'orangetree0' : TileTemplate('orangetree0', False),
+			'orangetree1' : TileTemplate('orangetree1', False),
+			'orangetree2' : TileTemplate('orangetree2', False),
+			'orangetree3' : TileTemplate('orangetree3', False),
+			'orangetree4' : TileTemplate('orangetree4', False),
+			'orangetree5' : TileTemplate('orangetree5', False),
+			
+			'redtree0' : TileTemplate('redtree0', False),
+			'redtree1' : TileTemplate('redtree1', False),
+			'redtree2' : TileTemplate('redtree2', False),
+			'redtree3' : TileTemplate('redtree3', False),
+			'redtree4' : TileTemplate('redtree4', False),
+			'redtree5' : TileTemplate('redtree5', False),
 			}
 
 _loadComplete = False
