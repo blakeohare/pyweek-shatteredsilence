@@ -16,10 +16,9 @@ class Title(GameSceneBase):
 		self.options = [
 						'Story Mode',
 						'Custom Game',
-						'Intro',
+						'Rewatch Intro',
 						'Credits',
-						'Quit',
-						'[TEMP] Map Test Mode'
+						'Quit'
 						]
 	
 	def ProcessInput(self, events):
@@ -53,7 +52,7 @@ class Title(GameSceneBase):
 	def Render(self, screen):
 		screen.fill((80, 90, 100))
 		titleimage = ImageLibrary.Get('title.png')
-		screen.blit(titleimage, (10, 10))
+		screen.blit(titleimage, ((640 - titleimage.get_width()) // 2, 20))
 		
 		y = 320
 		x = 100
