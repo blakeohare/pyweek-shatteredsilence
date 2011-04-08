@@ -3,9 +3,10 @@ from Resources import ImageLibrary
 
 class TileTemplate:
 	
-	def __init__(self, image, passable):
+	def __init__(self, image, passable, patchBG=False):
 		self.image = 'Tiles/' + image + '.png'
 		self.passable = passable
+		self.patchBG = patchBG
 
 	def GetImage(self, colorization):
 		return ImageLibrary.Get(self.image, colorization)
@@ -52,9 +53,9 @@ _tileStore = {
 			'sidewalk_corner4' : TileTemplate('sidewalkcorner4', True),
 			'vertical_crosswalk' : TileTemplate('crosswalk1', True),
 			'horizontal_crosswalk' : TileTemplate('crosswalk2', True),
-			'building/roof1' : TileTemplate('building/roof1', False),
+			'building/roof1' : TileTemplate('building/roof1', False, True),
 			'building/roof2' : TileTemplate('building/roof2', False),
-			'building/roof3' : TileTemplate('building/roof3', False),
+			'building/roof3' : TileTemplate('building/roof3', False, True),
 			'building/roof4' : TileTemplate('building/roof4', False),
 			'building/roof5' : TileTemplate('building/roof5', False),
 			'building/roof6' : TileTemplate('building/roof6', False),
@@ -64,9 +65,9 @@ _tileStore = {
 			'building/building1' : TileTemplate('building/building1', False),
 			'building/building2' : TileTemplate('building/building2', False),
 			'building/building3' : TileTemplate('building/building3', False),
-			'building/building4' : TileTemplate('building/building4', False),
+			'building/building4' : TileTemplate('building/building4', False, True),
 			'building/building5' : TileTemplate('building/building5', False),
-			'building/building6' : TileTemplate('building/building6', False),
+			'building/building6' : TileTemplate('building/building6', False, True),
 			'building/doodad' : TileTemplate('building/roofdoodad', False),
 			'building/door' : TileTemplate('building/buildingdoor', False),
 			'sidewalkchalkboy' : TileTemplate('sidewalkchalkboy', True),
