@@ -58,7 +58,9 @@ class GameLoop:
 			if self.show_fps_counter and diff > 0:
 				vfps = 1.0 / diff
 				afps = 1.0 / (time.time() - start)
-					
+		
+		if Resources.ImageLibrary.fullyInitialized:
+			Resources.ImageLibrary.SaveCache()			
 	
 	def ProcessInput(self):
 		

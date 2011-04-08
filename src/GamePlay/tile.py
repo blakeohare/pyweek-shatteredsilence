@@ -1,3 +1,4 @@
+import os
 from Resources import ImageLibrary
 
 class TileTemplate:
@@ -182,6 +183,41 @@ _tileStore = {
 			}
 
 _loadComplete = False
+
+def _GetAllImages(folder):
+	output = []
+	for file in os.listdir('Images' + os.sep + folder):
+		fullpath = folder + os.sep + file
+		if os.path.isdir('Images' + os.sep + fullpath):
+			output += _GetAllImages(fullpath)
+		elif file.endswith('.png'):
+			output.append(fullpath)
+	return output
+
+_totalLoadsIncSprites = _GetAllImages('Tiles') + _GetAllImages('Sprites')
+_totalLoadsCount = len(_totalLoadsIncSprites)
+
+def LoadNextThing():
+	global _totalLoadsCount, _totalLoadsIncSprites
+	
+	progress = LoadNextTile()
+	
+	progressB = 100
+	if len(_totalLoadsIncSprites) > 0:
+		path = _totalLoadsIncSprites[0]
+		_totalLoadsIncSprites = _totalLoadsIncSprites[1:]
+		ImageLibrary.Get(path, 0)
+		progressB = 100 - 100 * len(_totalLoadsIncSprites) // _totalLoadsCount
+	
+	done = progress == None and len(_totalLoadsIncSprites) == 0
+	
+	if done: return None
+	
+	if progress == None: progress = 100
+	if progressB == None: progressB = 100
+	
+	return (progress + progressB) // 2 
+
 def LoadNextTile():
 	global _tileStore, _tilesToBeLoaded, _loadComplete
 	
