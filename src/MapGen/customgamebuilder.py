@@ -8,7 +8,7 @@ _registeredSeeds = None
 def PopNextSeed():
 	global _registeredSeeds
 	
-	print _registeredSeeds
+	
 	if len(_registeredSeeds) == 0: return None
 	first = _registeredSeeds[0]
 	_registeredSeeds = _registeredSeeds[1:]
