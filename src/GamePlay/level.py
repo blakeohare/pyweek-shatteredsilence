@@ -187,7 +187,7 @@ class Level:
 			
 			# do collision dispersion
 			tooClose = graph.GetClosestNeighboringSprite(sprite)
-			if tooClose != None:
+			if tooClose != None and not sprite.isMoving:
 				if sprite.X < tooClose.X:
 					dx = -1
 				else:
@@ -196,8 +196,10 @@ class Level:
 					dy = -1
 				else:
 					dy = 1
-				sprite.DX = dx
-				sprite.DY = dy
+				sprite.targetX = sprite.X + dx * (sprite.R + 1) * 1 // 3
+				sprite.targetY = sprite.Y + dy * (sprite.R + 1) * 1 // 3
+				tooClose.targetX = tooClose.X - dx * (sprite.R + 1) * 1 // 3
+				tooClose.targetY = tooClose.Y - dy * (sprite.R + 1) * 1 // 3
 			
 			# do location updates
 			
