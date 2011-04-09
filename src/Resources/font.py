@@ -83,7 +83,7 @@ class FontPrivate:
 			self.letters[char] = letter
 			i += 1
 	
-	def Render(self, text):
+	def Render(self, text, kerning=0):
 		
 		if text == '': text = ' '
 		text = text.upper()
@@ -107,19 +107,19 @@ class FontPrivate:
 		
 		for image in images:
 			if image == None:
-				total += 8
+				total += 8 + kerning
 			else:
-				total += image.get_width()
+				total += image.get_width() + kerning
 		
 		output = pygame.Surface((total, 16)).convert_alpha()
 		output.fill((0, 0, 0, 0))
 		x = 0
 		for image in images:
 			if image == None:
-				x += 8
+				x += 8 + kerning
 			else:
 				output.blit(image, (x, 0))
-				x += image.get_width()
+				x += image.get_width() + kerning
 		self.cache[text] = output
 		
 		return output
