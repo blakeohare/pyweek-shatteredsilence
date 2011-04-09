@@ -14,6 +14,7 @@ class PlayScene(GameSceneBase):
 		self.tileHeight = levelSeed.height
 		self.level = GamePlay.Level(levelSeed)
 		self.levelSeed = levelSeed
+		self.selection_indicator = Resources.ImageLibrary.Get('selection_indicator.png')
 		self.cameraX = 0
 		self.cameraY = 0
 		self.dragStart = None
@@ -216,10 +217,8 @@ class PlayScene(GameSceneBase):
 			coords = sprite.RenderCoordinates(self.cameraX, self.cameraY)
 			left = coords[0] - 4
 			top = coords[1] + sprite.R - 3
-			width = sprite.R * 2 + 8
-			height = sprite.R + 6
 			
-			pygame.draw.ellipse(screen, (255, 255, 0), pygame.Rect(left, top, width, height), 2)
+			screen.blit(self.selection_indicator, (left - 2, top))
 	
 	def RenderDrag(self, screen):
 		
