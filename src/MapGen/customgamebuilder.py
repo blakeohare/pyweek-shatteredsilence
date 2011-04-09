@@ -155,7 +155,7 @@ class CustomGameBuilder:
 												'isCrowd' : isCrowd,
 												'mode' : ('individual', 'crowd')[isCrowd],
 												'progress' : True,
-												'minutes' : -1
+												'minutes' : self.minutes
 												}))
 		
 		_registeredSeeds = seeds

@@ -30,6 +30,14 @@ class PlayScene(GameSceneBase):
 		self.progress = 0.0
 		self.specializer = GamePlay.GetSpecializer(self.levelSeed.specialName)
 		self.auxillaryCounter = 0
+
+		self.seconds = -1
+		try:
+			self.seconds = self.levelSeed.minutes
+			if self.seconds != -1:
+				self.seconds = self.seconds * 60
+		except:
+			pass
 		
 		self.font_white = Resources.GetFont(255, 255, 255)
 		self.font_red = Resources.GetFont(255, 0, 0)
@@ -164,13 +172,24 @@ class PlayScene(GameSceneBase):
 		for sprite in selection:
 			if sprite.color == 255:
 				self.selection.append(sprite)
-			
+		
+	def GetTimeLeft(self):
+		if self.seconds == -1:
+			return None
+		return self.seconds - self.counter // 30
+		
 	def Update(self):
 		self.counter += 1
 		self.auxillaryCounter += 1
 		
 		self.level.Update()
 		
+		
+		timeLeft = self.GetTimeLeft()
+		
+		if timeLeft == 0:
+			self.next = GamePlay.LoseScene(self)
+				
 		self.UpdateCamera()
 		self.EnsureSelectionValid()
 		self.progress = self.level.GetProgress()
@@ -249,7 +268,20 @@ class PlayScene(GameSceneBase):
 		elif progress < 80: font = self.font_green
 		else: font = self.font_blue
 		screen.blit(font.Render(str(int(progress)) + '%'), (conversions_text.get_width(), 3))
-	
+		
+		timeLeft = self.GetTimeLeft()
+		if timeLeft != None:
+			minutes = timeLeft // 60
+			seconds = timeLeft % 60
+			output = str(minutes) + ':'
+			if seconds < 10:
+				output += '0'
+			output += str(seconds)
+			timeLeftText = self.font_yellow.Render('Time Left: ')
+			timeText = self.font_red.Render(output)
+			screen.blit(timeLeftText, (300, 3))
+			screen.blit(timeText, (300 + timeLeftText.get_width(), 3))
+		
 	def RenderSelection(self, screen):
 		for sprite in self.selection:
 			coords = sprite.RenderCoordinates(self.cameraX, self.cameraY)
