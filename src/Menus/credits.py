@@ -46,16 +46,17 @@ def _lineup():
 
 class Credits(GameSceneBase):
 	def __init__(self):
+		GameSceneBase.__init__(self)
 		global LINEUP
 		LINEUP = None
-		GameSceneBase.__init__(self)
+		_lineup()
 		
 	def ProcessInput(self, events):
 		pass
 
 	def Update(self):
 		self.next = Programming2()
-		#self.next = Art()
+		#self.next = Exit()
 		
 	def Render(self, screen):
 		screen.fill((0, 0, 0))
@@ -110,6 +111,42 @@ class CreditsBase(GameSceneBase):
 			offset += 3 + t.get_width()
 		return surf.subsurface(pygame.Rect(0,0,offset-3,16))
 
+class Exit(CreditsBase):
+	def __init__(self):
+		CreditsBase.__init__(self)
+		self._counter = 0
+		
+		self._header = self.RenderHeader('Thank you for playing')
+		self._tag = self._MakeName('Team Nerd Paradise')
+	
+	def Update(self):
+		CreditsBase.Update(self)
+		self._counter += 1
+	
+	def Render(self, screen):
+		screen.fill((0,0,0))
+		CreditsBase.Render(self, screen)
+		
+		counter = self._counter
+		start = 30
+
+		if counter == start:
+			for key in _lineup():
+				p = _lineup()[key]
+				if key != BLAKE:
+					p.SetMode(RETURN)
+		
+		if counter == start + RETURN_COUNT:
+			for key in _lineup():
+				p = _lineup()[key]
+				if key != BLAKE:
+					p.SetMode(WAITING)
+
+		salute = start + RETURN_COUNT + 5
+		
+		
+		print("Count: %d" % counter)
+
 class CBase2(CreditsBase):
 	def __init__(self, header, nameList, pplList):
 		CreditsBase.__init__(self)
@@ -138,10 +175,11 @@ class CBase2(CreditsBase):
 			screen.blit(self._names[i], ((200 - self._names[i].get_width()) / 2, yoffset))
 			yoffset += 20
 		
-		start = 80
+		start = 65
 		stop = start + WALK_COUNT
 		back = stop + 60
 		stop2 = back + RETURN_COUNT
+		shutdown = stop2 + 35
 
 		op = (1 - (counter / (2 * FADE_COUNT))) * 255
 		if op < 0:
@@ -171,7 +209,7 @@ class CBase2(CreditsBase):
 		
 		CreditsBase.Render(self, screen)
 		
-		if (counter > 340 and op >= 255):
+		if (counter > shutdown and op >= 255):
 			self.next = self.NextScene()
 
 class Art(CBase2):
@@ -232,7 +270,8 @@ class SpecialThanks(CBase2):
 		)
 	
 	def NextScene(self):
-		return Programming2()
+		#return Exit()
+		return Menus.Title()
 
 class Programming2(CBase2):
 	def __init__(self):

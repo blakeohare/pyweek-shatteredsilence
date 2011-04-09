@@ -24,6 +24,17 @@ ZOOM_LEVELS = [
 	'World'
 ]
 
+WHITE = pygame.Color(255, 255, 255)
+BLACK = pygame.Color(0, 0, 0)
+HOVER = pygame.Color(0, 110, 180)
+
+NONE = 0
+MAP_NEXT = 1
+PROG_NEXT = 2
+ZOOM_START = 3
+ARROW_LEFT = 4
+ARROW_RIGHT = 5
+
 class MapOptions(GameSceneBase):
 	def __init__(self):
 		GameSceneBase.__init__(self)
@@ -56,6 +67,7 @@ class MapOptions(GameSceneBase):
 		self._animStart = None
 		self._nextbg = None #next background
 		self._curScreenCache = None # previous bg
+		self._hover = None
 
 		# set stuff up
 		self._SetDefaults()
@@ -142,12 +154,12 @@ class MapOptions(GameSceneBase):
 		gcy = _GetCenterY
 		gcx = _GetCenterX
 		
-		text = self._font.Render("Start", pygame.Color(255, 255, 255))
+		text = self._font.Render("Start", (WHITE, HOVER)[self._hover == ZOOM_START])
 		nextx = _GetCenterX(screen, text)
 		screen.blit(text, (nextx, 400))
 		self._font_r = pygame.Rect(nextx, 400, text.get_width(), text.get_height())
 
-		text = self._font.Render("Zoom Level", pygame.Color(255, 255, 255))
+		text = self._font.Render("Zoom Level", BLACK)
 		screen.blit(text, (gcx(screen, text), 50))
 		yoffset = 50 + text.get_height()
 
@@ -157,17 +169,19 @@ class MapOptions(GameSceneBase):
 				if t > self._zoom_size:
 					self._zoom_size = t
 		
-		zsz = self._font.Render(ZOOM_LEVELS[self._zoom_level], pygame.Color(255, 255, 255))
+		zsz = self._font.Render(ZOOM_LEVELS[self._zoom_level], BLACK)
 		x = gcx(screen, zsz)
 		screen.blit(zsz, (x, yoffset + 30))
 		
 		x1 = ((640 - self._zoom_size)/2) - self._time_left.get_width() - 20
-		screen.blit(self._time_left, (x1, yoffset + 30))
+		surf = (self._time_left, self._time_left_hover)[self._hover == ARROW_LEFT]
+		screen.blit(surf, (x1, yoffset + 30))
 		if (not self._zoom_left_r):
 			self._zoom_left_r = pygame.Rect(x1, yoffset+30, self._time_left.get_width(), self._time_left.get_height())
 		
 		x2 = x1 + self._time_left.get_width() + self._zoom_size + 40
-		screen.blit(self._time_right, (x2, yoffset + 30))
+		surf = (self._time_right, self._time_right_hover)[self._hover == ARROW_RIGHT]
+		screen.blit(surf, (x2, yoffset + 30))
 		if (not self._zoom_right_r):
 			self._zoom_right_r = pygame.Rect(x2, yoffset+30, self._time_right.get_width(), self._time_right.get_height())
 
@@ -178,6 +192,8 @@ class MapOptions(GameSceneBase):
 	def _ZoomLevelUIInput(self, events):
 		for e in events:
 			if e.type == pygame.MOUSEBUTTONUP and e.button == 1:
+				if not self._zoom_left_r:
+					return
 				x = e.pos[0]
 				y = e.pos[1]
 				if (self._font_r.collidepoint(x, y)):
@@ -186,6 +202,18 @@ class MapOptions(GameSceneBase):
 					self._decZoom()
 				elif (self._zoom_right_r.collidepoint(x, y)):
 					self._incZoom()
+			if e.type == pygame.MOUSEMOTION:
+				self._hover = None
+				if not self._zoom_left_r:
+					return
+				x = e.pos[0]
+				y = e.pos[1]
+				if (self._font_r.collidepoint(x, y)):
+					self._hover = ZOOM_START
+				elif (self._zoom_left_r.collidepoint(x, y)):
+					self._hover = ARROW_LEFT
+				elif (self._zoom_right_r.collidepoint(x, y)):
+					self._hover = ARROW_RIGHT
 	
 	def _incZoom(self):
 		self._zoom_level += 1
@@ -201,7 +229,7 @@ class MapOptions(GameSceneBase):
 		gcy = _GetCenterY
 		gcx = _GetCenterX
 		
-		text = self._font.Render("Next")
+		text = self._font.Render("Next", (WHITE, HOVER)[self._hover == PROG_NEXT])
 		nextx = _GetCenterX(screen, text)
 		screen.blit(text, (nextx, 400))
 		if not self._font_r:
@@ -219,6 +247,8 @@ class MapOptions(GameSceneBase):
 			self._mode_zoom_selected = Resources.ImageLibrary.Get('MapOptions/prog-time/progress_selected.png')
 			self._time_right = Resources.ImageLibrary.Get('MapOptions/prog-time/right.png')
 			self._time_left = Resources.ImageLibrary.Get('MapOptions/prog-time/left.png')
+			self._time_right_hover = Resources.ImageLibrary.Get('MapOptions/prog-time/right_hover.png')
+			self._time_left_hover = Resources.ImageLibrary.Get('MapOptions/prog-time/left_hover.png')
 		
 		cont = self._mode_cont
 		zoom = self._mode_zoom
@@ -256,12 +286,14 @@ class MapOptions(GameSceneBase):
 		delta = 40
 		fx = base - self._time_left.get_width() - delta
 		y = yoffset + 30
-		screen.blit(self._time_left, (fx, y))
+		surf = (self._time_left, self._time_left_hover)[self._hover == ARROW_LEFT]
+		screen.blit(surf, (fx, y))
 		if not self._time_left_r:
 			self._time_left_r = pygame.Rect(fx, y, self._time_left.get_width(), self._time_left.get_height())
 			
 		fx = base + unl_width + delta
-		screen.blit(self._time_right, (fx, y))
+		surf = (self._time_right, self._time_right_hover)[self._hover == ARROW_RIGHT]
+		screen.blit(surf, (fx, y))
 		if not self._time_right_r:
 			self._time_right_r = pygame.Rect(fx, y, self._time_right.get_width(), self._time_right.get_height())
 		
@@ -269,6 +301,8 @@ class MapOptions(GameSceneBase):
 	def _ProgTimeUIInput(self, events):
 		for e in events:
 			if e.type == pygame.MOUSEBUTTONUP and e.button == 1:
+				if not self._mode_cont_r:
+					return
 				x = e.pos[0]
 				y = e.pos[1]
 				if (self._font_r.collidepoint(x, y)):
@@ -281,7 +315,19 @@ class MapOptions(GameSceneBase):
 					self._incTime()
 				elif (self._time_left_r.collidepoint(x, y)):
 					self._decTime()
-				
+			elif e.type == pygame.MOUSEMOTION:
+				self._hover = None
+				if not self._time_left_r:
+					return
+				x = e.pos[0]
+				y = e.pos[1]
+				if (self._font_r.collidepoint(x, y)):
+					self._hover = PROG_NEXT
+				elif (self._time_left_r.collidepoint(x, y)):
+					self._hover = ARROW_LEFT
+				elif (self._time_right_r.collidepoint(x, y)):
+					self._hover = ARROW_RIGHT
+
 	def _incTime(self):
 		if (self._time == -1):
 			self._time = 2
@@ -307,13 +353,13 @@ class MapOptions(GameSceneBase):
 		gcy = _GetCenterY
 		gcx = _GetCenterX
 		
-		text = self._font.Render("Next")
+		text = self._font.Render("Next", (WHITE, HOVER)[self._hover == MAP_NEXT])
 		nextx = _GetCenterX(screen, text)
 		screen.blit(text, (nextx, 400))
 		if not self._font_r:
 			self._font_r = pygame.Rect(nextx, 400, text.get_width(), text.get_height())
 		
-		text = self._font.Render("Map Size")
+		text = self._font.Render("Map Size", WHITE)
 		screen.blit(text, (gcx(screen, text), 50))
 		yoffset = 50 + text.get_height()
 
@@ -349,7 +395,16 @@ class MapOptions(GameSceneBase):
 	
 	def _MapUIInput(self, events):
 		for e in events:
+			if e.type == pygame.MOUSEMOTION:
+				self._hover = NONE
+				x = e.pos[0]
+				y = e.pos[1]
+				if (self._font_r and self._font_r.collidepoint(x, y)):
+					self._hover = MAP_NEXT
 			if e.type == pygame.MOUSEBUTTONUP and e.button == 1:
+				if (not self._font_r):
+					return
+				
 				x = e.pos[0]
 				y = e.pos[1]
 				if (self._font_r.collidepoint(x, y)):

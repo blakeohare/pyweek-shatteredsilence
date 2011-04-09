@@ -42,11 +42,11 @@ class Title(GameSceneBase):
 		self._quit_r = None
 		self._hover = NONE
 		
-		self.text = Resources.ImageLibrary.Get('txt.png')
-		self.shattered = pygame.Surface((435, 117), pygame.SRCALPHA).convert_alpha()
-		self.shattered.blit(self.text, (0, 0))
-		self.silence = pygame.Surface((286, 124), pygame.SRCALPHA).convert_alpha()
-		self.silence.blit(self.text, (-91, -222))
+		#self.text = Resources.ImageLibrary.Get('txt.png')
+		#self.shattered = pygame.Surface((435, 117), pygame.SRCALPHA).convert_alpha()
+		#self.shattered.blit(self.text, (0, 0))
+		#self.silence = pygame.Surface((286, 124), pygame.SRCALPHA).convert_alpha()
+		#self.silence.blit(self.text, (-91, -222))
 		
 	def ProcessInput(self, events):
 		for event in events:
@@ -71,6 +71,9 @@ class Title(GameSceneBase):
 				x = event.pos[0]
 				y = event.pos[1]
 				
+				if not self._story_r:
+					return
+				
 				if (self._story_r.collidepoint(x, y)):
 					self.next = PlayScene(LevelSeed('level2', None))
 				elif (self._custom_r.collidepoint(x, y)):
@@ -91,41 +94,41 @@ class Title(GameSceneBase):
 		v = int(120 + math.sin(self.counter * 3.14159 * 2 / 220.0) * 50)
 		pygame.draw.rect(screen, (v, v, v), pygame.Rect(0, 0, 640, 480)) 
 		
-		screen.blit(self.shattered, (0, 0))
-		screen.blit(self.silence, (297, 45))
+		#screen.blit(self.shattered, (0, 0))
+		#screen.blit(self.silence, (297, 45))
 		
 		titleimage = ImageLibrary.Get('title_bg.png')
 		screen.blit(titleimage, (0, 0))
 		
 		f = self._font.Render
 		h = self._hover
-		x = 44
-		y = 316
 		text = f('Story Mode', COLOR[h == STORY])
+		x = (250 - text.get_width()) / 2
+		y = 283
 		screen.blit(text, (x, y))
 		if (not self._story_r):
 			self._story_r = pygame.Rect(x, y, text.get_width(), text.get_height())
-		x = 39
-		y = 353
 		text = f('Custom Game', COLOR[h == CUSTOM])
+		x = (250 - text.get_width()) / 2
+		y = 316
 		screen.blit(text, (x, y))
 		if (not self._custom_r):
 			self._custom_r = pygame.Rect(x, y, text.get_width(), text.get_height())
-		x = 43
-		y = 394
 		text = f('Rewatch Intro', COLOR[h == INTRO])
+		x = (250 - text.get_width()) / 2
+		y = 353
 		screen.blit(text, (x, y))
 		if (not self._intro_r):
 			self._intro_r = pygame.Rect(x, y, text.get_width(), text.get_height())
-		x = 67
-		y = 433
 		text = f('Credits', COLOR[h == CREDITS])
+		x = (250 - text.get_width()) / 2
+		y = 394
 		screen.blit(text, (x, y))
 		if (not self._credits_r):
 			self._credits_r = pygame.Rect(x, y, text.get_width(), text.get_height())
-		x = 570
-		y = 433
 		text = f('Quit', COLOR[h == QUIT])
+		x = (250 - text.get_width()) / 2
+		y = 433
 		screen.blit(text, (x, y))
 		if (not self._quit_r):
 			self._quit_r = pygame.Rect(x, y, text.get_width(), text.get_height())
