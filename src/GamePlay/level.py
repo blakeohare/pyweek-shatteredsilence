@@ -302,7 +302,7 @@ class Level:
 				tile = tiles[x][y]
 				drawX = tile.PixelX - cameraX
 				drawY = tile.PixelY - cameraY
-				screen.blit(tile.GetImage(counter), (drawX, drawY))
+				screen.blit(tile.GetImage(counter, tiles), (drawX, drawY))
 				y += 1
 			x += 1 
 

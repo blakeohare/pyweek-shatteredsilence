@@ -1,3 +1,4 @@
+import pygame
 import os
 from Resources import ImageLibrary
 
@@ -10,6 +11,10 @@ class TileTemplate:
 
 	def GetImage(self, colorization):
 		return ImageLibrary.Get(self.image, colorization)
+
+def GetTileTemplateFromStore(key):
+	global _tileStore
+	return _tileStore[key]
 
 _tilesToBeLoaded = {}
 
@@ -54,7 +59,7 @@ _tileStore = {
 			'int/door' : TileTemplate('Interior/door', False),
 			'int/wall' : TileTemplate('Interior/wallpaper', False),
 			'int/floor' : TileTemplate('Interior/floor', True),
-			'int/phonograph' : TileTemplate('Interior/phonograph', True),
+			'int/phonograph' : TileTemplate('Interior/phonograph', True, True),
 			
 			'int/trim1' : TileTemplate('Interior/trim1', False),
 			'int/trim2' : TileTemplate('Interior/trim2', False),
@@ -307,15 +312,60 @@ class Tile:
 		self.permacolor = -1 # if colorization is lower than this, use this value instead
 		self.image = template.GetImage(0)
 		self.get_image = self.template.GetImage
+		self.patchBG = template.patchBG
+		self.bgTile = None
+		
 	
 	def Update(self, counter):
-		self.colorization -= 5
+		pass #self.colorization -= 5
 	
-	def GetImage(self, counter):
+	def GetImage(self, counter, tiles):
+		
 		color = (self.colorization - counter) * 3 + 255
 		if color < self.permacolor:
 			color = self.permacolor
-		return self.get_image(color)
+			
+		if self.patchBG:
+			if self.bgTile == None:
+				x = self.X
+				y = self.Y
+				width = len(tiles)
+				height = len(tiles[0])
+				grass = GetTileTemplateFromStore('grass')
+				sidewalk = GetTileTemplateFromStore('sidewalk')
+				floor = GetTileTemplateFromStore('int/floor')
+				self.t = pygame.Surface((32, 32))
+				template = None
+				
+				if x > 0:
+					n = tiles[x - 1][y]
+					if n.template == grass or n.template == sidewalk or n.template == floor:
+						template = n.template
+				if template == None and y > 0:
+					n = tiles[x][y - 1]
+					if n.template == grass or n.template == sidewalk or n.template == floor:
+						template = n.template
+				if template == None and x < width - 1:
+					n = tiles[x + 1][y]
+					if n.template == grass or n.template == sidewalk or n.template == floor:
+						template = n.template
+				if template == None and y < height - 1:
+					n = tiles[x][y + 1]
+					if n.template == grass or n.template == sidewalk or n.template == floor:
+						template = n.template
+				if template == None:
+					template = grass
+				
+				self.bgTile = template
+			
+			self.t.blit(self.bgTile.GetImage(color), (0, 0))
+			
+		img = self.get_image(color)
+		
+		if self.patchBG:
+			self.t.blit(img, (0, 0))
+			return self.t
+		return img
 	
 	def SetMinColorIntensity(self, color):
 		self.permacolor = color
