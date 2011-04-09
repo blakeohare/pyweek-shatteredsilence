@@ -1,11 +1,14 @@
 import MapGen
 import GamePlay
+import random
+
 
 _registeredSeeds = None
 
 def PopNextSeed():
 	global _registeredSeeds
 	
+	print _registeredSeeds
 	if len(_registeredSeeds) == 0: return None
 	first = _registeredSeeds[0]
 	_registeredSeeds = _registeredSeeds[1:]
@@ -109,11 +112,31 @@ class CustomGameBuilder:
 				y += 1
 			
 		
-		# blast out a bunch of sprites if the tile is not occupied
+		addTheseSprites = []
+		# blast out a bunch of sprites. PlayScene will automatically move sprites if they aren't standing in a valid place (like on a roof)
+		for i in range(100):
+			rx = int(random.random() * lastWidth - 4) + 2
+			ry = int(random.random() * lastHeight - 4) + 2
+			addTheseSprites.append((rx, ry))
 		
 		# sprites in previous level zone move to previous level
 		
-		# add 4 sprites to each border region of each level
+		for i in range(len(levels)):
+			size = levels[i]
+			offset = offsets[i]
+			level = maps[i]
+			
+			newSpriteList = []
+			for sprite in addTheseSprites:
+				if sprite[0] < offset[0] or sprite[0] >= offset[0] + size[0] or sprite[1] < offset[1] or sprite[1] >= offset[1] + size[1]:
+					newSpriteList.append(sprite)
+				else:
+					x = sprite[0] - offset[0]
+					y = sprite[1] - offset[1]
+					level.citizens.append((x, y, random.random() < .5, random.choice([1, 2, 3, 4]), x, y))
+			addTheseSprites = newSpriteList
+		
+		# add a sprite to each border region of each level
 		for level in maps:
 			level.citizens.append((1, 1, True, 1, 1, 1))
 		

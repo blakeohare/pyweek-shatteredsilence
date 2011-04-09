@@ -2,10 +2,17 @@ import GamePlay
 
 class Level:
 	
+	
+	def TileNotPassable(self, x, y):
+		isPassable = self.tiles[x % self.width][y % self.height].IsPassable
+		if isPassable:
+			self.OMGHAX = (x % self.width, y % self.height)
+		return not isPassable
+	
 	def __init__(self, levelseed):
 		self.width = levelseed.width
 		self.height = levelseed.height
-		
+		self.OMGHAX = None
 		self.pixelWidth = self.width * 32
 		self.pixelHeight = self.height * 32
 		self.InitializeTiles(self.width, self.height, levelseed.map)
@@ -25,6 +32,14 @@ class Level:
 				sprite.Crowdify()
 			if x != tx or y != ty:
 				sprite.SetWaypoint(tx * 32, ty * 32)
+			
+			fx = sprite.X
+			fy = sprite.Y
+			while self.TileNotPassable(fx // 32, fy // 32):
+				fy+= 1
+				
+			sprite.X = self.OMGHAX[0] * 32 + 16
+			sprite.Y = self.OMGHAX[1] * 32 + 16
 			self.sprites.append(sprite)
 			self.citizens.append(sprite)
 		
