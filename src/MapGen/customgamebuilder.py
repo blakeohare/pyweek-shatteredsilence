@@ -94,6 +94,11 @@ class CustomGameBuilder:
 		
 		# blit big map onto smaller maps
 		
+		for i in range(len(offsets) - 1):
+			x = offsets[i][0] - offsets[i + 1][0]
+			y = offsets[i][1] - offsets[i + 1][1]
+			maps[i + 1].spriteCarryOver = (x, y)
+		
 		for i in range(len(levels) - 1):
 			offset = offsets[i]
 			xOffset = offset[0]
@@ -144,6 +149,7 @@ class CustomGameBuilder:
 		maps = maps[self.startZoom:]
 		offsets = offsets[self.startZoom:]
 		
+		
 		seeds = []
 		for i in range(len(levels)):
 			
@@ -161,5 +167,7 @@ class CustomGameBuilder:
 		_registeredSeeds = seeds
 		first = _registeredSeeds[0]
 		_registeredSeeds = _registeredSeeds[1:]
+		if not self.doProgress:
+			_registeredSeeds = []
 		
 		return GamePlay.PlayScene(first)
