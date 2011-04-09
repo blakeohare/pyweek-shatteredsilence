@@ -1,3 +1,4 @@
+import os
 import time
 import Game
 import GamePlay
@@ -40,7 +41,7 @@ class LoadingScreen(Game.GameSceneBase):
 		while True:
 			progress = self.LoadNextImage()
 			if progress == None or progress >= 100:
-				self.next = Menus.Title()
+				self.MoveToNextScene()
 				Resources.ImageLibrary.fullyInitialized = True
 				
 				self.progress = 100
@@ -48,6 +49,13 @@ class LoadingScreen(Game.GameSceneBase):
 			else:
 				self.progress = progress
 		self.counter += 1
+	
+	def MoveToNextScene(self):
+		if os.path.exists('cookie.txt'):
+			
+			self.next = Menus.Title()
+		else:
+			self.next = Menus.Intro()
 	
 	def Render(self, screen):
 		

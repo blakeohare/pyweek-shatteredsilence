@@ -45,6 +45,10 @@ class IntroBase(GameSceneBase):
 		
 		if skip:
 			self.next = Menus.Title()
+			c = open('cookie.txt', 'wt')
+			c.write("Cookie Good! Mmmmmm...")
+			c.close()
+		
 	
 	def Update(self):
 		self.counter += 1
@@ -451,7 +455,6 @@ class IntroD(IntroBase):
 			self.BlitText(self.lineD, (bx, by + 20), bv - dimValue)
 		
 		if dimValue == 255:
-			#print 'CHANGE!'
 			self.next = IntroE()
 			
 		self.DoBlits(screen)
@@ -486,7 +489,7 @@ class IntroE(IntroBase):
 		f = bga - dim2
 		if f < 0: f = 0
 		if f > 255: f = 255
-		print f
+
 		self.temp.blit(self.bg, (0, 0))
 		self.temp.set_alpha(f)
 		screen.blit(self.temp, (0, 0))
@@ -597,6 +600,9 @@ class IntroF(IntroBase):
 			if dim2 > 255: dim2 = 255
 			if ecounter >= 110:
 				self.next = Menus.Title()
+				c = open('cookie.txt', 'wt')
+				c.write("Cookie Good! Mmmmmm...")
+				c.close()
 		
 		if dcounter >= 0:
 		
@@ -607,7 +613,7 @@ class IntroF(IntroBase):
 			y = 300 - dcounter // 2
 			x = 50
 			for d in display:
-				print 255 - dim2, ecounter
+
 				self.BlitText(self.MakeText((160, 225, 255), d), (x, y), 255 - dim2)
 				x += 100
 				y += 40
