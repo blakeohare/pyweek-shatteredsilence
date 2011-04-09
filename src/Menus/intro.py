@@ -38,8 +38,11 @@ class IntroBase(GameSceneBase):
 		skip = False
 		for event in events:
 			
-			if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
-				skip = True
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_RETURN:
+					skip = True
+				if event.key == pygame.K_ESCAPE:
+					skip = True
 			if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
 				skip = True
 		

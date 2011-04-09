@@ -46,6 +46,8 @@ def _lineup():
 
 class Credits(GameSceneBase):
 	def __init__(self):
+		global LINEUP
+		LINEUP = None
 		GameSceneBase.__init__(self)
 		
 	def ProcessInput(self, events):
@@ -71,8 +73,11 @@ class CreditsBase(GameSceneBase):
 	
 	def ProcessInput(self, events):	
 		for event in events:
-			if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
-				self.next = Menus.Title()
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_RETURN:
+					self.next = Menus.Title()
+				elif event.key == pygame.K_ESCAPE:
+					self.next = Menus.Title()
 			if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
 				self.next = Menus.Title()
 
