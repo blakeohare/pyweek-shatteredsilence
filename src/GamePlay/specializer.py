@@ -17,7 +17,8 @@ def GetSpecializer(levelName):
 class SpecializerBase:
 	
 	def __init__(self):
-		pass
+		self.narrator_color = (80, 140, 210)
+		self.nar_color = self.narrator_color
 	
 	def ShouldShowMessage(self, counter, conversionProgress):
 		return None
@@ -47,8 +48,9 @@ class SpecializerBase:
 	
 class Level1Specializer(SpecializerBase):
 	def __init__(self):
+		SpecializerBase.__init__(self)
 		self.lapis = None
-		self.narrator_color = (0, 60, 128)
+		
 		self.lapis_color = (243, 98, 210)
 		self.maple_color = (255, 107, 0)
 		self.magic_counter = 852
@@ -179,7 +181,7 @@ class Level1Specializer(SpecializerBase):
 		
 class Level2Specializer(SpecializerBase):
 	def __init__(self):
-		pass
+		SpecializerBase.__init__(self)
 	
 	def DoSetup(self, playScene, level):
 		level.citizens[0].Colorize()
@@ -188,35 +190,50 @@ class Level2Specializer(SpecializerBase):
 		self.SetMinColor(level, 10, 10, 18, 19, 128)
 		self.SetMinColor(level, 11, 11, 17, 18, 255)
 	
+	def ShouldShowMessage(self, counter, conversionProgress):
+		if counter == 2:
+			return [self.nar_color,
+				"Once you culture at least 80% of the", 
+				"population in the current area, the bounds",
+				"of the level will expand, increasing the",
+				"area by a factor of Nine Times."]
 	
 class Level3Specializer(SpecializerBase):
 	def __init__(self):
-		pass
+		SpecializerBase.__init__(self)
+	
+	def ShouldShowMessage(self, counter, conversionProgress):
+		
+		if counter == 2:
+			return [self.nar_color,
+				"Watch out for police.",
+				"They probably won't approve of you",
+				"disrupting the peace."]
 	
 class Level4Specializer(SpecializerBase):
 	def __init__(self):
-		pass
-	
+		SpecializerBase.__init__(self)
+		
 class Level5Specializer(SpecializerBase):
 	def __init__(self):
-		pass
-	
+		SpecializerBase.__init__(self)
+		
 class Level6Specializer(SpecializerBase):
 	def __init__(self):
-		pass
-	
+		SpecializerBase.__init__(self)
+		
 	def DoSetup(self, playScene, level):
 		level.citizens[0].Colorize()
-	
+		
 class Level7Specializer(SpecializerBase):
 	def __init__(self):
-		pass
-	
+		SpecializerBase.__init__(self)
+		
 class Level8Specializer(SpecializerBase):
 	def __init__(self):
-		pass
+		SpecializerBase.__init__(self)
 	
 class Level9Specializer(SpecializerBase):
 	def __init__(self):
-		pass
+		SpecializerBase.__init__(self)
 	
