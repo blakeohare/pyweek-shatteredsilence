@@ -24,6 +24,17 @@ class CRoad(MapItem):
 		top = self.startY
 		right = self.endX
 		bottom = self.endY
+		
+		if left > right:
+			t = left
+			left = right
+			right = t
+		if bottom < top:
+			t = bottom
+			bottom = top
+			top = t
+		
+		
 		x = left
 		while x <= right:
 			y = top

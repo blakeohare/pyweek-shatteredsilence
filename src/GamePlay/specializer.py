@@ -33,7 +33,7 @@ class SpecializerBase:
 		pass
 	
 	def Shortcircuited(self, levelName):
-		#return levelName in ['level1', 'level2', 'level3']
+		return levelName in ['level6', 'level7', 'level8']
 		return False
 	
 	def SetMinColor(self, level, left, top, right, bottom, value):
@@ -210,14 +210,21 @@ class Level3Specializer(SpecializerBase):
 				"They probably won't approve of you",
 				"disrupting the peace."]
 	
+	def DoSetup(self, playScene, level):
+		level.citizens[0].Decolorize()
+	
 class Level4Specializer(SpecializerBase):
 	def __init__(self):
 		SpecializerBase.__init__(self)
 		
+	def DoSetup(self, playScene, level):
+		level.citizens[0].Decolorize()
 class Level5Specializer(SpecializerBase):
 	def __init__(self):
 		SpecializerBase.__init__(self)
 		
+	def DoSetup(self, playScene, level):
+		level.citizens[0].Decolorize()
 class Level6Specializer(SpecializerBase):
 	def __init__(self):
 		SpecializerBase.__init__(self)
@@ -229,11 +236,19 @@ class Level7Specializer(SpecializerBase):
 	def __init__(self):
 		SpecializerBase.__init__(self)
 		
+	def DoSetup(self, playScene, level):
+		level.citizens[0].Decolorize()
+		
 class Level8Specializer(SpecializerBase):
 	def __init__(self):
 		SpecializerBase.__init__(self)
 	
+	def DoSetup(self, playScene, level):
+		level.citizens[0].Decolorize()
+		
 class Level9Specializer(SpecializerBase):
 	def __init__(self):
 		SpecializerBase.__init__(self)
 	
+	def DoSetup(self, playScene, level):
+		level.citizens[0].Decolorize()

@@ -1,3 +1,140 @@
-CITIZEN 8 3 M 1
-CITIZEN 19 3 F 3
-POLICE 10 10 1
+CITIZEN 5 29 M 1
+CITIZEN 9 29 M 1
+CITIZEN 55 2 M 1
+CITIZEN 38 1 M 1
+CITIZEN 72 4 M 1
+CITIZEN 78 4 M 1
+CITIZEN 78 0 M 1
+CITIZEN 60 44 M 1
+CITIZEN 65 42 M 1
+CITIZEN 67 46 M 1
+CITIZEN 61 49 M 1
+CITIZEN 70 49 M 1
+CITIZEN 70 43 M 1
+CITIZEN 57 48 M 1
+
+CARRYOVER 20 15 COLOR
+
+TILE crowd_bhouse 66 28
+
+TILE crowd_building 6 30
+TILE crowd_building 6 31
+TILE crowd_building 8 31
+
+CROAD 40 45 40 59
+CROAD 19 29 0 29
+CROAD 36 8 36 14
+CROAD 60 29 79 29
+CROAD 65 29 65 59
+CROAD 60 42 70 42
+CROAD 70 42 70 48
+CROAD 5 30 5 33
+CROAD 5 33 9 33
+CROAD 9 33 9 30
+TILE cobblestone 5 28
+TILE cobblestone 9 28
+TILE cobblestone 5 27
+TILE cobblestone 6 27
+TILE cobblestone 7 27
+TILE cobblestone 8 27
+TILE cobblestone 9 27
+TILE crowd_bhouse 6 28
+TILE crowd_ghouse 7 28
+TILE crowd_phouse 8 28
+TILE crowd_bhouse 10 28
+RECT crowd_tree 0 0 24 19
+CROAD 36 7 36 0
+CROAD 70 49 57 49
+CROAD 57 49 57 45
+CROAD 57 46 70 46
+CROAD 60 43 60 46
+
+RECT crowd_tree 0 19 15 5
+RECT crowd_tree 16 19 3 3
+RECT crowd_tree 4 38 8 8
+RECT crowd_tree 20 36 2 4
+RECT crowd_tree 26 46 10 8
+RECT crowd_tree 45 47 5 6
+RECT crowd_tree 58 45 1 1
+RECT crowd_tree 60 31 2 2
+RECT crowd_tree 43 8 9 7
+RECT crowd_tree 47 0 3 8
+RECT crowd_tree 65 16 10 8
+RECT crowd_tree 50 7 1 1
+RECT crowd_tree 52 10 1 5
+RECT crowd_tree 53 13 1 2
+RECT crowd_tree 54 14 1 1
+RECT crowd_tree 64 17 1 6
+RECT crowd_tree 66 24 3 2
+RECT crowd_tree 72 24 2 1
+RECT crowd_tree 75 17 1 3
+RECT crowd_tree 68 15 3 1
+RECT crowd_tree 69 32 11 6
+RECT crowd_tree 67 44 2 1
+RECT crowd_tree 67 33 2 2
+RECT crowd_tree 68 35 1 1
+RECT crowd_tree 72 38 8 1
+RECT crowd_tree 76 39 4 1
+RECT crowd_tree 76 31 4 1
+RECT crowd_tree 42 11 1 4
+RECT crowd_tree 44 7 3 1
+RECT crowd_tree 46 4 1 3
+RECT crowd_tree 24 3 1 9
+RECT crowd_tree 25 5 1 4
+RECT crowd_tree 23 20 1 1
+RECT crowd_tree 0 24 12 1
+RECT crowd_tree 0 39 4 4
+RECT crowd_tree 3 43 1 1
+RECT crowd_tree 8 50 5 5
+RECT crowd_tree 25 47 1 3
+
+CROAD 78 29 78 0
+CROAD 79 4 71 4
+CROAD 71 4 71 0
+TILE crowd_bhouse 54 2
+TILE crowd_bhouse 57 3
+TILE crowd_tree 57 2
+CROAD 37 2 41 2
+CROAD 41 2 41 0
+TILE crowd_building 37 41
+TILE crowd_tree 38 41
+TILE crowd_building 61 45
+TILE crowd_building 62 45
+TILE crowd_building 64 45
+TILE crowd_building 59 48
+TILE crowd_building 58 48
+TILE crowd_building 64 48
+TILE crowd_building 66 48
+TILE crowd_buildingbottom 67 48
+TILE crowd_buildingtop 67 47
+TILE crowd_bhouse 66 45
+TILE crowd_ghouse 67 45
+TILE crowd_phouse 68 45
+TILE crowd_bhouse 69 45
+TILE crowd_ghouse 66 43
+TILE crowd_ghouse 69 44
+TILE crowd_bhouse 66 44
+TILE crowd_phouse 67 43
+TILE crowd_phouse 61 43
+TILE crowd_ghouse 68 43
+TILE crowd_ghouse 69 47
+TILE crowd_phouse 69 43
+
+TILE crowd_ghouse 39 1
+TILE crowd_phouse 37 1
+
+TILE crowd_building 62 43
+TILE crowd_buildingbottom 62 48
+TILE crowd_buildingtop 62 47
+TILE crowd_buildingbottom 63 48
+TILE crowd_buildingtop 63 47
+TILE crowd_buildingbottom 64 41
+TILE crowd_buildingtop 64 40
+
+CROAD 71 1 79 1
+RECT crowd_tree 12 39 2 5
+
+RECT crowd_tree 11 53 5 5
+RECT crowd_tree 10 55 5 5
+RECT crowd_tree 13 52 1 1
+RECT crowd_tree 9 49 2 1

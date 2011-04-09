@@ -1,5 +1,6 @@
 CITIZEN 8 3 M 1
-CITIZEN 19 3 F 3
+CITIZEN 12 3 F 3
+CITIZEN 5 7 M 1
 POLICE 10 10 1
 
 CROAD 3 3 9 3
@@ -7,7 +8,42 @@ CROAD 3 3 3 9
 CROAD 3 9 9 9
 CROAD 9 3 9 9
 CROAD 6 0 6 12
-CROAD 0 6 12 6
+CROAD 0 6 18 6
+
+TILE crowd_phouse 10 7
+TILE crowd_bhouse 11 7
+TILE crowd_ghouse 10 8
+TILE crowd_phouse 11 8
+
+TILE crowd_bhouse 14 7
+TILE crowd_bhouse 13 7
+TILE crowd_phouse 14 8
+TILE crowd_ghouse 13 8
+
+TILE crowd_phouse 10 10
+TILE crowd_bhouse 11 10
+TILE crowd_ghouse 10 11
+TILE crowd_phouse 11 11
+
+TILE crowd_ghouse 14 10
+TILE crowd_phouse 13 10
+TILE crowd_bhouse 14 11
+TILE crowd_ghouse 13 11
+
+TILE crowd_tree 10 4
+TILE crowd_tree 12 4
+TILE crowd_tree 14 4
+
+CROAD 10 3 15 3
+CROAD 15 5 15 3
+
+
+RECT cobblestone 12 7 1 5
+RECT cobblestone 10 9 5 1
+
+CROAD 9 10 9 12
+CROAD 9 12 15 12
+CROAD 15 6 15 12
 
 TILE crowd_buildingtop 4 4
 TILE crowd_buildingbottom 4 5
@@ -16,4 +52,16 @@ TILE crowd_building 8 4
 TILE crowd_buildingtop 8 7
 TILE crowd_buildingbottom 8 8
 
-TILE crowd_bhouse 8 6
+
+CROAD 19 6 19 6
+CROAD 6 13 6 14
+RECT crowd_tree 17 9 3 6
+RECT crowd_tree 0 11 4 4
+RECT crowd_tree 8 0 12 1
+RECT crowd_tree 11 1 9 1
+TILE crowd_tree 1 1
+TILE crowd_tree 0 10
+TILE crowd_tree 4 13
+TILE crowd_tree 19 8
+TILE crowd_tree 16 14
+TILE crowd_tree 18 2

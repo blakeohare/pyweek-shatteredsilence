@@ -73,7 +73,7 @@ class Title(GameSceneBase):
 					return
 				
 				if (self._story_r.collidepoint(x, y)):
-					self.next = PlayScene(LevelSeed('level1', None))
+					self.next = PlayScene(LevelSeed('level6', None))
 				elif (self._custom_r.collidepoint(x, y)):
 					self.next = Menus.MapOptions()
 				elif (self._intro_r.collidepoint(x, y)):

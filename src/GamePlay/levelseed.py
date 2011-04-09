@@ -103,25 +103,25 @@ class LevelSeed:
 			self.width = 64
 			self.height = 64
 		elif special == 'level4':
-			self.width = 180
+			self.width = 150
 			self.height = 100
 		elif special == 'level5':
-			self.width = 40
-			self.height = 32
+			self.width = 250
+			self.height = 180
 		elif special == 'level6':
 			self.mode = 'crowd'
-			self.width = 96
-			self.height = 64
+			self.width = 20
+			self.height = 15
 		elif special == 'level7':
 			self.mode = 'crowd'
-			self.width = 180
-			self.height = 100
+			self.width = 40
+			self.height = 30
 		elif special == 'level8':
 			self.mode = 'crowd'
-			self.width = 40
-			self.height = 32
+			self.width = 80
+			self.height = 60
 		elif special == 'level9':
 			self.mode = 'crowd'
-			self.width = 96
-			self.height = 64
+			self.width = 160
+			self.height = 120
 		self.map = MapGen.BuildMap(special, self.width, self.height, previousLevelSeed, previousLevel, None)

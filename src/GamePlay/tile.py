@@ -36,7 +36,7 @@ _tileStore = {
 			'crowd_building' : TileTemplate('Crowd/buildinga', False),
 			'crowd_buildingtop' : TileTemplate('Crowd/buildingbtop', False),
 			'crowd_buildingbottom' : TileTemplate('Crowd/buildingbbottom', False),
-			'crowd_tree' : TileTemplate('Crowd/trees', False),
+			'crowd_tree' : TileTemplate('Crowd/trees', False, True),
 			'crowd_bhouse' : TileTemplate('Crowd/bhouse', False),
 			'crowd_phouse' : TileTemplate('Crowd/phouse', False),
 			'crowd_ghouse' : TileTemplate('Crowd/ghouse', False),
