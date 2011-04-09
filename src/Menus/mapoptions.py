@@ -1,3 +1,4 @@
+import Menus
 import time
 import pygame
 from Game import GameSceneBase
@@ -60,6 +61,11 @@ class MapOptions(GameSceneBase):
 		self._SetDefaults()
 	
 	def ProcessInput(self, events):
+		
+		for event in events:
+			if event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE:
+				self.next = Menus.Title()
+		
 		if (self._page == 0):
 			self._MapUIInput(events)
 		elif (self._page == 1):
