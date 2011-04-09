@@ -222,7 +222,7 @@ class SpecialThanks(CBase2):
 		CBase2.__init__(
 			self,
 			'Special Thanks To',
-			['Christine Sandquist', 'Bad Kitty'],
+			['Christine Sandquist'],
 			[_lineup()[CHRISTINE]]
 		)
 	
@@ -241,76 +241,6 @@ class Programming2(CBase2):
 	def NextScene(self):
 		return Art()
 
-class Programming(CreditsBase):
-	def __init__(self):
-		CreditsBase.__init__(self)
-		
-		self._counter = 0
-		self._txt = []
-		
-		hf = self._header_font.Render
-		f = self._font.Render
-		self._dev = self.RenderHeader('Development')
-		self._names = [
-			f('Blake O\'Hare'),
-			f('Richard Bailey')
-		]
-		
-		self._t = pygame.Surface((640, 480))
-
-	def Update(self):
-		CreditsBase.Update(self)
-		self._counter += 1
-
-		
-	def Render(self, screen):
-		screen.fill((0,0,0))
-		
-		counter = self._counter
-		blake = _lineup()[BLAKE]
-		richard = _lineup()[RICHARD]
-		
-		screen.blit(self._dev, ((200 - self._dev.get_width()) / 2, TITLE_Y))
-		screen.blit(self._names[0], ((200 - self._names[0].get_width()) / 2, 220))
-		screen.blit(self._names[1], ((200 - self._names[1].get_width()) / 2, 240))
-
-		start = 80
-		stop = start + WALK_COUNT
-		back = stop + 60
-		stop2 = back + RETURN_COUNT
-		
-		op = (1 - (counter / FADE_COUNT)) * 255
-		if op > 255:
-			op = 255
-		
-		if counter >= stop2:
-			op = ((counter - 312) / FADE_COUNT) * 255
-			
-		
-		self._blacks.set_alpha(op)
-		screen.blit(self._blacks, (0, 100))
-
-		if (counter == start):
-			blake.SetMode(PRESENT)
-			richard.SetMode(PRESENT)
-		if (counter == stop):
-			blake.SetMode(WAITING)
-			richard.SetMode(WAITING)
-		if (counter == back):
-			blake.SetMode(RETURN)
-			richard.SetMode(RETURN)
-		if (counter == stop2):
-			blake.SetMode(WAITING)
-			blake.ResetPos()
-			richard.SetMode(WAITING)
-			richard.ResetPos()
-
-		CreditsBase.Render(self, screen)
-		
-		if (counter > 340 and op >= 255):
-			self.next = Art()
-
-
 
 # class CState:
 	# Step()
@@ -322,10 +252,6 @@ class Programming(CreditsBase):
 	# Face(direction)
 	# SetMode(mode)
 	# GetMode()
-
-
-
-
 
 class CState:
 	def __init__(self, name, x, y):
