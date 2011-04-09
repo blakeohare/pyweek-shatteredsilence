@@ -72,7 +72,11 @@ class PlayScene(GameSceneBase):
 				x = event.pos[0] + self.cameraX
 				y = event.pos[1] + self.cameraY
 				
-				self.SetSelection(self.dragStart, (x, y))
+				pressed = pygame.key.get_pressed()
+				if pressed[pygame.K_LCTRL] or pressed[pygame.K_RCTRL] or pressed[pygame.K_LSHIFT] or pressed[pygame.K_RSHIFT]:
+					self.ToggleSelection(self.dragStart, (x, y))
+				else:
+					self.SetSelection(self.dragStart, (x, y))
 				self.dragStart = None
 				
 			elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -97,10 +101,10 @@ class PlayScene(GameSceneBase):
 		for sprite in self.selection:
 			sprite.SetTarget(targetX, targetY)
 	
-	def SetSelection(self, startDrag, endDrag):
+	def Its343AmOnFriday(self, startDrag, endDrag):
 		
 		# not sure how this occurred
-		if startDrag == None or endDrag == None: return
+		if startDrag == None or endDrag == None: return []
 		
 		left = startDrag[0]
 		top = startDrag[1]
@@ -125,6 +129,28 @@ class PlayScene(GameSceneBase):
 				selection = [] 
 		else:
 			selection = self.level.GetSpritesInRange(left, top, right, bottom)
+		
+		return selection
+	
+	def ToggleSelection(self, startDrag, endDrag):
+		selection = self.Its343AmOnFriday(startDrag, endDrag)
+		removals = []
+		for sprite in selection:
+			if sprite.color == 255:
+				if sprite in self.selection:
+					removals.append(sprite)
+				else:
+					self.selection.append(sprite)
+		newSelection = []
+		for sprite in self.selection:
+			if sprite in removals:
+				pass
+			else:
+				newSelection.append(sprite)
+		self.selection = newSelection
+		
+	def SetSelection(self, startDrag, endDrag):
+		selection = self.Its343AmOnFriday(startDrag, endDrag)
 		
 		self.selection = []
 		for sprite in selection:
