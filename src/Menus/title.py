@@ -33,6 +33,7 @@ OPTIONS = [
 class Title(GameSceneBase):
 	def __init__(self):
 		GameSceneBase.__init__(self)
+		pygame.mixer.music.stop()
 		self.whitefont = Resources.GetFont(255, 255, 255)
 		self.yellowfont = Resources.GetFont(255, 255, 0)
 		self._font = Resources.TTF_Font('Kallamar/KALLAMAR.TTF', 28)
@@ -48,6 +49,9 @@ class Title(GameSceneBase):
 		
 	def ProcessInput(self, events):
 		for event in events:
+			if event.type == pygame.KEYDOWN and event.key == pygame.K_F8:
+				self.next = Menus.GameWin(self)
+
 			if event.type == pygame.MOUSEMOTION and self._story_r:
 				x = event.pos[0]
 				y = event.pos[1]
