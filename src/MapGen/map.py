@@ -8,7 +8,7 @@ def _trim(string):
 		string = string[:-1]
 	return string
 
-def BuildMapFromCommands(commands, mapwidth, mapheight, previousLevelSeed, previousLevel):
+def BuildMapFromCommands(commands, mapwidth, mapheight, previousLevelSeed, previousLevel, spriteCarryOver):
 	items = []
 	citizens = []
 	police = []
@@ -83,19 +83,19 @@ def BuildMapFromCommands(commands, mapwidth, mapheight, previousLevelSeed, previ
 					y += 1
 				x += 1
 				
-	return Map(mapwidth, mapheight, items, citizens, police, carryover, tileOverrides, previousLevel, isCrowdLevel)
+	return Map(mapwidth, mapheight, items, citizens, police, carryover, tileOverrides, previousLevel, isCrowdLevel, spriteCarryOver)
 
-def BuildMap(level, width, height, previousLevelSeed, previousLevel):
+def BuildMap(level, width, height, previousLevelSeed, previousLevel, spriteCarryOver):
 	path = 'Levels' + os.sep + level + '.txt'
 	c = open(path, 'rt')
 	lines = c.read().split('\n')
 	c.close()
 	
-	return BuildMapFromCommands(lines, width, height, previousLevelSeed, previousLevel)
+	return BuildMapFromCommands(lines, width, height, previousLevelSeed, previousLevel, spriteCarryOver)
 	
 class Map:
 	
-	def __init__(self, width, height, items, citizens, police, carryover, tileOverrides, previousLevel, isCrowdLevel):
+	def __init__(self, width, height, items=[], citizens=[], police=[], carryover=None, tileOverrides=[], previousLevel=None, isCrowdLevel=False, spriteCarryOver=None):
 		self.InitializeGrid(width, height)
 		self.roadSquares = []
 		self.isCrowdLevel = isCrowdLevel
@@ -109,7 +109,7 @@ class Map:
 		self.previousLevel = previousLevel
 		self.FleshOutRoads(self.roadSquares)
 		self.carryoversprites = None
-		
+		self.spriteCarryOver = spriteCarryOver
 		if carryover != None:
 			x = carryover[0]
 			y = carryover[1]

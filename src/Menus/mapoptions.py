@@ -12,7 +12,7 @@ import MapGen
 # Progress + Time
 # Zoom level
 
-ANIMATION_TIME = 2500 #ms
+ANIMATION_TIME = 500 #ms
 ZOOM_LEVELS = [
 	'House',
 	'Street',
@@ -113,7 +113,7 @@ class MapOptions(GameSceneBase):
 
 	def _Animate(self, frame1, frame2, startTime, curTime, totalTimeMS):
 		delta = curTime - startTime
-		pctDone = delta / (totalTimeMS / 1000)
+		pctDone = delta / (totalTimeMS / 1000.0)
 		
 		if (pctDone >= 1):
 			return None
@@ -430,6 +430,8 @@ class MapOptions(GameSceneBase):
 			a['width'] = 80
 			a['height'] = 80
 		
+		a['map_size'] = self._map_size
+		
 		a['minutes'] = self._time
 		
 		if self._zoom_level < 4: # Room -> Neighborhood
@@ -438,7 +440,8 @@ class MapOptions(GameSceneBase):
 			a['mode'] = 'crowd'
 		else: # Continent + World	
 			a['mode'] = 'region'
-
+		a['zoom_level'] = self._zoom_level
+		
 		a['progress'] = (self._mode == 2)
 			
 	def _SetDefaults(self):

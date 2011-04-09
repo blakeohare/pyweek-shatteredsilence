@@ -287,8 +287,8 @@ class ShowMessageOverlay(GameSceneBase):
 		self.font = Resources.GetFont(color[0], color[1], color[2])
 		self.messages = messages
 		self.border = Resources.CreateBorder(400, len(messages) * 20 + 60)
-		self.x = 30
-		self.y = 10
+		self.x = (640 - self.border.get_width()) // 2
+		self.y = 50
 		self.close_x = self.x + self.border.get_width() - 24
 		self.close_y = self.y + 24
 	

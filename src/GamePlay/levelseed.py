@@ -6,8 +6,14 @@ class LevelSeed:
 		self.height = 64
 		self.mode = 'individual'
 		self.map = None
+		if args != None:
+			try:
+				self.map = args.get('map')
+			except:
+				pass # >:( 3 hours of PyWeek to go. 
 		self.specialName = None
 		self.won = False
+		
 		if special != None:
 			if special == 'next':
 				self.InitializeNextLevel(args, previousLevel)
@@ -21,21 +27,13 @@ class LevelSeed:
 			self.timedMode = args['minutes'] > -1
 			self.minutes = args['minutes']
 			
-			if self.mode == 'individual':
-				self.citizens = args['citizens']
-				self.police = args['police']
-			else:
-				self.citizens = 0
-				self.police = 0
-			
-			if self.mode == 'region':
-				self.city_centers = args['city_centers']
-			else:
-				self.city_centers = 0
-			self.map = self.GenerateCustomMap(self.width, self.height, True)
+			self.citizens = 0
+			self.police = 0
+		
+			self.map = args['map']
 	
-	def GenerateCustomMap(self, width, height, isUrban):
-		generator = MapGen.Generator(width, height, isUrban)
+	def GenerateCustomMap(self, width, height, isUrban, isCrowd):
+		generator = MapGen.Generator(width, height, isUrban, isCrowd)
 		while not generator.IsDone():
 			generator.DoNextTask()
 		commands = generator.commands
@@ -92,7 +90,6 @@ class LevelSeed:
 			self.width = 180
 			self.height = 100
 		elif special == 'level5':
-			self.mode = 'crowd'
 			self.width = 40
 			self.height = 32
 		elif special == 'level6':
@@ -104,11 +101,11 @@ class LevelSeed:
 			self.width = 180
 			self.height = 100
 		elif special == 'level8':
-			self.mode = 'region'
+			self.mode = 'crowd'
 			self.width = 40
 			self.height = 32
 		elif special == 'level9':
-			self.mode = 'region'
+			self.mode = 'crowd'
 			self.width = 96
 			self.height = 64
-		self.map = MapGen.BuildMap(special, self.width, self.height, previousLevelSeed, previousLevel)
+		self.map = MapGen.BuildMap(special, self.width, self.height, previousLevelSeed, previousLevel, None)

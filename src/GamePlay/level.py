@@ -41,9 +41,13 @@ class Level:
 		
 		self.PreColorize(levelseed.map.colorize_these)
 		self.initCameraOffset = None
-		if levelseed.map.carryoversprites != None:
-			x = levelseed.map.carryoversprites[0]
-			y = levelseed.map.carryoversprites[1]
+		spriteCarryOver = levelseed.map.spriteCarryOver
+		if spriteCarryOver == None:
+			spriteCarryOver = levelseed.map.carryoversprites
+			
+		if spriteCarryOver != None:
+			x = spriteCarryOver[0]
+			y = spriteCarryOver[1]
 			
 			self.initCameraOffset = (x, y)
 			self.CarryOverSprites(x, y, levelseed.map.previousLevel)
@@ -88,6 +92,7 @@ class Level:
 			y = 0
 			column = []
 			while y < rows:
+				#print x, y, len(map_data.grid), len(map_data.grid[0])
 				column.append(GamePlay.MakeTile(map_data.grid[x][y], x, y))
 				y += 1
 			tiles.append(column)

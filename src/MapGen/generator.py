@@ -2,9 +2,7 @@ import random
 
 class Generator:
 	
-	# want to be able to do this in steps so that it 
-	# can be done on a loading screen
-	def __init__(self, width, height, isUrban):
+	def __init__(self, width, height, isUrban, isCrowd):
 		self.width = width
 		self.height = height
 		self.cellWidth = 8
