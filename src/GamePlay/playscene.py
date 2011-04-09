@@ -74,7 +74,9 @@ class PlayScene(GameSceneBase):
 				
 				pressed = pygame.key.get_pressed()
 				if pressed[pygame.K_LCTRL] or pressed[pygame.K_RCTRL] or pressed[pygame.K_LSHIFT] or pressed[pygame.K_RSHIFT]:
-					self.ToggleSelection(self.dragStart, (x, y))
+					#TODO: figure out why this gets called even when shift/ctrl isn't pressed
+					#self.ToggleSelection(self.dragStart, (x, y))
+					self.SetSelection(self.dragStart, (x, y))
 				else:
 					self.SetSelection(self.dragStart, (x, y))
 				self.dragStart = None
@@ -100,6 +102,8 @@ class PlayScene(GameSceneBase):
 				if event.key == pygame.K_F7:
 					for sprite in self.level.citizens:
 						sprite.Decolorize()
+				if event.key == pygame.K_F8:
+					self.next = GamePlay.WinScene(self)
 				
 	def MoveSelectionToTarget(self, targetX, targetY):
 		for sprite in self.selection:
@@ -180,7 +184,7 @@ class PlayScene(GameSceneBase):
 		self.specializer.DoSomethingInteresting(self.counter, self.auxillaryCounter, self.progress, self, self.level)
 		
 		if self.progress == 0 and self.levelSeed.specialName != 'level1':
-			self.next = None #TODO: You Lose Scene
+			self.next = GamePlay.LoseScene(self)
 			
 		
 	def EnsureSelectionValid(self):

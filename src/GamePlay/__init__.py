@@ -5,6 +5,7 @@ from . import sprite as _sprite
 from . import levelseed as _levelseed
 from . import leveluptransition as _levelup
 from . import specializer as _specializer
+from . import winandlose as _wal
 
 Sprite = _sprite.Sprite
 Citizen = _sprite.Citizen
@@ -18,3 +19,5 @@ LevelUpTransition = _levelup.LevelUpTransition
 GetSpecializer = _specializer.GetSpecializer
 LoadNextTile = _tile.LoadNextTile
 LoadNextThing = _tile.LoadNextThing
+WinScene = _wal.WinScene
+LoseScene = _wal.LoseScene
