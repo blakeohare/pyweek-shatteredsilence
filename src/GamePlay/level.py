@@ -196,10 +196,17 @@ class Level:
 					dy = -1
 				else:
 					dy = 1
-				sprite.targetX = sprite.X + dx * (sprite.R + 1) * 1 // 3
-				sprite.targetY = sprite.Y + dy * (sprite.R + 1) * 1 // 3
-				tooClose.targetX = tooClose.X - dx * (sprite.R + 1) * 1 // 3
-				tooClose.targetY = tooClose.Y - dy * (sprite.R + 1) * 1 // 3
+				
+				if (y + x) & 1 == 0:
+					sprite.targetX = sprite.X + dx * (sprite.R + 1) * 1 // 3
+				else:
+					sprite.targetY = sprite.Y + dy * (sprite.R + 1) * 1 // 3
+				
+				if not tooClose.isMoving:
+					if (x + y) & 1 == 0:
+						tooClose.targetX = tooClose.X - dx * (sprite.R + 1) * 1 // 3
+					else:
+						tooClose.targetY = tooClose.Y - dy * (sprite.R + 1) * 1 // 3
 			
 			# do location updates
 			
