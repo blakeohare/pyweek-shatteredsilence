@@ -1,3 +1,4 @@
+import Menus
 import pygame
 from Game import GameSceneBase
 import GamePlay
@@ -85,7 +86,10 @@ class PlayScene(GameSceneBase):
 			
 			elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
 				self.MoveSelectionToTarget(event.pos[0] + self.cameraX, event.pos[1] + self.cameraY)
-	
+			
+			elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+				self.next = Menus.GamePauseMenu(self)
+				
 	def MoveSelectionToTarget(self, targetX, targetY):
 		for sprite in self.selection:
 			sprite.SetTarget(targetX, targetY)
