@@ -129,7 +129,7 @@ class Citizen(Sprite):
 		color = self.color - self.demotivation
 		num = '0'
 		if self.isMoving or self.IsRadiating:
-			num = ('1', '0', '2', '0')[(self.renderCounter // 3) & 3]
+			num = ('1', '0', '2', '0')[(self.renderCounter // 4) & 3]
 			
 		if self.IsRadiating:
 			file = 'action'
