@@ -181,7 +181,7 @@ class CBase2(CreditsBase):
 		stop2 = back + RETURN_COUNT
 		shutdown = stop2 + 35
 
-		op = (1 - (counter / (2 * FADE_COUNT))) * 255
+		op = (1 - (float(counter) / (2 * FADE_COUNT))) * 255
 		if op < 0:
 			op = 0
 		if op > 255:
@@ -217,7 +217,7 @@ class Art(CBase2):
 		CBase2.__init__(
 			self,
 			'Art',
-			['Angel McLaughlin', 'Niels', 'Chun Y'],
+			['Angel McLaughlin', 'Niels', 'Fixception'],
 			[_lineup()[ANGEL], _lineup()[NIELS], _lineup()[CHUN]]
 			)
 	
@@ -253,7 +253,7 @@ class GameDesign(CBase2):
 		CBase2.__init__(
 			self,
 			'Game Design',
-			['Chun Y', 'Richard Bailey', 'Blake O\'Hare'],
+			['Fixception', 'Richard Bailey', 'Blake O\'Hare'],
 			[_lineup()[CHUN], _lineup()[RICHARD], _lineup()[BLAKE]]
 		)
 

@@ -25,8 +25,12 @@ OPTIONS = [
 	'Quit'
 ]
 
+# get surf
+# set_alpha
+# blit to surface
+# blit surface to screen
+
 class Title(GameSceneBase):
-	
 	def __init__(self):
 		GameSceneBase.__init__(self)
 		self.whitefont = Resources.GetFont(255, 255, 255)
@@ -41,12 +45,6 @@ class Title(GameSceneBase):
 		self._credits_r = None
 		self._quit_r = None
 		self._hover = NONE
-		
-		#self.text = Resources.ImageLibrary.Get('txt.png')
-		#self.shattered = pygame.Surface((435, 117), pygame.SRCALPHA).convert_alpha()
-		#self.shattered.blit(self.text, (0, 0))
-		#self.silence = pygame.Surface((286, 124), pygame.SRCALPHA).convert_alpha()
-		#self.silence.blit(self.text, (-91, -222))
 		
 	def ProcessInput(self, events):
 		for event in events:
@@ -93,9 +91,6 @@ class Title(GameSceneBase):
 		
 		v = int(120 + math.sin(self.counter * 3.14159 * 2 / 220.0) * 50)
 		pygame.draw.rect(screen, (v, v, v), pygame.Rect(0, 0, 640, 480)) 
-		
-		#screen.blit(self.shattered, (0, 0))
-		#screen.blit(self.silence, (297, 45))
 		
 		titleimage = ImageLibrary.Get('title_bg.png')
 		screen.blit(titleimage, (0, 0))
