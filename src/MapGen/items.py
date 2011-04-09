@@ -6,6 +6,34 @@ class MapItem:
 		self.IsHouse = False
 		self.Applyable = False
 		
+		
+class CRoad(MapItem):
+	def __init__(self, startX, startY, endX, endY):
+		MapItem.__init__(self)
+		self.Applyable = True
+		self.startX = startX
+		self.IsRoad = True
+		self.startY = startY
+		self.endX = endX
+		self.endY = endY
+	
+	def ApplySelfToGrid(self, grid):
+		roads = []
+		
+		left = self.startX
+		top = self.startY
+		right = self.endX
+		bottom = self.endY
+		x = left
+		while x <= right:
+			y = top
+			while y <= bottom:
+				grid[x][y] = 'croad'
+				roads.append((x, y))
+				y += 1
+			x += 1
+		return roads
+	
 class House(MapItem):
 	def __init__(self, x, y, variety):
 		MapItem.__init__(self)

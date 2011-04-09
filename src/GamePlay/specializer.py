@@ -205,6 +205,9 @@ class Level6Specializer(SpecializerBase):
 	def __init__(self):
 		pass
 	
+	def DoSetup(self, playScene, level):
+		level.citizens[0].Colorize()
+	
 class Level7Specializer(SpecializerBase):
 	def __init__(self):
 		pass

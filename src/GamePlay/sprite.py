@@ -26,7 +26,11 @@ class Sprite:
 		self.isMoving = False
 		self.renderCounter = 0
 		self.IsPolice = False
+		self.IsCrowd = False
 	
+	def Crowdify(self):
+		self.IsCrowd = True
+		
 	def IsCollision(self, anotherSprite):
 		dx = (self.X - anotherSprite.X)
 		dy = (self.Y - anotherSprite.Y)
@@ -68,8 +72,12 @@ class Sprite:
 		self.waypointDelay += 1
 		
 		v = self.gV
+		
 		if self.color == 255: v = self.cV
 		elif self.color != 0: v = 0
+		
+		if self.IsCrowd:
+			v = 1.5
 		
 		if self.targetX != self.X or self.targetY != self.Y:
 			dx = self.targetX - self.X
@@ -123,10 +131,16 @@ class Citizen(Sprite):
 		sprite.direction = self.direction
 		sprite.demotiviation = self.demotivation
 		sprite.waypointDelay = self.waypointDelay
+		sprite.IsCrowd = self.IsCrowd
 		return sprite
 		
 	def GetImage(self):
+		
 		color = self.color - self.demotivation
+		
+		if self.IsCrowd:
+			return ImageLibrary.Get('Sprites/crowds/goodguys.png', color)
+		
 		num = '0'
 		if self.isMoving or self.IsRadiating:
 			num = ('1', '0', '2', '0')[(self.renderCounter // 4) & 3]
@@ -175,8 +189,13 @@ class Police(Sprite):
 		sprite.direction = self.direction
 		sprite.demotiviation = self.demotivation
 		sprite.waypointDelay = self.waypointDelay
+		sprite.IsCrowd = self.IsCrowd
 		return sprite
 	def GetImage(self):
+		
+		if self.IsCrowd:
+			return ImageLibrary.Get('Sprites/crowds/police.png', 0)
+		
 		if self.mode == 'walking':
 			image = 'Sprites/Police/down0.png'
 		elif self.mode == 'smackdown':

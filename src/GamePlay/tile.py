@@ -14,6 +14,30 @@ class TileTemplate:
 _tilesToBeLoaded = {}
 
 _tileStore = {
+			
+			#crowd roads
+			'croad_street-4' : TileTemplate('Crowd/street-4', True),
+			'croad_street-bl' : TileTemplate('Crowd/street-bl', True),
+			'croad_street-br' : TileTemplate('Crowd/street-br', True),
+			'croad_street-h' : TileTemplate('Crowd/street-h', True),
+			'croad_street-t1' : TileTemplate('Crowd/street-t1', True),
+			'croad_street-t2' : TileTemplate('Crowd/street-t2', True),
+			'croad_street-t3' : TileTemplate('Crowd/street-t3', True),
+			'croad_street-t4' : TileTemplate('Crowd/street-t4', True),
+			'croad_street-tl' : TileTemplate('Crowd/street-tl', True),
+			'croad_street-tr' : TileTemplate('Crowd/street-tr', True),
+			'croad_street-v' : TileTemplate('Crowd/street-v', True),
+			
+			'crowd_building' : TileTemplate('Crowd/buildinga', False),
+			'crowd_buildingtop' : TileTemplate('Crowd/buildingbtop', False),
+			'crowd_buildingbottom' : TileTemplate('Crowd/buildingbbottom', False),
+			'crowd_tree' : TileTemplate('Crowd/trees', False),
+			'crowd_bhouse' : TileTemplate('Crowd/bhouse', False),
+			'crowd_phouse' : TileTemplate('Crowd/phouse', False),
+			'crowd_ghouse' : TileTemplate('Crowd/ghouse', False),
+			
+			
+			
 			#suburbia
 			'cobblestone' : TileTemplate('cobblestone', True),
 			'mailbox' : TileTemplate('mailboxB', False),

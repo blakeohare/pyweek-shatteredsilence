@@ -1,3 +1,19 @@
 CITIZEN 8 3 M 1
 CITIZEN 19 3 F 3
 POLICE 10 10 1
+
+CROAD 3 3 9 3
+CROAD 3 3 3 9
+CROAD 3 9 9 9
+CROAD 9 3 9 9
+CROAD 6 0 6 12
+CROAD 0 6 12 6
+
+TILE crowd_buildingtop 4 4
+TILE crowd_buildingbottom 4 5
+TILE crowd_building 7 5
+TILE crowd_building 8 4
+TILE crowd_buildingtop 8 7
+TILE crowd_buildingbottom 8 8
+
+TILE crowd_bhouse 8 6

@@ -14,10 +14,15 @@ def BuildMapFromCommands(commands, mapwidth, mapheight, previousLevelSeed, previ
 	police = []
 	tileOverrides = []
 	carryover = None
+	isCrowdLevel = False
 	for line in commands:
 		parts = _trim(line).split(' ')
 		if parts[0] == 'ROAD':
 			item = MapGen.Road(int(parts[1]), int(parts[2]), int(parts[3]), int(parts[4]))
+			items.append(item)
+		elif parts[0] == 'CROAD':
+			isCrowdLevel = True
+			item = MapGen.CRoad(int(parts[1]), int(parts[2]), int(parts[3]), int(parts[4]))
 			items.append(item)
 		elif parts[0] == 'BUILDING':
 			item = MapGen.Building(int(parts[1]), int(parts[2]), int(parts[3]), int(parts[4]), int(parts[5]), int(parts[6]))
@@ -78,7 +83,7 @@ def BuildMapFromCommands(commands, mapwidth, mapheight, previousLevelSeed, previ
 					y += 1
 				x += 1
 				
-	return Map(mapwidth, mapheight, items, citizens, police, carryover, tileOverrides, previousLevel)
+	return Map(mapwidth, mapheight, items, citizens, police, carryover, tileOverrides, previousLevel, isCrowdLevel)
 
 def BuildMap(level, width, height, previousLevelSeed, previousLevel):
 	path = 'Levels' + os.sep + level + '.txt'
@@ -90,10 +95,10 @@ def BuildMap(level, width, height, previousLevelSeed, previousLevel):
 	
 class Map:
 	
-	def __init__(self, width, height, items, citizens, police, carryover, tileOverrides, previousLevel):
+	def __init__(self, width, height, items, citizens, police, carryover, tileOverrides, previousLevel, isCrowdLevel):
 		self.InitializeGrid(width, height)
 		self.roadSquares = []
-		
+		self.isCrowdLevel = isCrowdLevel
 		self.colorize_these = []
 		
 		self.citizens = citizens
@@ -137,7 +142,8 @@ class Map:
 				y += 1
 			x += 1 
 		
-	def FleshOutRoads(self, roadSquares):
+		
+	def FleshOutBigRoads(self, roadSquares):
 		intersections = []
 		sidewalk = []
 		grid = self.grid
@@ -214,7 +220,66 @@ class Map:
 					grid[x + col - 3][y + row - 3] = impose[row][col]
 					row += 1
 				col += 1		  
+		
+	def FleshOutRoads(self, roadSquares):
+		if self.isCrowdLevel:
+			self.FleshOutSmallRoads(roadSquares)
+		else:
+			self.FleshOutBigRoads(roadSquares)
+	
+	
+	
+	def FleshOutSmallRoads(self, roadSquares):
+		width = len(self.grid)
+		height = len(self.grid[0])
+		
+		lookup = {
+				'0000' : '4',
+				'0001' : 'v',
+				'0010' : 'h',
+				'0011' : 'br',
+				'0100' : 'v',
+				'0101' : 'v',
+				'0110' : 'tr',
+				'0111' : 't4',
+				'1000' : 'h',
+				'1001' : 'bl',
+				'1010' : 'h',
+				'1011' : 't1',
+				'1100' : 'tl',
+				'1101' : 't2',
+				'1110' : 't3',
+				'1111' : '4'
+				}
+		
+		for road in roadSquares:
+			x = road[0]
+			y = road[1]
+			left = False
+			right = False
+			top = False
+			bottom = False
 			
+			if x > 0:
+				t = self.grid[x - 1][y]
+				if t != None:
+					left = t[:5] == 'croad'
+			if x < width - 1:
+				t = self.grid[x + 1][y]
+				if t != None:
+					right = t[:5] == 'croad'
+			if y > 0:
+				t = self.grid[x][y - 1]
+				if t != None:
+					top = t[:5] == 'croad'
+			if y < height - 1:
+				t = self.grid[x][y + 1]
+				if t != None:
+					bottom = t[:5] == 'croad'
+			
+			key = ('0','1')[left] + ('0','1')[top] + ('0','1')[right] + ('0','1')[bottom]
+			self.grid[x][y] = 'croad_street-' + lookup[key]
+	
 	def InitializeGrid(self, width, height):
 		self.grid = []
 		x = 0

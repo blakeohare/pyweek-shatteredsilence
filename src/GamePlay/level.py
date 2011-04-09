@@ -21,6 +21,8 @@ class Level:
 			tx = citizen[4]
 			ty = citizen[5]
 			sprite = GamePlay.Citizen(32 * citizen[0] + 16, 32 * citizen[1] + 16, citizen[2], citizen[3])
+			if levelseed.map.isCrowdLevel:
+				sprite.Crowdify()
 			if x != tx or y != ty:
 				sprite.SetWaypoint(tx * 32, ty * 32)
 			self.sprites.append(sprite)
@@ -32,6 +34,8 @@ class Level:
 			sprite = GamePlay.Police(32 * police[0] + 16, 32 * police[1] + 16, police[2])
 			self.sprites.append(sprite)
 			self.police.append(sprite)
+			if levelseed.map.isCrowdLevel:
+				sprite.Crowdify()
 		
 		self.spriteGraph = SpriteGraph(self.width, self.height)
 		

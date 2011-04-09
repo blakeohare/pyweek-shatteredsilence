@@ -22,7 +22,23 @@ Sprites...
 	variety:
 		1 - traditional police officer uniform
 		2 - riot control officer
-
+	
+Crowd-level commands:
+	
+	Citizen and police are the same. They will automatically be converted
+	Roads are different...
+	
+	CROAD startX startY endX endY
+	
+	Buildings and trees use TILE or RECT command:
+	
+	TILE crowd_building x y
+	TILE crowd_buildingtop x y
+	TILE crowd_buildingbottom x y
+	TILE crowd_tree x y
+	TILE crowd_bhouse x y  				// blue
+	TILE crowd_ghouse x y  				// green
+	TILE crowd_phouse x y  				// pink
 Carry-over...
 
 	CARRYOVER x y
