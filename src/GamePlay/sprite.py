@@ -16,6 +16,7 @@ class Sprite:
 		self.direction = 'down'
 		self.colorizeable = False
 		self.IsRadiating = False
+		self.IsActivelyRadiating = False
 		self.demotivation = 0
 		self.beingShoved = False
 		self.shoveCounter = 0
@@ -127,9 +128,15 @@ class Citizen(Sprite):
 	def GetImage(self):
 		color = self.color - self.demotivation
 		num = '0'
-		if self.isMoving:
-			num = ('1', '0', '2', '0')[(self.renderCounter // 3) & 3] 
-		return ImageLibrary.Get('Sprites/' + self.imagepath + '/' + self.direction + num + '.png', color)
+		if self.isMoving or self.IsRadiating:
+			num = ('1', '0', '2', '0')[(self.renderCounter // 3) & 3]
+			
+		if self.IsRadiating:
+			file = 'action'
+		else:
+			file = self.direction
+			
+		return ImageLibrary.Get('Sprites/' + self.imagepath + '/' + file + num + '.png', color)
 
 	def Decolorize(self):
 		self.colorizeable = True
@@ -141,7 +148,7 @@ class Citizen(Sprite):
 	
 	def Colorize(self):
 		self.color = 255
-		self.IsRadiating = True
+		#self.IsRadiating = True
 		self.waypoints = []
 		self.targetX = self.X
 		self.targetY = self.Y
