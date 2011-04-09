@@ -17,7 +17,11 @@ class LevelUpTransition(Game.GameSceneBase):
 		self.counter += 1
 		if self.counter == 3:
 			#self.PlaySound('phase_complete.ogg')
-			self.nextPlayScene = GamePlay.PlayScene(GamePlay.LevelSeed('next', self.prevPlayScene.levelSeed, self.prevPlayScene.level))
+			levelseed = GamePlay.LevelSeed('next', self.prevPlayScene.levelSeed, self.prevPlayScene.level)
+			if levelseed.won:
+				self.next = None
+			else:
+				self.nextPlayScene = GamePlay.PlayScene(levelseed)
 		elif self.counter == 69:
 			self.next = self.nextPlayScene
 			camOff = self.next.level.initCameraOffset   

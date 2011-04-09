@@ -7,6 +7,7 @@ class LevelSeed:
 		self.mode = 'individual'
 		self.map = None
 		self.specialName = None
+		self.won = False
 		if special != None:
 			if special == 'next':
 				self.InitializeNextLevel(args, previousLevel)
@@ -62,7 +63,7 @@ class LevelSeed:
 			self.InitializeSpecialLevel('level9', previousLevelSeed, previousLevel)
 		elif specialName == 'level9':
 			# TODO: something else
-			raise "You won!"
+			self.won = True
 		elif specialName == 'testlevel':
 			self.InitializeSpecialLevel('level1', previousLevelSeed, previousLevel)
 			# meh

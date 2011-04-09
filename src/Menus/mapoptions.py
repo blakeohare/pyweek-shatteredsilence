@@ -5,6 +5,7 @@ from Game import GameSceneBase
 from GamePlay import PlayScene
 import Resources
 from GamePlay import LevelSeed
+import MapGen
 
 # Option stages
 # Size
@@ -126,12 +127,12 @@ class MapOptions(GameSceneBase):
 		return surf
 
 	def _StartGame(self):
-		levelseed = LevelSeed(None, self._args)
-		self.next = PlayScene(levelseed)
+		gameBuilder = MapGen.CustomGameBuilder(self._args)
+		self.next = gameBuilder.GetPlayScene()
 
 	def _NextPage(self):
 		if (self._page == 2):
-			print("TODO: animate transition to game-start")
+			#TODO: animate transition to game-start
 			#self._transitioning = True
 			#self._animStart = time.time()
 			self._UpdateArgs()

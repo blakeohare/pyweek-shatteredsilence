@@ -94,8 +94,12 @@ class PlayScene(GameSceneBase):
 			elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
 				self.MoveSelectionToTarget(event.pos[0] + self.cameraX, event.pos[1] + self.cameraY)
 			
-			elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-				self.next = Menus.GamePauseMenu(self)
+			elif event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_ESCAPE:
+					self.next = Menus.GamePauseMenu(self)
+				if event.key == pygame.K_F7:
+					for sprite in self.level.citizens:
+						sprite.Decolorize()
 				
 	def MoveSelectionToTarget(self, targetX, targetY):
 		for sprite in self.selection:
@@ -174,6 +178,10 @@ class PlayScene(GameSceneBase):
 			self.next = ShowMessageOverlay(messages[0], messages[1:], self)
 		
 		self.specializer.DoSomethingInteresting(self.counter, self.auxillaryCounter, self.progress, self, self.level)
+		
+		if self.progress == 0 and self.levelSeed.specialName != 'level1':
+			self.next = None #TODO: You Lose Scene
+			
 		
 	def EnsureSelectionValid(self):
 		for sprite in self.selection:
