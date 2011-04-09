@@ -15,3 +15,4 @@ BuildMap = _map.BuildMap
 BuildMapFromCommands = _map.BuildMapFromCommands
 Generator = _generator.Generator
 CustomGameBuilder = _cgb.CustomGameBuilder
+PopNextSeed = _cgb.PopNextSeed

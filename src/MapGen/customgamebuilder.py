@@ -3,6 +3,15 @@ import GamePlay
 
 _registeredSeeds = None
 
+def PopNextSeed():
+	global _registeredSeeds
+	
+	if len(_registeredSeeds) == 0: return None
+	first = _registeredSeeds[0]
+	_registeredSeeds = _registeredSeeds[1:]
+	
+	return first
+
 class CustomGameBuilder:
 	
 	def __init__(self, args):
@@ -106,7 +115,7 @@ class CustomGameBuilder:
 		
 		# add 4 sprites to each border region of each level
 		for level in maps:
-			level.citizens.append((0, 0, True, 1, 0, 0))
+			level.citizens.append((1, 1, True, 1, 1, 1))
 		
 		levels = levels[self.startZoom:]
 		maps = maps[self.startZoom:]

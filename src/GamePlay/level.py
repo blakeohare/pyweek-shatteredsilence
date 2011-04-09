@@ -28,7 +28,7 @@ class Level:
 			self.sprites.append(sprite)
 			self.citizens.append(sprite)
 		
-		#self.citizens[0].color = 255
+		self.citizens[0].color = 255
 		
 		for police in levelseed.map.police:
 			sprite = GamePlay.Police(32 * police[0] + 16, 32 * police[1] + 16, police[2])

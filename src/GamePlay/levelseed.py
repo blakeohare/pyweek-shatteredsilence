@@ -39,6 +39,22 @@ class LevelSeed:
 		commands = generator.commands
 		return MapGen.BuildMapFromCommands(commands, width, height, None, None)
 	
+	def InitializeNextCustomLevel(self, previousLevelSeed):
+		next = MapGen.PopNextSeed()
+		if next == None:
+			self.won = True
+		else:
+			self.width = next.width
+			self.height = next.height
+			self.mode = next.mode
+			self.progress = next.progress
+			self.timedMode = next.timedMode
+			self.minutes = next.minutes
+			self.map = next.map
+		self.citizens = 0
+		self.police = 0
+	
+	
 	def InitializeNextLevel(self, previousLevelSeed, previousLevel):
 		specialName = previousLevelSeed.specialName
 		if specialName == None:
