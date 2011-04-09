@@ -32,7 +32,8 @@ class SpecializerBase:
 		pass
 	
 	def Shortcircuited(self, levelName):
-		return levelName in ['level1', 'level2', 'level3']
+		#return levelName in ['level1', 'level2', 'level3']
+		return False
 	
 	def SetMinColor(self, level, left, top, right, bottom, value):
 		
@@ -55,6 +56,14 @@ class Level1Specializer(SpecializerBase):
 	
 	def DoSetup(self, playScene, level):
 		level.citizens[0].color = 0
+		a = level.citizens[0]
+		b = level.citizens[1]
+		self.level = level
+		a.tgV = a.gV
+		b.tgV = b.gV
+		
+		a.gV = a.cV
+		b.gV = b.cV
 	
 	def ShouldShowMessage(self, counter, conversionProgress):
 		if counter == 1:
@@ -112,6 +121,10 @@ class Level1Specializer(SpecializerBase):
 				"a box around them)"]
 		
 		elif counter == self.magic_counter + 250 and conversionProgress == 100:
+			a = self.level.citizens[0]
+			b = self.level.citizens[1]
+			a.gV = a.tgV
+			b.gV = b.tgV
 			return [self.lapis_color,
 				"We should really let others know about this..."]
 			
@@ -160,6 +173,7 @@ class Level1Specializer(SpecializerBase):
 				y += 1
 	
 		elif counter == 829:
+			self.lapis.direction = 'down'
 			level.citizens.append(self.lapis)
 			level.sprites.append(self.lapis)
 		

@@ -4,6 +4,8 @@ from Game import GameSceneBase
 import GamePlay
 import Resources
 
+_show_mouse_coords = True
+
 class PlayScene(GameSceneBase):
 	
 	def __init__(self, levelSeed):
@@ -182,17 +184,20 @@ class PlayScene(GameSceneBase):
 		if self.cameraY < 0: self.cameraY = 0
 		
 	def Render(self, screen):
+		global _show_mouse_coords
+		
 		self.level.RenderTiles(screen, self.cameraX, self.cameraY)
 		self.RenderSelection(screen)
 		self.level.RenderSprites(screen, self.cameraX, self.cameraY)
 		self.RenderDrag(screen)
 		self.RenderChrome(screen, self.progress)
 		
-		mousepos = pygame.mouse.get_pos()
-		x = (mousepos[0] + self.cameraX) // 32
-		y = (mousepos[1] + self.cameraY) // 32
-		mousepos = self.font_white.Render('(' + str(x) + ', ' + str(y) + ')')
-		screen.blit(mousepos, (640 - mousepos.get_width(), 480 - mousepos.get_height()))
+		if _show_mouse_coords:
+			mousepos = pygame.mouse.get_pos()
+			x = (mousepos[0] + self.cameraX) // 32
+			y = (mousepos[1] + self.cameraY) // 32
+			mousepos = self.font_white.Render('(' + str(x) + ', ' + str(y) + ')')
+			screen.blit(mousepos, (640 - mousepos.get_width(), 480 - mousepos.get_height()))
 		
 	def RenderChrome(self, screen, progress):
 		screen.blit(self.topmenu, (0, 0))

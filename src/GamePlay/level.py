@@ -36,9 +36,13 @@ class Level:
 		self.spriteGraph = SpriteGraph(self.width, self.height)
 		
 		self.PreColorize(levelseed.map.colorize_these)
+		self.initCameraOffset = None
 		if levelseed.map.carryoversprites != None:
+			x = levelseed.map.carryoversprites[0]
+			y = levelseed.map.carryoversprites[1]
 			
-			self.CarryOverSprites(levelseed.map.carryoversprites[0], levelseed.map.carryoversprites[1], levelseed.map.previousLevel)
+			self.initCameraOffset = (x, y)
+			self.CarryOverSprites(x, y, levelseed.map.previousLevel)
 		levelseed.map.previousLevel = None
 	
 	def CarryOverSprites(self, xTileOffset, yTileOffset, previousLevel):
@@ -210,6 +214,9 @@ class Level:
 					y = newy
 					sprite.X = x
 					sprite.Y = y
+				else:
+					sprite.targetX = sprite.X
+					sprite.targetY = sprite.Y
 				sprite.DX = 0
 				sprite.DY = 0
 			

@@ -16,10 +16,16 @@ class LevelUpTransition(Game.GameSceneBase):
 	def Update(self):
 		self.counter += 1
 		if self.counter == 3:
-			self.PlaySound('phase_complete.ogg')
+			#self.PlaySound('phase_complete.ogg')
 			self.nextPlayScene = GamePlay.PlayScene(GamePlay.LevelSeed('next', self.prevPlayScene.levelSeed, self.prevPlayScene.level))
 		elif self.counter == 69:
-			self.next = self.nextPlayScene  
+			self.next = self.nextPlayScene
+			camOff = self.next.level.initCameraOffset   
+			if camOff != None:
+				self.next.cameraX = self.prevPlayScene.cameraX + camOff[0] * 32
+				self.next.cameraY = self.prevPlayScene.cameraY + camOff[1] * 32
+
+				
 			
 	
 	def Render(self, screen):
@@ -34,3 +40,10 @@ class LevelUpTransition(Game.GameSceneBase):
 			offset = self.counter - 45
 			x -= offset * 24
 			screen.blit(ninex, (x, y))
+		
+		ninexWord = Resources.ImageLibrary.Get('9xImage.png')
+		dx = (640 - ninexWord.get_width()) // 2
+		dy = (480 - ninexWord.get_height()) // 2 - 80 - self.counter * 5
+		
+		screen.blit(ninexWord, (dx, dy))
+		
