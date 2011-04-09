@@ -129,18 +129,3 @@ class Title(GameSceneBase):
 		screen.blit(text, (x, y))
 		if (not self._quit_r):
 			self._quit_r = pygame.Rect(x, y, text.get_width(), text.get_height())
-
-		
-		#y = 320
-		#x = 100
-		#for i in range(len(self.options)):
-		#	
-		#	if i == self.index:
-		#		font = self.yellowfont
-		#		cursor = font.Render('>')
-		#		screen.blit(cursor, (x - 12, y)) 
-		#	else:
-		#		font = self.whitefont
-		#	
-		#	screen.blit(font.Render(self.options[i]), (x, y))
-		#	y += 20
