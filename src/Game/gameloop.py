@@ -15,7 +15,7 @@ class GameLoop:
 		pygame.display.set_caption(title)
 		self.DoHacks(self.screen)
 		self.quitting = False
-		self.show_fps_counter = True
+		self.show_fps_counter = False
 		self.lastNFrames = []
 		self.font = None
 		self.sound_cache = {}

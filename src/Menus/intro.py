@@ -3,7 +3,16 @@ from Game import GameSceneBase
 import Resources
 import Menus
 
+_useFancyRender = False
 
+_font = None
+def FancyRender(text, color):
+	global _font
+	if _font == None:
+		_font = Resources.TTF_Font('Kallamar/KALLAMAR.TTF', 18)
+		
+	c = pygame.Color(color[0], color[1], color[2])
+	return _font.Render(text, c)
 
 class Intro(GameSceneBase):
 	def __init__(self):
@@ -26,7 +35,16 @@ class IntroBase(GameSceneBase):
 		self.text_blits = []
 	
 	def ProcessInput(self, events):
-		pass # You have to sit and watch the whoooooole thing
+		skip = False
+		for event in events:
+			
+			if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+				skip = True
+			if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+				skip = True
+		
+		if skip:
+			self.next = Menus.Title()
 	
 	def Update(self):
 		self.counter += 1
@@ -48,8 +66,12 @@ class IntroBase(GameSceneBase):
 		return image
 	
 	def MakeText(self, color, text):
-		font = Resources.GetFont(color[0], color[1], color[2])
-		return font.Render(text).convert_alpha()
+		global _useFancyRender
+		if _useFancyRender:
+			return FancyRender(text, color)
+		else:
+			font = Resources.GetFont(color[0], color[1], color[2])
+			return font.Render(text).convert_alpha()
 	
 	def BlitText(self, text_image, loc, opacity):
 		if opacity < 0: opacity = 0
@@ -106,7 +128,7 @@ class IntroA(IntroBase):
 		self.fgB = Resources.ImageLibrary.Get('Intro/intro_0b.png')
 		self.temp = pygame.Surface((640, 480))
 		
-		self.nar_lineA = '`Good morning, citizens.'
+		self.nar_lineA = '`Good morning, Citizens.'
 		self.nar_lineB = 'Today is Ineo 1:1, Utopia Year 27.'
 		self.nar_lineC = "Today's weather is sunny.\"" 
 	
@@ -226,7 +248,7 @@ class IntroB(IntroBase):
 		self.lineD = self.MakeText(white, "You can't beat that when the rest of the")
 		self.lineE = self.MakeText(white, "world has only craters and despair to offer.")
 		
-		self.nar = '`Citizens,\nPlease extend your thanks\nto each other for working hard\nfor our happiness every day.\"'
+		self.nar = '`Citizens,\nPlease extend Your thanks\nto each other for working hard\nfor Our happiness every day.\"'
 		
 	def GetBG(self, counter):
 		scale = counter / 2000.0 + 1.0
@@ -391,6 +413,203 @@ class IntroD(IntroBase):
 	def __init__(self):
 		IntroBase.__init__(self)
 		white = (255, 255, 255)
+		self.lineA = self.MakeText(white, 'As resources became less scarce people')
+		self.lineB = self.MakeText(white, "stopped striving to stand out above their peers.")
+		self.lineC = self.MakeText(white, 'As differences were eliminated to calm an angry')
+		self.lineD = self.MakeText(white, 'populace, creativity seemed to go with them.')
 		
 	def Render(self, screen):
 		screen.fill((0, 0, 0))
+		
+		counter = self.counter
+		
+		acounter = counter 
+		bcounter = acounter - 190
+		ccounter = bcounter - 200
+		
+		
+		dimValue = bcounter - 190
+		if dimValue < 0: dimValue = 0
+		dimValue = dimValue * 7
+		if dimValue > 255:
+			dimValue = 255
+		
+		if acounter >= 0:
+			av = acounter * 10
+			if av > 255: av = 255
+			ax = 60 + acounter//3
+			ay = 300
+			self.BlitText(self.lineA, (ax, ay), av - dimValue)
+			self.BlitText(self.lineB, (ax, ay + 20), av - dimValue)
+			
+		if bcounter >= 0:
+			bv = bcounter * 10
+			if bv > 255: bv = 255
+			bx = 60 + bcounter//3
+			by = 400
+			self.BlitText(self.lineC, (bx, by), bv - dimValue)
+			self.BlitText(self.lineD, (bx, by + 20), bv - dimValue)
+		
+		if dimValue == 255:
+			#print 'CHANGE!'
+			self.next = IntroE()
+			
+		self.DoBlits(screen)
+
+class IntroE(IntroBase):
+	def __init__(self):
+		IntroBase.__init__(self)
+		self.nar = '\n'.join(["`We would like to take a moment",
+					"to remind all Citizens that",
+					"Items of Objection are to be",
+					"left alone and reported immediately",
+					"for the safety of All.\""])
+		self.bg = Resources.ImageLibrary.Get('Intro/intro_2.png').convert_alpha()
+		self.temp = pygame.Surface((640, 480))
+		
+	def Render(self, screen):
+		screen.fill((0, 0, 0))
+		self.temp.fill((0, 0, 0))
+		counter = self.counter
+		acounter = counter - 30
+		bcounter = acounter - 300
+		
+		dim2 = bcounter * 10
+		if dim2 > 255: dim2 = 255
+		if dim2 < 0: dim2 = 0
+		
+		bga = counter * 10
+		if bga > 255: bga = 255
+		
+		bga = bga - dim2
+		if bga < 0: bga = 0
+		f = bga - dim2
+		if f < 0: f = 0
+		if f > 255: f = 255
+		print f
+		self.temp.blit(self.bg, (0, 0))
+		self.temp.set_alpha(f)
+		screen.blit(self.temp, (0, 0))
+		#self.bg.set_alpha(f)
+		#pygame.draw.rect(screen, pygame.Color(0, 0, 0, 255 - f), pygame.Rect(0, 0, 640, 480))
+		
+		if bcounter > 0 and bga == 0:
+			self.next = IntroF()
+		
+		
+		if acounter >= 0:
+			text = self.nar
+			limit = acounter
+			if limit > len(text): limit = len(text)
+			display = text[:limit].split('\n')
+			y = 300 - acounter // 2
+			x = 50
+			for d in display:
+				self.BlitText(self.MakeText((160, 225, 255), d), (x, y), 255)
+				x += 100
+				y += 40
+		
+		self.DoBlits(screen)
+
+
+class IntroF(IntroBase):
+	def __init__(self):
+		IntroBase.__init__(self)
+		self.lineA = self.MakeText((255, 255, 255), '`On the sacrificial altar of unity and utopia we')
+		self.lineB = self.ConcatenateImages([
+							self.MakeText((255, 255, 255), 'placed '),
+							self.MakeText((255, 0, 0), 'music'),
+							self.MakeText((255, 255, 255), ', '),
+							self.MakeText((255, 180, 0), 'theatre'),
+							self.MakeText((255, 255, 255), ', '),
+							self.MakeText((0, 100, 255), 'dance'),
+							self.MakeText((255, 255, 255), ', '),
+							self.MakeText((100, 200, 100), 'literature'),
+							self.MakeText((255, 255, 255), '. ')])
+		self.lineC = self.MakeText((140, 140, 140), '--Anonymous Author, Before Utopia Year 3')
+		self.bg = pygame.Surface((640, 480))
+		self.bg_open = pygame.Surface((640, 480))
+		self.bg_open.blit(Resources.ImageLibrary.Get('Intro/intro_3.png'), (0, 0))
+		self.bg_closed = pygame.Surface((640, 480))
+		self.bg_closed.blit(Resources.ImageLibrary.Get('Intro/intro_4.png'), (0, 0))
+		self.nar = '\n'.join([
+							"`Thank you for keeping Our", 
+							"society harmonious for",
+							"a bright future. " + (' '*120),
+							"Please enjoy Your day.\""
+							])
+		self.RenderBG(0)
+	
+	def RenderBG(self, opacity):
+		self.bg.blit(self.bg_open, (0, 0))
+		self.bg_closed.set_alpha(opacity)
+		if opacity > 0:
+			self.bg.blit(self.bg_closed, (0, 0))
+		
+	def Render(self, screen):
+		counter = self.counter
+		
+		screen.fill((0, 0, 0))
+		
+		acounter = counter
+		bcounter = acounter - 50
+		ccounter = bcounter - 300
+		dcounter = ccounter - 255 // 6 + 20
+		ecounter = dcounter - 4 * 30 - 7 * 30
+		
+		dimVal = 0
+		if ccounter >= 0:
+			dimVal = ccounter * 10
+			if dimVal > 255:
+				dimVal = 255
+			if dimVal < 0: dimVal = 0
+		
+		if acounter >= 0:
+			av = acounter * 7
+			if av > 255: av = 255
+			self.bg.set_alpha(av)
+		
+		if bcounter >= 0:
+			av = bcounter * 10
+			ax = 100
+			ay = 300 - bcounter // 3
+			if av > 255: av = 255
+			self.BlitText(self.lineA, (ax, ay), av - dimVal)
+			self.BlitText(self.lineB, (ax, ay + 20), av - dimVal)
+			self.BlitText(self.lineC, (ax + 100, ay + 40), av - dimVal)
+		
+		if ccounter >= 0:
+			cv = ccounter * 6
+			if cv > 255: cv = 255
+			self.RenderBG(cv)
+		
+		screen.blit(self.bg, (0, 0))
+		
+		dim2 = 0
+		if ecounter >= 0:
+			#self.bg.blit(screen, (0, 0))
+			opacity = 255 - ecounter * 4
+			if opacity < 0: opacity = 0
+			self.bg.set_alpha(opacity)
+			screen.fill((0, 0, 0))
+			screen.blit(self.bg, (0, 0))
+			dim2 = ecounter * 8
+			if dim2 > 255: dim2 = 255
+			if ecounter >= 110:
+				self.next = Menus.Title()
+		
+		if dcounter >= 0:
+		
+			text = self.nar
+			limit = dcounter
+			if limit > len(text): limit = len(text)
+			display = text[:limit].split('\n')
+			y = 300 - dcounter // 2
+			x = 50
+			for d in display:
+				print 255 - dim2, ecounter
+				self.BlitText(self.MakeText((160, 225, 255), d), (x, y), 255 - dim2)
+				x += 100
+				y += 40
+		
+		self.DoBlits(screen)

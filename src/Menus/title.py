@@ -6,7 +6,7 @@ from Resources import ImageLibrary
 import Resources
 from GamePlay import LevelSeed
 
-COLOR = [pygame.Color(0, 0, 0), pygame.Color(255, 0, 0)]
+COLOR = [pygame.Color(0, 0, 0), pygame.Color(0, 110, 180)]
 
 NONE = 0
 STORY = 1
@@ -19,7 +19,7 @@ OPTIONS = [
 	'',
 	'Story Mode',
 	'Custom Game',
-	'Watch Intro',
+	'Rewatch Intro',
 	'Credits',
 	'Quit'
 ]
@@ -97,7 +97,7 @@ class Title(GameSceneBase):
 			self._custom_r = pygame.Rect(x, y, text.get_width(), text.get_height())
 		x = 43
 		y = 394
-		text = f('Watch Intro', COLOR[h == INTRO])
+		text = f('Rewatch Intro', COLOR[h == INTRO])
 		screen.blit(text, (x, y))
 		if (not self._intro_r):
 			self._intro_r = pygame.Rect(x, y, text.get_width(), text.get_height())
