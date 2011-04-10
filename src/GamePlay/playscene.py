@@ -4,7 +4,7 @@ from Game import GameSceneBase
 import GamePlay
 import Resources
 
-_show_mouse_coords = True
+_show_mouse_coords = False
 
 class PlayScene(GameSceneBase):
 	

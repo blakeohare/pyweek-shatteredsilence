@@ -39,7 +39,7 @@ class Title(GameSceneBase):
 		self._font = Resources.TTF_Font('Kallamar/KALLAMAR.TTF', 28)
 	
 		self.counter = 0
-		
+		pygame.mixer.music.stop()
 		self._story_r = None
 		self._custom_r = None
 		self._intro_r = None
@@ -77,7 +77,7 @@ class Title(GameSceneBase):
 					return
 				
 				if (self._story_r.collidepoint(x, y)):
-					self.next = PlayScene(LevelSeed('level6', None))
+					self.next = PlayScene(LevelSeed('level1', None))
 				elif (self._custom_r.collidepoint(x, y)):
 					self.next = Menus.MapOptions()
 				elif (self._intro_r.collidepoint(x, y)):

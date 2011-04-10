@@ -1,3 +1,4 @@
+import os
 import pygame
 from Game import GameSceneBase
 import Resources
@@ -17,6 +18,9 @@ def FancyRender(text, color):
 class Intro(GameSceneBase):
 	def __init__(self):
 		GameSceneBase.__init__(self)
+		pygame.mixer.music.load(os.path.join('Media', 'Music', 'BigBrother.mp3'))
+		pygame.mixer.music.set_volume(0.5)
+		pygame.mixer.music.play(-1)
 	
 	def ProcessInput(self, events):
 		pass
